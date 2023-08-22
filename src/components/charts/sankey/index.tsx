@@ -6,12 +6,12 @@ const MARGIN_X = 150;
 const HEIGHT = 400
 
 // colors
-const GREY = '#6c6c6c'
-const LIGHT_GREY = '#aaaaaa'
-const GREEN = '#05a302'
-const LIGHT_GREEN = '#12d02a'
-const RED = '#b81b01'
-const LIGHT_RED = '#f76c67'
+const GREY = '#545955'
+const LIGHT_GREY = '#a6a6a6'
+const GREEN = '#188c1a'
+const LIGHT_GREEN = '#18b81b'
+const RED = '#b81818'
+const LIGHT_RED = '#e63535'
 
 type Data = {
   nodes: { id: string }[];
@@ -38,23 +38,23 @@ enum Title {
 }
 
 const sankeySettings = {
-  [Title.AutoRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY },
-  [Title.AutoSalesRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY },
-  [Title.AutoLeasingRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY },
-  [Title.AutoRegCredits]: { nodeFill: GREY, linkFill: LIGHT_GREY },
-  [Title.TotalRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY },
-  [Title.GrossProfite]: { nodeFill: GREEN, linkFill: LIGHT_GREEN },
-  [Title.OperationProfit]: { nodeFill: GREEN, linkFill: LIGHT_GREEN },
-  [Title.NetProfite]: { nodeFill: GREEN, linkFill: LIGHT_GREEN },
-  [Title.CostOfRevenue]: { nodeFill: RED, linkFill: LIGHT_RED },
-  [Title.OperationExpenses]: { nodeFill: RED, linkFill: LIGHT_RED },
-  [Title.AutoCosts]: { nodeFill: RED, linkFill: LIGHT_RED },
-  [Title.EnergyCosts]: { nodeFill: RED, linkFill: LIGHT_RED },
-  [Title.Tax]: { nodeFill: RED, linkFill: LIGHT_RED },
-  [Title.Others]: { nodeFill: RED, linkFill: LIGHT_RED },
-  [Title["R&D"]]: { nodeFill: RED, linkFill: LIGHT_RED },
-  [Title["SG&D"]]: { nodeFill: RED, linkFill: LIGHT_RED },
-} as { [key in Title]: { nodeFill: string, linkFill: string } }
+  [Title.AutoRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },
+  [Title.AutoSalesRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },
+  [Title.AutoLeasingRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },
+  [Title.AutoRegCredits]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },
+  [Title.TotalRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: false },
+  [Title.GrossProfite]: { nodeFill: GREEN, linkFill: LIGHT_GREEN, showVal: false },
+  [Title.OperationProfit]: { nodeFill: GREEN, linkFill: LIGHT_GREEN, showVal: false },
+  [Title.NetProfite]: { nodeFill: GREEN, linkFill: LIGHT_GREEN, showVal: true },
+  [Title.CostOfRevenue]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
+  [Title.OperationExpenses]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
+  [Title.AutoCosts]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
+  [Title.EnergyCosts]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
+  [Title.Tax]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
+  [Title.Others]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
+  [Title["R&D"]]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
+  [Title["SG&D"]]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
+} as { [key in Title]: { nodeFill: string, linkFill: string, showVal: boolean } }
 
 interface Sankey {
   autoSalesRevenue: number;
@@ -122,7 +122,7 @@ const Sankey = ({ autoSalesRevenue, autoLeasingRevenue, autoRegCredits }: Sankey
 
   // Draw the nodes
   const allNodes = nodes.map((node: any) => {
-    const { nodeFill } = sankeySettings[node.id as Title] || {}
+    const { nodeFill, showVal } = sankeySettings[node.id as Title] || {}
     const { heading, layer } = node
     const showLeftLabel = [0, 1].includes(layer)
     const showLabel = showLeftLabel || !node.sourceLinks.length
@@ -138,16 +138,34 @@ const Sankey = ({ autoSalesRevenue, autoLeasingRevenue, autoRegCredits }: Sankey
           fillOpacity={0.8}
           strokeLinecap="round"
         />
-        {showLabel && <text
-          x={showLeftLabel ? (node.x0 + (node.x1 - node.x0) / 2) - 20 : node.x1 + 15}
-          y={node.y0 + (node.y1 - node.y0) / 2}
-          dy={".35em"}
-          fontSize={12}
-          fontWeight={heading ? 'bold' : 'normal'}
-          textAnchor={showLeftLabel ? "end" : "start"}
-          transform={null}
-          fill="#fff"
-        >{node.id}</text>}
+        {showLabel && 
+          <>
+            {/* Main text */}
+            <text
+              x={showLeftLabel ? (node.x0 + (node.x1 - node.x0) / 2) - 20 : node.x1 + 15}
+              y={node.y0 + (node.y1 - node.y0) / 2}
+              dy={".35em"}
+              fontSize={12}
+              fontWeight={heading ? 'bold' : 'normal'}
+              textAnchor={showLeftLabel ? "end" : "start"}
+              fill="#fff"
+            >
+              {node.id}
+            </text>
+            {/* Subtext */}
+            {showVal && <text
+              x={showLeftLabel ? (node.x0 + (node.x1 - node.x0) / 2) - 20 : node.x1 + 15}
+              y={node.y0 + (node.y1 - node.y0) / 2 + 15}
+              dy={".35em"}
+              fontSize={10}
+              fontWeight="normal"
+              textAnchor={showLeftLabel ? "end" : "start"}
+              fill="#fff"
+            >
+              {`$${node.value} BN`}
+            </text>}
+          </>
+        }
       </g>
     );
   });

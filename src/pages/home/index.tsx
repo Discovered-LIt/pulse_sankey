@@ -6,6 +6,8 @@ import Filters from "./filters";
 // types
 import { SlidderCategory } from "config/sankey";
 
+export type SliderData = {[key in SlidderCategory]?: number}
+
 const Home = () => {
   const [autoSalesRevenue, setAutoSalesRevenue] = useState<number>(2)
   const [autoLeasingRevenue, setAutoLeasingRevenue] = useState<number>(2)

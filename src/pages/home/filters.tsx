@@ -1,9 +1,11 @@
 import React from "react";
 import Slider, { SliderType } from "../../components/slider";
+// types
 import { SlidderSettings, SlidderCategory } from "../../config/sankey";
+import { SliderData } from ".";
 
 interface Filter {
-  sliderData: {[key in SlidderCategory]?: number}
+  sliderData: SliderData;
   onChange: (type: SlidderCategory, val: number) => void;
 }
 
