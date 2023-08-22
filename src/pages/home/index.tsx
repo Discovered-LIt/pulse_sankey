@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 // components
-import Header from "../../components/header";
 import SankeyChart from "../../components/charts/sankey";
 import Filters from "./filters";
 // types
@@ -56,7 +55,6 @@ const Home = () => {
 
   return (
     <div className="bg-[#1d1f23] text-white h-screen w-screen block">
-      <Header />
       <SankeyChart data={sankeyData} />
       <Filters
         onChange={onSliderChange}
