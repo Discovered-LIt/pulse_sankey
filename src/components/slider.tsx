@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import cn from 'classnames';
 import SliderCom from 'rc-slider'
 
 export enum SliderType {
@@ -14,12 +13,24 @@ interface Slider {
   description?: string
   min?: number
   max?: number
+  step?: number;
   value: number
   type?: SliderType
+  prefix?: string;
   onChange: (val: number) => void;
 }
 
-const Slider = ({ id, label, description, value, min = 0, max = 500, type = SliderType.Basic, onChange }: Slider) => {
+const Slider = ({
+  id,
+  label,
+  description,
+  value,
+  min = 0,
+  max = 500,
+  step=1,
+  type = SliderType.Basic,
+  prefix,
+  onChange }: Slider) => {
   const [tempVal, setTempVal] = useState<any>(value)
   return (
     <div className="text-white w-full">
@@ -30,8 +41,8 @@ const Slider = ({ id, label, description, value, min = 0, max = 500, type = Slid
         >
           {label}
         </label>
-        <div className="h-[20px] rounded bg-zinc-700 text-[10px] flex items-center p-2">
-          {tempVal} BN
+        <div className="h-[20px] min-w-[55px] rounded bg-zinc-700 text-[10px] flex items-center justify-center">
+          {tempVal} {prefix}
         </div>
       </div>
       <p className="text-[10px] font-light uppercase italic my-2">{description}</p>
@@ -40,7 +51,7 @@ const Slider = ({ id, label, description, value, min = 0, max = 500, type = Slid
         value={tempVal}
         min={min}
         max={max}
-        step={0.1}
+        step={step}
         handleStyle={{ backgroundColor: 'none', border: 'none', opacity: 1 }}
         trackStyle={{ backgroundColor: type }}
         onChange={(val) => setTempVal(val)}
