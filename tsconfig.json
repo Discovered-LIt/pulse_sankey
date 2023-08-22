@@ -1,13 +1,16 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
+    "outDir": "dist",
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "es6",
+    "module": "esnext",
     "target": "es5",
     "jsx": "react",
     "allowJs": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-  }
+    "baseUrl": "src",
+  },
+  "include": ["src/**/*", "./global.d.ts"],
+  "exclude": ["node_modules"]
 }
