@@ -1,73 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { sankey, sankeyCenter, sankeyLinkHorizontal } from "d3-sankey";
+// types
+import { sankeySettings, SankeyCategory } from "../../../config/sankey";
+import { SankeyData } from "../../../pages/home";
 
 const MARGIN_Y = 25;
 const MARGIN_X = 150;
 const HEIGHT = 400
 
-// colors
-const GREY = '#545955'
-const LIGHT_GREY = '#a6a6a6'
-const GREEN = '#188c1a'
-const LIGHT_GREEN = '#18b81b'
-const RED = '#b81818'
-const LIGHT_RED = '#e63535'
-
-type Data = {
-  nodes: { id: string }[];
-  links: { source: string; target: string; value: number }[];
-};
-
-enum Title {
-  AutoRevenue = "Auto Revenue",
-  AutoSalesRevenue = "Auto Sales Revenue",
-  AutoLeasingRevenue = "Auto Leasing Revenue",
-  AutoRegCredits = "Auto Reg Credits",
-  TotalRevenue = "Total Revenue",
-  GrossProfite = "Gross Profit",
-  CostOfRevenue = "Cost of Revenue",
-  OperationProfit = "Operation Profit",
-  OperationExpenses = "Operation Expenses",
-  AutoCosts = "Auto Costs",
-  EnergyCosts = "Energy Costs",
-  NetProfite = "Net Profit",
-  Tax = "Tax",
-  Others = "Others",
-  "R&D" = "R&D",
-  "SG&D" = "SG&D"
-}
-
-const sankeySettings = {
-  [Title.AutoRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },
-  [Title.AutoSalesRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },
-  [Title.AutoLeasingRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },
-  [Title.AutoRegCredits]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },
-  [Title.TotalRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: false },
-  [Title.GrossProfite]: { nodeFill: GREEN, linkFill: LIGHT_GREEN, showVal: false },
-  [Title.OperationProfit]: { nodeFill: GREEN, linkFill: LIGHT_GREEN, showVal: false },
-  [Title.NetProfite]: { nodeFill: GREEN, linkFill: LIGHT_GREEN, showVal: true },
-  [Title.CostOfRevenue]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
-  [Title.OperationExpenses]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
-  [Title.AutoCosts]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
-  [Title.EnergyCosts]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
-  [Title.Tax]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
-  [Title.Others]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
-  [Title["R&D"]]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
-  [Title["SG&D"]]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
-} as { [key in Title]: { nodeFill: string, linkFill: string, showVal: boolean } }
-
 interface Sankey {
-  autoSalesRevenue: number;
-  autoLeasingRevenue: number;
-  autoRegCredits: number
+  data: SankeyData
 }
 
-const Sankey = ({ autoSalesRevenue, autoLeasingRevenue, autoRegCredits }: Sankey) => {
+const Sankey = ({ data }: Sankey) => {
   const [hoveredNode, setHoveredNode] = useState<string>('')
   const [windowWidth, setWindowWidth] = useState<number>()
-
-  const autoRevenue = autoSalesRevenue + autoLeasingRevenue + autoRegCredits;
-  console.log('autoRevenue', autoRevenue)
 
   useEffect(() => {
     windowresizeHandler()
@@ -79,33 +26,6 @@ const Sankey = ({ autoSalesRevenue, autoLeasingRevenue, autoRegCredits }: Sankey
     setWindowWidth(window.innerWidth)
   }
 
-  const data: Data = {
-    nodes: Object.values(Title).map((key) => {
-      return { id: key, heading: [Title.AutoRevenue, Title.NetProfite].includes(key) }
-    }),
-    links: [
-      { source: Title.AutoRevenue, target: Title.TotalRevenue, value: autoRevenue },
-      { source: Title.AutoSalesRevenue, target: Title.TotalRevenue, value: autoSalesRevenue },
-      { source: Title.AutoLeasingRevenue, target: Title.TotalRevenue, value: autoLeasingRevenue },
-      { source: Title.AutoRegCredits, target: Title.TotalRevenue, value: autoRegCredits },
-
-      { source: Title.TotalRevenue, target: Title.GrossProfite, value: 1.4 },
-      { source: Title.GrossProfite, target: Title.OperationProfit, value: 1.4 },
-      { source: Title.GrossProfite, target: Title.OperationExpenses, value: 1.4 },
-
-      { source: Title.OperationProfit, target: Title.NetProfite, value: 1.4 },
-      { source: Title.OperationProfit, target: Title.Tax, value: 1.4 },
-      { source: Title.OperationProfit, target: Title.Others, value: 1.4 },
-
-      { source: Title.OperationExpenses, target: Title["R&D"], value: 1.4 },
-      { source: Title.OperationExpenses, target: Title["SG&D"], value: 1.4 },
-
-      { source: Title.TotalRevenue, target: Title.CostOfRevenue, value: 1.4 },
-      { source: Title.CostOfRevenue, target: Title.AutoCosts, value: 1.4 },
-      { source: Title.CostOfRevenue, target: Title.EnergyCosts, value: 1.4 },
-    ]
-  }
-
   // Set the sankey diagram properties
   const sankeyGenerator = sankey()
     .nodeWidth(26)
@@ -114,15 +34,15 @@ const Sankey = ({ autoSalesRevenue, autoLeasingRevenue, autoRegCredits }: Sankey
       [MARGIN_X, MARGIN_Y],
       [windowWidth - MARGIN_X, HEIGHT - MARGIN_Y],
     ])
-    .nodeId((node: any) => node.id) // Accessor function: how to retrieve the id that defines each node. This id is then used for the source and target props of links
-    .nodeAlign(sankeyCenter); // Algorithm used to decide node position
+    .nodeId((node: any) => node.id)
+    .nodeAlign(sankeyCenter);
 
   // Compute nodes and links positions
   const { nodes, links } = sankeyGenerator(data as any);
 
   // Draw the nodes
   const allNodes = nodes.map((node: any) => {
-    const { nodeFill, showVal } = sankeySettings[node.id as Title] || {}
+    const { nodeFill, showVal } = sankeySettings[node.id as SankeyCategory] || {}
     const { heading, layer } = node
     const showLeftLabel = [0, 1].includes(layer)
     const showLabel = showLeftLabel || !node.sourceLinks.length
@@ -176,7 +96,7 @@ const Sankey = ({ autoSalesRevenue, autoLeasingRevenue, autoRegCredits }: Sankey
     const path = linkGenerator(link);
     // const hoveredId = `${link?.target?.id}-${link?.source?.id}`
     // const hovered = hoveredId === hoveredNode
-    const { linkFill } = sankeySettings[link?.target?.id as Title] || { linkFill: '' }
+    const { linkFill } = sankeySettings[link?.target?.id as SankeyCategory] || { linkFill: '' }
     const { layer } = link?.source;
     const showLabel = layer !== 0 && !!link.target.sourceLinks.length
     return (

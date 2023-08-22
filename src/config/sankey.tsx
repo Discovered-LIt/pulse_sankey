@@ -1,3 +1,22 @@
+export enum SankeyCategory {
+  AutoRevenue = "Auto Revenue",
+  AutoSalesRevenue = "Auto Sales Revenue",
+  AutoLeasingRevenue = "Auto Leasing Revenue",
+  AutoRegCredits = "Auto Reg Credits",
+  TotalRevenue = "Total Revenue",
+  GrossProfite = "Gross Profit",
+  CostOfRevenue = "Cost of Revenue",
+  OperationProfit = "Operation Profit",
+  OperationExpenses = "Operation Expenses",
+  AutoCosts = "Auto Costs",
+  EnergyCosts = "Energy Costs",
+  NetProfite = "Net Profit",
+  Tax = "Tax",
+  Others = "Others",
+  "R&D" = "R&D",
+  "SG&D" = "SG&D"
+}
+
 export enum SlidderCategory {
   AutoSalesRevenue = "Auto sales revenue",
   AutoRegCreditsRevenue = "Auto reg credits revenue",
@@ -33,6 +52,34 @@ type SlidderSettings = { [key in SlidderCategory]: {
   step: number,
   description?: string
 }}
+
+// colors
+const GREY = '#545955'
+const LIGHT_GREY = '#a6a6a6'
+const GREEN = '#188c1a'
+const LIGHT_GREEN = '#18b81b'
+const RED = '#b81818'
+const LIGHT_RED = '#e63535'
+
+export const sankeySettings: { [key in SankeyCategory]: { nodeFill: string, linkFill: string, showVal: boolean } } = {
+  [SankeyCategory.AutoRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },
+  [SankeyCategory.AutoSalesRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },
+  [SankeyCategory.AutoLeasingRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },
+  [SankeyCategory.AutoRegCredits]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },
+  [SankeyCategory.TotalRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: false },
+  [SankeyCategory.GrossProfite]: { nodeFill: GREEN, linkFill: LIGHT_GREEN, showVal: false },
+  [SankeyCategory.OperationProfit]: { nodeFill: GREEN, linkFill: LIGHT_GREEN, showVal: false },
+  [SankeyCategory.NetProfite]: { nodeFill: GREEN, linkFill: LIGHT_GREEN, showVal: true },
+  [SankeyCategory.CostOfRevenue]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
+  [SankeyCategory.OperationExpenses]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
+  [SankeyCategory.AutoCosts]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
+  [SankeyCategory.EnergyCosts]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
+  [SankeyCategory.Tax]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
+  [SankeyCategory.Others]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
+  [SankeyCategory["R&D"]]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
+  [SankeyCategory["SG&D"]]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
+}
+
 
 export const SlidderSettings: SlidderSettings = {
   [SlidderCategory.AutoSalesRevenue]: {
