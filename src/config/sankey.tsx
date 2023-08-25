@@ -1,3 +1,5 @@
+import { SliderData } from "../pages/home";
+
 export enum SankeyCategory {
   AutoRevenue = "Auto Revenue",
   AutoSalesRevenue = "Auto Sales Revenue",
@@ -21,17 +23,19 @@ export enum SlidderCategory {
   AutoSalesRevenue = "Auto sales revenue",
   AutoRegCreditsRevenue = "Auto reg credits revenue",
   AutomotiveLeasingRevenue = "Automotive leasing revenue",
-  EnergyStorageRevenue = "Energy Storage revenue",
-  EnergyGenerationRevenue = "Energy generation revenue",
-  ServicesEndOtherRevenue = "Services and other revenue",
+
+  EnergyGenerationAndStorageRevenue = "Energy generation & storage revenue",
+  
+  ServicesAndOtherRevenue = "Services and other revenue",
   AutoRevenueMargin = "Auto revenue margin",
-  EnergyStorageMargin = "Energy Storage margin",
-  EnergyGenerationMargin = "Energy generation margin",
+
+  EnergyStorageMargin = "Energy generation and storage margin",
   ServicesAndOtherMargin = "Services and other Margin",
   ResearchAndDevelopment = "R&D",
   SGA = "SGA",
-  OtherExpenses = "Other Expenses",
-  InterestTaxesDepreciationAmortization = "Interest, taxes, depreciation, and amortization"
+  OtherExpenses = "Other Operating Expenses",
+  InterestAndOther = "Interest and other income/expenses (net)",
+  Taxes = "Taxes (TAX)"
 }
 
 export enum Prefix {
@@ -50,16 +54,17 @@ type SlidderSettings = { [key in SlidderCategory]: {
   max: number,
   prefix: Prefix,
   step: number,
+  defaultValue: number,
   description?: string
 }}
 
 // colors
-const GREY = '#545955'
-const LIGHT_GREY = '#a6a6a6'
-const GREEN = '#188c1a'
-const LIGHT_GREEN = '#18b81b'
-const RED = '#b81818'
-const LIGHT_RED = '#e63535'
+export const GREY = '#545955'
+export  const LIGHT_GREY = '#a6a6a6'
+export  const GREEN = '#188c1a'
+export  const LIGHT_GREEN = '#18b81b'
+export  const RED = '#b81818'
+export  const LIGHT_RED = '#e63535'
 
 export const sankeySettings: { [key in SankeyCategory]: { nodeFill: string, linkFill: string, showVal: boolean } } = {
   [SankeyCategory.AutoRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },
@@ -84,9 +89,10 @@ export const sankeySettings: { [key in SankeyCategory]: { nodeFill: string, link
 export const SlidderSettings: SlidderSettings = {
   [SlidderCategory.AutoSalesRevenue]: {
     min: 0,
-    max: 5,
+    max: 55,
     prefix: Prefix.Currency,
     step: 0.1,
+    defaultValue: 26.4,
     description: "less than Q2 auti revenue"
   },
   [SlidderCategory.AutoRegCreditsRevenue]: {
@@ -94,6 +100,7 @@ export const SlidderSettings: SlidderSettings = {
     max: 3,
     prefix: Prefix.Currency,
     step: 0.1,
+    defaultValue: 0.2,
     description: "more than analyst avg"
   },
   [SlidderCategory.AutomotiveLeasingRevenue]: {
@@ -101,27 +108,23 @@ export const SlidderSettings: SlidderSettings = {
     max: 3,
     prefix: Prefix.Currency,
     step: 0.1,
+    defaultValue: 0.6,
     description: "more than yst avg"
   },
-  [SlidderCategory.EnergyStorageRevenue]: {
+  [SlidderCategory.EnergyGenerationAndStorageRevenue]: {
     min: 0,
     max: 3,
     prefix: Prefix.Currency,
     step: 0.1,
+    defaultValue: 1.5,
     description: "less than Q2 auti revenue"
   },
-  [SlidderCategory.EnergyGenerationRevenue]: {
-    min: 0,
-    max: 5,
-    prefix: Prefix.Currency,
-    step: 0.1,
-    description: "less than Q2 auti revenue"
-  },
-  [SlidderCategory.ServicesEndOtherRevenue]: {
+  [SlidderCategory.ServicesAndOtherRevenue]: {
     min: 0,
     max: 3,
     prefix: Prefix.Currency,
     step: 0.1,
+    defaultValue: 2.15,
     description: "less than Q2 auti revenue"
   },
 
@@ -130,6 +133,7 @@ export const SlidderSettings: SlidderSettings = {
     max: 100,
     prefix: Prefix.Percentage,
     step: 1,
+    defaultValue: 19.2,
     description: "less than Q2 auti revenue"
   },
   [SlidderCategory.EnergyStorageMargin]: {
@@ -137,13 +141,7 @@ export const SlidderSettings: SlidderSettings = {
     max: 100,
     prefix: Prefix.Percentage,
     step: 1,
-    description: "less than Q2 auti revenue"
-  },
-  [SlidderCategory.EnergyGenerationMargin]: {
-    min: 0,
-    max: 100,
-    prefix: Prefix.Percentage,
-    step: 1,
+    defaultValue: 18.4,
     description: "less than Q2 auti revenue"
   },
   [SlidderCategory.ServicesAndOtherMargin]: {
@@ -151,6 +149,7 @@ export const SlidderSettings: SlidderSettings = {
     max: 100,
     prefix: Prefix.Percentage,
     step: 1,
+    defaultValue: 7.7,
     description: "less than Q2 auti revenue"
   },
 
@@ -159,6 +158,7 @@ export const SlidderSettings: SlidderSettings = {
     max: 3,
     prefix: Prefix.Currency,
     step: 0.1,
+    defaultValue: 0.9,
     description: "less than Q2 auti revenue"
   },
   [SlidderCategory.SGA]: {
@@ -166,6 +166,7 @@ export const SlidderSettings: SlidderSettings = {
     max: 3,
     prefix: Prefix.Currency,
     step: 0.1,
+    defaultValue: 1.2,
     description: "less than Q2 auti revenue"
   },
   [SlidderCategory.OtherExpenses]: {
@@ -173,13 +174,27 @@ export const SlidderSettings: SlidderSettings = {
     max: 1,
     prefix: Prefix.Currency,
     step: 0.1,
+    defaultValue: 0,
     description: "less than Q2 auti revenue"
   },
-  [SlidderCategory.InterestTaxesDepreciationAmortization]: {
+  [SlidderCategory.InterestAndOther]: {
+    min: 0,
+    max: 1,
+    prefix: Prefix.Currency,
+    step: 0.1,
+    defaultValue: 0.5,
+    description: "less than Q2 auti revenue"
+  },
+  [SlidderCategory.Taxes]: {
     min: 0,
     max: 3,
     prefix: Prefix.Currency,
     step: 0.1,
+    defaultValue: 0.3,
     description: "less than Q2 auti revenue"
-  },
+  }
 }
+
+export const sliderDefaultData: SliderData = Object.keys(SlidderSettings).reduce((obj, key: SlidderCategory) => {
+  return {...obj, ...{ [key]: SlidderSettings[key].defaultValue }}
+}, {})
