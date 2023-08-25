@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 // components
 import SankeyChart from "../../components/charts/sankey";
-import Filters from "./filters";
+import Settings from "./settings";
 // types
 import { SlidderCategory, SankeyCategory } from "../../config/sankey";
 // data
@@ -64,7 +64,7 @@ const Home = () => {
   return (
     <div className="bg-[#1d1f23] text-white h-screen w-screen block">
       <SankeyChart data={sankeyData} />
-      <Filters
+      <Settings
         onChange={onSliderChange}
         sliderData={sliderData}
       />
