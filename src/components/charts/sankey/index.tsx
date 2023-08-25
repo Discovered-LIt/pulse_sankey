@@ -3,6 +3,8 @@ import { sankey, sankeyCenter, sankeyLinkHorizontal } from "d3-sankey";
 // types
 import { sankeySettings, SankeyCategory } from "../../../config/sankey";
 import { SankeyData } from "../../../pages/home";
+// constant
+import { GREY } from "../../../config/sankey";
 
 const MARGIN_Y = 25;
 const MARGIN_X = 150;
@@ -54,37 +56,33 @@ const Sankey = ({ data }: Sankey) => {
           x={node.x0}
           y={node.y0}
           stroke='none'
-          fill={nodeFill}
+          fill={nodeFill || GREY}
           fillOpacity={0.8}
           strokeLinecap="round"
         />
         {showLabel && 
-          <>
-            {/* Main text */}
-            <text
-              x={showLeftLabel ? (node.x0 + (node.x1 - node.x0) / 2) - 20 : node.x1 + 15}
-              y={node.y0 + (node.y1 - node.y0) / 2}
-              dy={".35em"}
-              fontSize={12}
-              fontWeight={heading ? 'bold' : 'normal'}
-              textAnchor={showLeftLabel ? "end" : "start"}
-              fill="#fff"
+          <foreignObject
+            x={showLeftLabel ? (node.x0 + (node.x1 - node.x0) / 2) - 100 : node.x1 + 15}
+            y={node.y0 + (node.y1 - node.y0) / 2 - 10}
+            width={300}
+            height={100}
+          >
+            <div
+              style={{
+                fontSize: 12,
+                fontWeight: heading ? 'bold' : 'normal',
+                textAlign: 'left',
+                color: '#fff',
+                whiteSpace: 'pre-wrap',
+                wordWrap: 'break-word',
+                lineHeight: '1.2em',
+              }}
             >
               {node.id}
-            </text>
-            {/* Subtext */}
-            {showVal && <text
-              x={showLeftLabel ? (node.x0 + (node.x1 - node.x0) / 2) - 20 : node.x1 + 15}
-              y={node.y0 + (node.y1 - node.y0) / 2 + 15}
-              dy={".35em"}
-              fontSize={10}
-              fontWeight="normal"
-              textAnchor={showLeftLabel ? "end" : "start"}
-              fill="#fff"
-            >
+              <br />
               {`$${node.value} BN`}
-            </text>}
-          </>
+            </div>
+          </foreignObject>
         }
       </g>
     );
