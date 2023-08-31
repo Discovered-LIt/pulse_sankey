@@ -80,7 +80,7 @@ const Sankey = ({ data }: Sankey) => {
             >
               {node.id}
               <br />
-              {`$${node.value} BN`}
+              {`$${(node.value).toFixed(1)} BN`}
             </div>
           </foreignObject>
         }
@@ -97,6 +97,7 @@ const Sankey = ({ data }: Sankey) => {
     const { linkFill } = sankeySettings[link?.target?.id as SankeyCategory] || { linkFill: '' }
     const { layer } = link?.source;
     const showLabel = layer !== 0 && !!link.target.sourceLinks.length
+    
     return (
       <svg key={i}>
         <path
@@ -106,8 +107,8 @@ const Sankey = ({ data }: Sankey) => {
           fill="none"
           strokeOpacity={1}
           strokeWidth={link.width}
-        // onMouseOver={() => setHoveredNode(hoveredId)}
-        // onMouseOut={() => setHoveredNode('')}
+          // onMouseOver={() => setHoveredNode(hoveredId)}
+          // onMouseOut={() => setHoveredNode('')}
         />
         {showLabel && <text>
           <textPath

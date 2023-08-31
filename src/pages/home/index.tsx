@@ -20,27 +20,28 @@ const Home = () => {
   const [sliderData, setSlider] = useState<SliderData>(sliderDefaultData)
 
   const sankeyData = useMemo((): SankeyData => {
+    const netProfit = cal.calculateNetProfit(sliderData)
     const sankeyLinks: [any, SankeyCategory, (data: SliderData) => number][] = [
       [SankeyCategory.AutoRevenue, SankeyCategory.TotalRevenue, cal.calculateAutoRevenue],
-      // [SankeyCategory.AutoSalesRevenue, SankeyCategory.TotalRevenue, cal.calculateAutoSalesRevenue],
-      // [SankeyCategory.AutoLeasingRevenue, SankeyCategory.TotalRevenue, cal.calculateAutoLeasingRevenue],
-      // [SankeyCategory.AutoRegCredits, SankeyCategory.TotalRevenue, cal.calculateAutoRegCredits],
       [SlidderCategory.EnergyGenerationAndStorageRevenue, SankeyCategory.TotalRevenue, cal.getEnergyGenerationAndStorageRevenue],
       [SlidderCategory.ServicesAndOtherRevenue, SankeyCategory.TotalRevenue, cal.getServicesAndOtherRevenue],
-    
       [SankeyCategory.TotalRevenue, SankeyCategory.GrossProfite, cal.calculateGrossProfit],
       [SankeyCategory.GrossProfite, SankeyCategory.OperationProfit, cal.calculateOperationProfit],
       [SankeyCategory.GrossProfite, SankeyCategory.OperationExpenses, cal.calculateOperationExpenses],
-      [SankeyCategory.OperationProfit, SankeyCategory.NetProfite, cal.calculateNetProfit],
+      [
+        SankeyCategory.OperationProfit, 
+        netProfit >= 0 ? SankeyCategory.NetProfite : SankeyCategory.NetLoss, 
+        cal.calculateNetProfit
+      ],
       [SankeyCategory.OperationProfit, SankeyCategory.Tax, cal.calculateTax],
       [SankeyCategory.OperationProfit, SankeyCategory.Others, cal.calculateOthers],
-    
       [SankeyCategory.OperationExpenses, SankeyCategory["R&D"], cal.calculateRAndD],
-      [SankeyCategory.OperationExpenses, SankeyCategory["SG&D"], cal.calculateSGA],
-    
+      [SankeyCategory.OperationExpenses, SankeyCategory["SG&A"], cal.calculateSGA],
+      [SankeyCategory.OperationExpenses, SankeyCategory.OtherOpex, cal.calculateOtherOpex],
       [SankeyCategory.TotalRevenue, SankeyCategory.CostOfRevenue, cal.calculateCostOfRevenue],
-      [SankeyCategory.CostOfRevenue, SankeyCategory.AutoCosts, cal.calculateAutoCosts],
-      [SankeyCategory.CostOfRevenue, SankeyCategory.EnergyCosts, cal.calculateEnergyCosts],
+      // disabled
+      // [SankeyCategory.CostOfRevenue, SankeyCategory.AutoCosts, cal.calculateAutoCosts],
+      // [SankeyCategory.CostOfRevenue, SankeyCategory.EnergyCosts, cal.calculateEnergyCosts],
     ];
   
     return {
@@ -49,7 +50,7 @@ const Home = () => {
       }),
       links: sankeyLinks.map((link) => {
         const [source, target, fn] = link;
-        const val = parseFloat((fn?.(sliderData) || 0).toFixed(1))
+        const val = parseFloat(Math.abs(fn?.(sliderData)).toFixed(1))
         return { source, target, value: val }
       })
     }

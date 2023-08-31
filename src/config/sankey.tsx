@@ -13,27 +13,26 @@ export enum SankeyCategory {
   AutoCosts = "Auto Costs",
   EnergyCosts = "Energy Costs",
   NetProfite = "Net Profit",
+  NetLoss = "Net Loss",
   Tax = "Tax",
   Others = "Others",
+  OtherOpex = "Other Opex",
   "R&D" = "R&D",
-  "SG&D" = "SG&D"
+  "SG&A" = "SG&A"
 }
 
 export enum SlidderCategory {
   AutoSalesRevenue = "Auto sales revenue",
   AutoRegCreditsRevenue = "Auto reg credits revenue",
   AutomotiveLeasingRevenue = "Automotive leasing revenue",
-
   EnergyGenerationAndStorageRevenue = "Energy generation & storage revenue",
-  
   ServicesAndOtherRevenue = "Services and other revenue",
   AutoRevenueMargin = "Auto revenue margin",
-
   EnergyStorageMargin = "Energy generation and storage margin",
   ServicesAndOtherMargin = "Services and other Margin",
   ResearchAndDevelopment = "R&D",
   SGA = "SGA",
-  OtherExpenses = "Other Operating Expenses",
+  OtherOperatingExpenses = "Other Operating Expenses",
   InterestAndOther = "Interest and other income/expenses (net)",
   Taxes = "Taxes (TAX)"
 }
@@ -75,14 +74,17 @@ export const sankeySettings: { [key in SankeyCategory]: { nodeFill: string, link
   [SankeyCategory.GrossProfite]: { nodeFill: GREEN, linkFill: LIGHT_GREEN, showVal: false },
   [SankeyCategory.OperationProfit]: { nodeFill: GREEN, linkFill: LIGHT_GREEN, showVal: false },
   [SankeyCategory.NetProfite]: { nodeFill: GREEN, linkFill: LIGHT_GREEN, showVal: true },
+  [SankeyCategory.NetLoss]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
+
   [SankeyCategory.CostOfRevenue]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
   [SankeyCategory.OperationExpenses]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
   [SankeyCategory.AutoCosts]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
   [SankeyCategory.EnergyCosts]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
   [SankeyCategory.Tax]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
   [SankeyCategory.Others]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
+  [SankeyCategory.OtherOpex]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
   [SankeyCategory["R&D"]]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
-  [SankeyCategory["SG&D"]]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
+  [SankeyCategory["SG&A"]]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
 }
 
 
@@ -169,7 +171,7 @@ export const SlidderSettings: SlidderSettings = {
     defaultValue: 1.2,
     description: "less than Q2 auti revenue"
   },
-  [SlidderCategory.OtherExpenses]: {
+  [SlidderCategory.OtherOperatingExpenses]: {
     min: 0,
     max: 1,
     prefix: Prefix.Currency,

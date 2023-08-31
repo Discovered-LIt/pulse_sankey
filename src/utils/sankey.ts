@@ -34,7 +34,7 @@ const calculateGrossProfit = (data: SliderData): number =>
 const calculateOperationExpenses = (data: SliderData): number =>
   data[SlidderCategory.ResearchAndDevelopment] +
   data[SlidderCategory.SGA] +
-  data[SlidderCategory.OtherExpenses];
+  data[SlidderCategory.OtherOperatingExpenses];
 
 const calculateOperationProfit = (data: SliderData): number =>
   calculateGrossProfit(data) - calculateOperationExpenses(data);
@@ -47,7 +47,7 @@ const calculateNetProfit = (data: SliderData): number =>
   calculateTax(data);
 
 const calculateOthers = (data: SliderData): number =>
-  data[SlidderCategory.ServicesAndOtherRevenue] * (1 - data[SlidderCategory.ServicesAndOtherMargin] / 100);
+  data[SlidderCategory.InterestAndOther] * (1 - data[SlidderCategory.ServicesAndOtherMargin] / 100);
 
 const calculateAutoCosts = (data: SliderData): number =>
   calculateAutoRevenue(data) * (1 - data[SlidderCategory.AutoRevenueMargin] / 100);
@@ -58,11 +58,17 @@ const calculateEnergyCosts = (data: SliderData): number =>
 const calculateRAndD = (data: SliderData): number => data[SlidderCategory.ResearchAndDevelopment];
 const calculateSGA = (data: SliderData): number => data[SlidderCategory.SGA];
 
+const calculateOtherOpex = (data: SliderData): number => 
+  data[SlidderCategory.SGA] +
+  data[SlidderCategory.ResearchAndDevelopment] +
+  data[SlidderCategory.OtherOperatingExpenses]
+
 const getAutoSalesRevenue = (data: SliderData): number => data[SlidderCategory.AutoSalesRevenue]
 const getAutoLeasingRevenue = (data: SliderData): number => data[SlidderCategory.AutomotiveLeasingRevenue]
 const getAutoRegCredits = (data: SliderData): number => data[SlidderCategory.AutoRegCreditsRevenue]
 
 const getEnergyGenerationAndStorageRevenue = (data: SliderData): number => data[SlidderCategory.EnergyGenerationAndStorageRevenue]
+
 const getServicesAndOtherRevenue = (data: SliderData): number => data[SlidderCategory.ServicesAndOtherRevenue]
 
 const calculations = {
@@ -82,6 +88,7 @@ const calculations = {
   calculateEnergyCosts,
   calculateRAndD,
   calculateSGA,
+  calculateOtherOpex,
   getEnergyGenerationAndStorageRevenue,
   getServicesAndOtherRevenue
 };
