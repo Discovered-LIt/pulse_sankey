@@ -60,11 +60,11 @@ type SlidderSettings = { [key in SlidderCategory]: {
 
 // colors
 export const GREY = '#545955'
-export  const LIGHT_GREY = '#a6a6a6'
-export  const GREEN = '#188c1a'
-export  const LIGHT_GREEN = '#18b81b'
-export  const RED = '#b81818'
-export  const LIGHT_RED = '#e63535'
+export const LIGHT_GREY = '#a6a6a6'
+export const GREEN = '#188c1a'
+export const LIGHT_GREEN = '#18b81b'
+export const RED = '#b81818'
+export const LIGHT_RED = '#e63535'
 
 export const sankeySettings: { [key in SankeyCategory]: { nodeFill: string, linkFill: string, showVal: boolean } } = {
   [SankeyCategory.AutoRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },

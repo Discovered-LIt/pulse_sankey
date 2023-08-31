@@ -2,7 +2,7 @@ import React from "react";
 import cn from 'classnames';
 // components
 import Slider from "../../components/slider";
-import { SliderType } from "../../config/sankey";
+import { SliderType, GREEN, RED } from "../../config/sankey";
 // icons
 import AdjustmentsHorizontalIcon from '@heroicons/react/24/outline/AdjustmentsHorizontalIcon'
 import LockClosedIcon from '@heroicons/react/24/outline/LockClosedIcon'
@@ -11,6 +11,7 @@ import ChevronDownIcon from '@heroicons/react/24/solid/ChevronDoubleDownIcon'
 // types
 import { SlidderSettings, SlidderCategory } from "../../config/sankey";
 import { SliderData } from ".";
+// const
 
 interface Filter {
   sliderData: SliderData;
@@ -77,8 +78,8 @@ const Settings = ({ sliderData, defaultSliderData, onChange }: Filter) => {
   const getDescription = (type: SlidderCategory) => {
     const percentage = calculatePercentage(type)
     const Icon = percentage >= 0 ? ChevronUpIcon : ChevronDownIcon
-    const primary = `text-[${SlidderSettings[type].type === SliderType.Positive ? SliderType.Positive : SliderType.Negative}]`
-    const secondary = `text-[${SlidderSettings[type].type === SliderType.Positive ? SliderType.Negative : SliderType.Positive}]`
+    const primary = `text-[${SlidderSettings[type].type === SliderType.Positive ? GREEN : RED}]`
+    const secondary = `text-[${SlidderSettings[type].type === SliderType.Positive ? RED : GREEN}]`
     return (
       <div className="flex items-center gap-1">
         <Icon className={cn(
