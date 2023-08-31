@@ -17,6 +17,7 @@ export type SankeyData = {
 };
 
 const Home = () => {
+  const [defaultSliderData] = useState<SliderData>(sliderDefaultData)
   const [sliderData, setSlider] = useState<SliderData>(sliderDefaultData)
 
   const sankeyData = useMemo((): SankeyData => {
@@ -67,6 +68,7 @@ const Home = () => {
       <SankeyChart data={sankeyData} />
       <Settings
         onChange={onSliderChange}
+        defaultSliderData={defaultSliderData}
         sliderData={sliderData}
       />
     </div>

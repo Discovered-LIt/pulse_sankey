@@ -43,9 +43,9 @@ export enum Prefix {
 }
 
 export enum SliderType {
-  Negative = '#b81b01',
-  Positive = "#05a302",
-  Basic = '#6c6c6c'
+  Negative = '#b81818',
+  Positive = "#188c1a",
+  Basic = '#545955'
 }
 
 type SlidderSettings = { [key in SlidderCategory]: {
@@ -54,7 +54,8 @@ type SlidderSettings = { [key in SlidderCategory]: {
   prefix: Prefix,
   step: number,
   defaultValue: number,
-  description?: string
+  description?: string,
+  type: SliderType
 }}
 
 // colors
@@ -95,7 +96,8 @@ export const SlidderSettings: SlidderSettings = {
     prefix: Prefix.Currency,
     step: 0.1,
     defaultValue: 26.4,
-    description: "less than Q2 auti revenue"
+    description: "less than Q2 auti revenue",
+    type: SliderType.Positive
   },
   [SlidderCategory.AutoRegCreditsRevenue]: {
     min: 0,
@@ -103,7 +105,8 @@ export const SlidderSettings: SlidderSettings = {
     prefix: Prefix.Currency,
     step: 0.1,
     defaultValue: 0.2,
-    description: "more than analyst avg"
+    description: "more than analyst avg",
+    type: SliderType.Positive
   },
   [SlidderCategory.AutomotiveLeasingRevenue]: {
     min: 0,
@@ -111,7 +114,8 @@ export const SlidderSettings: SlidderSettings = {
     prefix: Prefix.Currency,
     step: 0.1,
     defaultValue: 0.6,
-    description: "more than yst avg"
+    description: "more than yst avg",
+    type: SliderType.Positive
   },
   [SlidderCategory.EnergyGenerationAndStorageRevenue]: {
     min: 0,
@@ -119,7 +123,8 @@ export const SlidderSettings: SlidderSettings = {
     prefix: Prefix.Currency,
     step: 0.1,
     defaultValue: 1.5,
-    description: "less than Q2 auti revenue"
+    description: "less than Q2 auti revenue",
+    type: SliderType.Positive
   },
   [SlidderCategory.ServicesAndOtherRevenue]: {
     min: 0,
@@ -127,7 +132,8 @@ export const SlidderSettings: SlidderSettings = {
     prefix: Prefix.Currency,
     step: 0.1,
     defaultValue: 2.15,
-    description: "less than Q2 auti revenue"
+    description: "less than Q2 auti revenue",
+    type: SliderType.Positive
   },
 
   [SlidderCategory.AutoRevenueMargin]: {
@@ -136,7 +142,8 @@ export const SlidderSettings: SlidderSettings = {
     prefix: Prefix.Percentage,
     step: 1,
     defaultValue: 19.2,
-    description: "less than Q2 auti revenue"
+    description: "less than Q2 auti revenue",
+    type: SliderType.Positive
   },
   [SlidderCategory.EnergyStorageMargin]: {
     min: 0,
@@ -144,7 +151,8 @@ export const SlidderSettings: SlidderSettings = {
     prefix: Prefix.Percentage,
     step: 1,
     defaultValue: 18.4,
-    description: "less than Q2 auti revenue"
+    description: "less than Q2 auti revenue",
+    type: SliderType.Positive
   },
   [SlidderCategory.ServicesAndOtherMargin]: {
     min: 0,
@@ -152,7 +160,8 @@ export const SlidderSettings: SlidderSettings = {
     prefix: Prefix.Percentage,
     step: 1,
     defaultValue: 7.7,
-    description: "less than Q2 auti revenue"
+    description: "less than Q2 auti revenue",
+    type: SliderType.Positive
   },
 
   [SlidderCategory.ResearchAndDevelopment]: {
@@ -161,7 +170,8 @@ export const SlidderSettings: SlidderSettings = {
     prefix: Prefix.Currency,
     step: 0.1,
     defaultValue: 0.9,
-    description: "less than Q2 auti revenue"
+    description: "less than Q2 auti revenue",
+    type: SliderType.Negative
   },
   [SlidderCategory.SGA]: {
     min: 0,
@@ -169,7 +179,8 @@ export const SlidderSettings: SlidderSettings = {
     prefix: Prefix.Currency,
     step: 0.1,
     defaultValue: 1.2,
-    description: "less than Q2 auti revenue"
+    description: "less than Q2 auti revenue",
+    type: SliderType.Negative
   },
   [SlidderCategory.OtherOperatingExpenses]: {
     min: 0,
@@ -177,7 +188,8 @@ export const SlidderSettings: SlidderSettings = {
     prefix: Prefix.Currency,
     step: 0.1,
     defaultValue: 0,
-    description: "less than Q2 auti revenue"
+    description: "less than Q2 auti revenue",
+    type: SliderType.Negative
   },
   [SlidderCategory.InterestAndOther]: {
     min: 0,
@@ -185,7 +197,8 @@ export const SlidderSettings: SlidderSettings = {
     prefix: Prefix.Currency,
     step: 0.1,
     defaultValue: 0.5,
-    description: "less than Q2 auti revenue"
+    description: "less than Q2 auti revenue",
+    type: SliderType.Negative
   },
   [SlidderCategory.Taxes]: {
     min: 0,
@@ -193,7 +206,8 @@ export const SlidderSettings: SlidderSettings = {
     prefix: Prefix.Currency,
     step: 0.1,
     defaultValue: 0.3,
-    description: "less than Q2 auti revenue"
+    description: "less than Q2 auti revenue",
+    type: SliderType.Negative
   }
 }
 

@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, ReactNode } from "react";
 import cn from 'classnames';
 
 import SliderCom from 'rc-slider'
 
 export enum SliderType {
-  Negative = '#b81b01',
-  Positive = "#05a302",
-  Basic = '#6c6c6c'
+  Negative = '#b81818',
+  Positive = "#188c1a",
+  Basic = '#545955'
 }
 
 interface Slider {
   id: string
   label: string
-  description?: string
+  description?: string | ReactNode
   min?: number
   max?: number
   step?: number;

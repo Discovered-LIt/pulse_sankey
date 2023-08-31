@@ -1,15 +1,20 @@
 import React from "react";
+import cn from 'classnames';
 // components
-import Slider, { SliderType } from "../../components/slider";
+import Slider from "../../components/slider";
+import { SliderType } from "../../config/sankey";
 // icons
 import AdjustmentsHorizontalIcon from '@heroicons/react/24/outline/AdjustmentsHorizontalIcon'
 import LockClosedIcon from '@heroicons/react/24/outline/LockClosedIcon'
+import ChevronUpIcon from '@heroicons/react/24/solid/ChevronDoubleUpIcon'
+import ChevronDownIcon from '@heroicons/react/24/solid/ChevronDoubleDownIcon'
 // types
 import { SlidderSettings, SlidderCategory } from "../../config/sankey";
 import { SliderData } from ".";
 
 interface Filter {
   sliderData: SliderData;
+  defaultSliderData: SliderData;
   onChange: (type: SlidderCategory, val: number) => void;
 }
 
@@ -58,7 +63,37 @@ const InfoDiv = () => (
   </div>
 )
 
-const Settings = ({ sliderData, onChange }: Filter) => {
+const Settings = ({ sliderData, defaultSliderData, onChange }: Filter) => {
+
+  const calculatePercentage = (type: SlidderCategory): number => {
+    const defaultVal = defaultSliderData[type]
+    const currentVal = sliderData[type]
+
+    if((defaultVal + currentVal) === 0) return 0;
+    if(defaultVal === 0) return 100;
+    return Math.ceil(((currentVal - defaultVal) / defaultVal) * 100)
+  }
+  
+  const getDescription = (type: SlidderCategory) => {
+    const percentage = calculatePercentage(type)
+    const Icon = percentage >= 0 ? ChevronUpIcon : ChevronDownIcon
+    const primary = SlidderSettings[type].type;
+    const secondary = SlidderSettings[type].type === SliderType.Positive ? SliderType.Negative : SliderType.Positive
+    return (
+      <div className="flex items-center gap-1">
+        <Icon className={cn(
+          [
+            "h-4 w-6",
+            percentage >= 0 ? `text-[${primary}]` : `text-[${secondary}]`
+          ],
+        )}/>
+        <p className="text-[10px] font-light uppercase italic my-2">
+          {`${percentage}% since Q2 2023`}
+        </p>
+      </div>
+    )
+  }
+
   return(
     <div className="w-full h-[260px] bg-black fixed bottom-0 left-0 right-0 pb-10 overflow-auto">
       <InfoDiv />
@@ -69,13 +104,13 @@ const Settings = ({ sliderData, onChange }: Filter) => {
             <Slider
               id={type}
               label={type}
-              description={SlidderSettings[type].description}
+              description={getDescription(type)}
               min={SlidderSettings[type].min}
               max={SlidderSettings[type].max}
               step={SlidderSettings[type].step}
               prefix={SlidderSettings[type].prefix}
               value={sliderData[type] || 0}
-              type={SliderType.Positive}
+              type={SlidderSettings[type].type}
               onChange={(val: number) => onChange(type, val)}
             />
             </div>
