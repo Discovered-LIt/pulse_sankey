@@ -83,11 +83,14 @@ const Settings = ({ sliderData, defaultSliderData, onChange }: Filter) => {
       <div className="flex items-center gap-1">
         <Icon className={cn(
           [
-            "h-4 w-6",
-            percentage >= 0 ? `text-[${primary}]` : `text-[${secondary}]`
+            "h-4 w-6 -ml-2",
+            {
+              [`text-[${primary}]`]: percentage >= 0,
+              [`text-[${secondary}]`]: percentage < 0
+            }
           ],
         )}/>
-        <p className="text-[10px] font-light uppercase italic my-2">
+        <p className="text-[10px] font-light uppercase italic">
           {`${percentage}% since Q2 2023`}
         </p>
       </div>
