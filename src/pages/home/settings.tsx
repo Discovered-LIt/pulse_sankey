@@ -2,12 +2,13 @@ import React from "react";
 import cn from 'classnames';
 // components
 import Slider from "../../components/slider";
-import { SliderType, GREEN, RED } from "../../config/sankey";
+import { SliderType } from "../../config/sankey";
 // icons
 import AdjustmentsHorizontalIcon from '@heroicons/react/24/outline/AdjustmentsHorizontalIcon'
 import LockClosedIcon from '@heroicons/react/24/outline/LockClosedIcon'
 import ChevronUpIcon from '@heroicons/react/24/solid/ChevronDoubleUpIcon'
 import ChevronDownIcon from '@heroicons/react/24/solid/ChevronDoubleDownIcon'
+import MinusIcon from '@heroicons/react/24/solid/MinusIcon'
 // types
 import { SlidderSettings, SlidderCategory } from "../../config/sankey";
 import { SliderData } from ".";
@@ -77,9 +78,10 @@ const Settings = ({ sliderData, defaultSliderData, onChange }: Filter) => {
   
   const getDescription = (type: SlidderCategory) => {
     const percentage = calculatePercentage(type)
-    const Icon = percentage >= 0 ? ChevronUpIcon : ChevronDownIcon
-    const primary = `text-[${SlidderSettings[type].type === SliderType.Positive ? GREEN : RED}]`
-    const secondary = `text-[${SlidderSettings[type].type === SliderType.Positive ? RED : GREEN}]`
+    const base = percentage === 0
+    const Icon = base ? MinusIcon : percentage >= 0 ? ChevronUpIcon : ChevronDownIcon
+    const primary = base ? 'text-gray-500' :`text-${SlidderSettings[type].type === SliderType.Positive ? 'green-500' : 'red-500'}`
+    const secondary = `text-${SlidderSettings[type].type === SliderType.Positive ? 'red-500' : 'green-500'}`
     return (
       <div className="flex items-center gap-1">
         <Icon className={cn(
