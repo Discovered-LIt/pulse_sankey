@@ -77,16 +77,16 @@ const Settings = ({ sliderData, defaultSliderData, onChange }: Filter) => {
   const getDescription = (type: SlidderCategory) => {
     const percentage = calculatePercentage(type)
     const Icon = percentage >= 0 ? ChevronUpIcon : ChevronDownIcon
-    const primary = SlidderSettings[type].type;
-    const secondary = SlidderSettings[type].type === SliderType.Positive ? SliderType.Negative : SliderType.Positive
+    const primary = `text-[${SlidderSettings[type].type === SliderType.Positive ? SliderType.Positive : SliderType.Negative}]`
+    const secondary = `text-[${SlidderSettings[type].type === SliderType.Positive ? SliderType.Negative : SliderType.Positive}]`
     return (
       <div className="flex items-center gap-1">
         <Icon className={cn(
           [
             "h-4 w-6 -ml-2",
             {
-              [`text-[${primary}]`]: percentage >= 0,
-              [`text-[${secondary}]`]: percentage < 0
+              [primary]: percentage >= 0,
+              [secondary]: percentage < 0
             }
           ],
         )}/>
