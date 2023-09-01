@@ -2,7 +2,7 @@ import React from "react";
 import cn from 'classnames';
 // components
 import Slider from "../../components/slider";
-import { SliderType } from "../../config/sankey";
+import { SliderType, Prefix} from "../../config/sankey";
 // icons
 import AdjustmentsHorizontalIcon from '@heroicons/react/24/outline/AdjustmentsHorizontalIcon'
 import LockClosedIcon from '@heroicons/react/24/outline/LockClosedIcon'
@@ -73,6 +73,9 @@ const Settings = ({ sliderData, defaultSliderData, onChange }: Filter) => {
 
     if((defaultVal + currentVal) === 0) return 0;
     if(defaultVal === 0) return 100;
+    if(SlidderSettings[type].prefix === Prefix.Percentage) {
+      return Math.ceil(currentVal - defaultVal)
+    }
     return Math.ceil(((currentVal - defaultVal) / defaultVal) * 100)
   }
   
@@ -80,8 +83,8 @@ const Settings = ({ sliderData, defaultSliderData, onChange }: Filter) => {
     const percentage = calculatePercentage(type)
     const base = percentage === 0
     const Icon = base ? MinusIcon : percentage >= 0 ? ChevronUpIcon : ChevronDownIcon
-    const primary = base ? 'text-gray-500' :`text-${SlidderSettings[type].type === SliderType.Positive ? 'green-500' : 'red-500'}`
-    const secondary = `text-${SlidderSettings[type].type === SliderType.Positive ? 'red-500' : 'green-500'}`
+    const primary = base ? 'text-gray-500' : SlidderSettings[type].type === SliderType.Positive ? 'text-green-500' : 'text-red-500'
+    const secondary = SlidderSettings[type].type === SliderType.Positive ? 'text-red-500' : 'text-green-500'
     return (
       <div className="flex items-center gap-1">
         <Icon className={cn(
