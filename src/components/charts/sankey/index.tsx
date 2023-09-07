@@ -15,8 +15,8 @@ interface Sankey {
 }
 
 const Sankey = ({ data }: Sankey) => {
-  const [hoveredNode, setHoveredNode] = useState<string>('')
-  const [windowWidth, setWindowWidth] = useState<number>()
+  const [windowWidth, setWindowWidth] = useState<number>();
+  const isMobile = window.innerWidth <= 680;
 
   useEffect(() => {
     windowresizeHandler()
@@ -25,7 +25,8 @@ const Sankey = ({ data }: Sankey) => {
   }, [])
 
   const windowresizeHandler = () => {
-    setWindowWidth(window.innerWidth)
+    const width = window.innerWidth <= 680 ? 800 : window.innerWidth
+    setWindowWidth(width)
   }
 
   // Set the sankey diagram properties
@@ -43,13 +44,41 @@ const Sankey = ({ data }: Sankey) => {
   const { nodes, links } = sankeyGenerator(data as any);
 
   // Draw the nodes
-  const allNodes = nodes.map((node: any) => {
+  const allNodes = nodes.map((node: any, idx: number) => {
     const { nodeFill, showVal } = sankeySettings[node.id as SankeyCategory] || {}
     const { heading, layer } = node
     const showLeftLabel = [0, 1].includes(layer)
     const showLabel = showLeftLabel || !node.sourceLinks.length
+    // Define the transform origin for the rotation
+    let transformOriginX = (node.x0 + (node.x1 - node.x0) / 2 + (showLeftLabel ? - 40 : + 50)) || 1;
+    let transformOriginY = node.y0 + (node.y1 - node.y0) / 2;
+    
+    if(isMobile) {
+      let isOverlap = false;
+      for (const otherNode of nodes) {
+        if (node !== otherNode) {
+          if (
+            transformOriginX + 100 > otherNode.x0 && // Right edge of the foreignObject
+            transformOriginX < otherNode.x1 &&        // Left edge of the other node
+            transformOriginY < otherNode.y1 &&
+            transformOriginY + 100 > otherNode.y0
+          ) {
+            isOverlap = true;
+            break;
+          }
+        }
+      }
+      if (isOverlap) {
+        transformOriginX += Math.min(transformOriginX, node.x0 - 110); // Move it to the right (adjust as needed)
+        transformOriginY += 40;  // Move it down (adjust as needed)
+      }
+    }
+
+    const transform = isMobile ? `rotate(90 ${transformOriginX} ${transformOriginY})` : ''
+    
+    if(node.value <= 0) return null;
     return (
-      <g key={node.index} onClick={() => setHoveredNode(node.id)}>
+      <g key={node.index}>
         <rect
           height={node.y1 - node.y0}
           width={sankeyGenerator.nodeWidth()}
@@ -61,10 +90,11 @@ const Sankey = ({ data }: Sankey) => {
           strokeLinecap="round"
         />
         {showLabel && 
+          <g transform={transform} className="label">
           <foreignObject
-            x={showLeftLabel ? (node.x0 + (node.x1 - node.x0) / 2) - 100 : node.x1 + 15}
+            x={showLeftLabel ? (node.x0 + (node.x1 - node.x0) / 2) - 80 : node.x1 + 15}
             y={node.y0 + (node.y1 - node.y0) / 2 - 10}
-            width={300}
+            width={isMobile ? 90 : 200}
             height={100}
           >
             <div
@@ -74,7 +104,7 @@ const Sankey = ({ data }: Sankey) => {
                 textAlign: 'left',
                 color: '#fff',
                 whiteSpace: 'pre-wrap',
-                wordWrap: 'break-word',
+                width: isMobile && !showLeftLabel ? '20px' : 'fit-content',
                 lineHeight: '1.2em',
               }}
             >
@@ -83,6 +113,7 @@ const Sankey = ({ data }: Sankey) => {
               {`$${(node.value).toFixed(1)} BN`}
             </div>
           </foreignObject>
+          </g>
         }
       </g>
     );
@@ -92,8 +123,6 @@ const Sankey = ({ data }: Sankey) => {
   const allLinks = links.map((link: any, i) => {
     const linkGenerator = sankeyLinkHorizontal();
     const path = linkGenerator(link);
-    // const hoveredId = `${link?.target?.id}-${link?.source?.id}`
-    // const hovered = hoveredId === hoveredNode
     const { linkFill } = sankeySettings[link?.target?.id as SankeyCategory] || { linkFill: '' }
     const { layer } = link?.source;
     const showLabel = layer !== 0 && !!link.target.sourceLinks.length
@@ -107,15 +136,13 @@ const Sankey = ({ data }: Sankey) => {
           fill="none"
           strokeOpacity={1}
           strokeWidth={link.width}
-          // onMouseOver={() => setHoveredNode(hoveredId)}
-          // onMouseOut={() => setHoveredNode('')}
         />
         {showLabel && <text>
           <textPath
             xlinkHref={`#path-${i}`}
             startOffset="50%"
             textAnchor="middle"
-            fontSize={12}
+            fontSize={isMobile ? 10 : 12}
             fill="white"
           >
             {link.target.id}
@@ -126,8 +153,14 @@ const Sankey = ({ data }: Sankey) => {
   });
 
   return (
-    <div className="flex items-center h-[70vh]">
-      <svg width={windowWidth} height={HEIGHT} className="m-auto">
+    <div className={`${isMobile ? "mobile-view" : ""}`}>
+      <svg
+        width={MARGIN_X + windowWidth}
+        height={isMobile ? 350 : HEIGHT}
+        viewBox={`0 0 ${MARGIN_X + windowWidth} ${HEIGHT}`}
+        // preserveAspectRatio="xMinYMin"
+        className="m-auto"
+      >
         {allLinks}
         {allNodes}
       </svg>
