@@ -28,17 +28,19 @@ type InfoDivProps = {
   eps: number;
   priceTarget: number;
   setPeRatio: (peRatio: number) => void;
+  onExpandClick: () => void;
 }
 
 const InfoDiv = ({
   isExpanded,
   eps,
   priceTarget,
-  setPeRatio
+  setPeRatio,
+  onExpandClick
 }: InfoDivProps) => (
   <div
     className="
-      bg-black w-full min-h-10 mb-4 px-8 py-4 sticky top-0 z-10 text-xs
+      bg-black w-full min-h-10 px-8 py-4 top-0 z-10 text-xs
       gap-4 md:gap-12 shadow-md shadow-slate-600/50 flex flex-wrap items-center
       sm:justify-normal justify-between"
     >
@@ -47,10 +49,11 @@ const InfoDiv = ({
       <AdjustmentsHorizontalIcon className="h-4 w-4"/>
       <ChevronUpIcon className={
         cn(
-          ["h-4 w-4 md:hidden transition-transform duration-500"],
-          { 'rotate-180': !isExpanded }
-        )
-      }/>
+          ["h-4 w-4 transition-transform duration-500"],
+          { 'rotate-180': isExpanded }
+        )}
+        onClick={onExpandClick}
+      />
       <LockClosedIcon className="h-4 w-4 hidden sm:block"/>
     </div>
     <div className="flex gap-2 md:gap-4">
@@ -94,7 +97,9 @@ const Settings = ({
   setPeRatio,
   onChange
 }: Setting) => {
-  const [isExpanded, setIsExpanded] = useState(true)
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [height, setHeight] = useState(window.innerWidth <= 680 ? 0 : 250);
+  const [isDragging, setIsDragging] = useState(false);
 
   const calculatePercentage = (type: SlidderCategory): number => {
     const defaultVal = defaultSliderData[type]
@@ -132,45 +137,84 @@ const Settings = ({
     )
   }
 
-  return(
-    <div 
-      className={cn(
-        [
-          "w-full bg-black fixed bottom-0 left-0 right-0 pb-10 transition-height duration-500 overflow-auto",
-          "cursor-pointer",
-          isExpanded ? "md:h-[260px] h-[50px] overflow-hidden" : "md:h-[260px] h-[260px]"
-        ]
-      )}
-      onClick={() => setIsExpanded(!isExpanded)}
-    >
-      <InfoDiv
-        isExpanded={isExpanded}
-        eps={eps}
-        priceTarget={priceTarget}
-        setPeRatio={setPeRatio}
-      />
-      <div className="grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {
-          Object.keys(SlidderSettings).map((type: SlidderCategory) => (
-            <div className="w-[300px] mb-2 m-auto">
-            <Slider
-              id={type}
-              label={type}
-              description={getDescription(type)}
-              min={SlidderSettings[type].min}
-              max={SlidderSettings[type].max}
-              step={SlidderSettings[type].step}
-              prefix={SlidderSettings[type].prefix}
-              value={sliderData[type] || 0}
-              type={SlidderSettings[type].type}
-              onChange={(val: number) => onChange(type, val)}
-            />
-            </div>
-          ))
-        }
-      </div>
+  const handleMouseDown = (e: any) => {
+    e.preventDefault();
+    let startY = e.clientY || e.touches[0].clientY;
+    setIsDragging(true)
 
-    </div>
+    const handleMouseMove = (e: any) => {
+      e.preventDefault();
+      setIsExpanded(true)
+      const deltaY = (e.clientY || e.touches[0].clientY) - startY;
+      if(e.clientY <= 150) return;
+      setHeight((prevHeight) => prevHeight - deltaY);
+      startY = e.clientY || e.touches[0].clientY
+    };
+
+    const handleMouseUp = (e: any) => {
+      setIsDragging(false)
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('touchmove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('touchend', handleMouseUp);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('touchmove', handleMouseMove, {passive: false});
+    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('touchend', handleMouseUp);
+  };
+
+  const onExpandClick = () => {
+    setIsExpanded(!isExpanded)
+    setHeight(isExpanded ? 0 : 500)
+  }
+
+  return(
+      <div className="w-full bg-black fixed bottom-0 left-0 right-0 cursor-pointer overflow-auto">
+        <div
+          onMouseDown={handleMouseDown}
+          onTouchStart={handleMouseDown}
+        >
+          <InfoDiv
+            isExpanded={isExpanded}
+            eps={eps}
+            priceTarget={priceTarget}
+            setPeRatio={setPeRatio}
+            onExpandClick={onExpandClick}
+          />
+        </div>
+        <div className={cn([
+            "overflow-auto block",
+            // isExpanded ? "md:h-[200px] h-0" : "md:h-[200px] h-[200px]",
+            {
+              'transition-height duration-500': !isDragging
+            }
+          ])}
+          style={{ height: `${height}px` }}
+        >
+          <div className="grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-6">
+            {
+              Object.keys(SlidderSettings).map((type: SlidderCategory) => (
+                <div className="w-[300px] mb-2 m-auto">
+                <Slider
+                  id={type}
+                  label={type}
+                  description={getDescription(type)}
+                  min={SlidderSettings[type].min}
+                  max={SlidderSettings[type].max}
+                  step={SlidderSettings[type].step}
+                  prefix={SlidderSettings[type].prefix}
+                  value={sliderData[type] || 0}
+                  type={SlidderSettings[type].type}
+                  onChange={(val: number) => onChange(type, val)}
+                />
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
   )
 }
 
