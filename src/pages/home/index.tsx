@@ -19,6 +19,7 @@ export type SankeyData = {
 const Home = () => {
   const [defaultSliderData] = useState<SliderData>(sliderDefaultData)
   const [sliderData, setSlider] = useState<SliderData>(sliderDefaultData)
+  const [peRatio, setPeRatio] = useState<number>(20)
 
   const sankeyData = useMemo((): SankeyData => {
     const netProfit = cal.calculateNetProfit(sliderData)
@@ -47,7 +48,10 @@ const Home = () => {
   
     return {
       nodes: [...new Set(sankeyLinks.map((ar) => [ar[1], ar[0]] ).flat())].map((key) => {
-        return { id: key, heading: [SankeyCategory.AutoRevenue, SankeyCategory.NetProfite].includes(key) }
+        return { 
+          id: key,
+          heading: [SankeyCategory.AutoRevenue, SankeyCategory.NetProfite].includes(key),
+        }
       }),
       links: sankeyLinks.map((link) => {
         const [source, target, fn] = link;
@@ -55,6 +59,10 @@ const Home = () => {
         return { source, target, value: val }
       })
     }
+  }, [sliderData])
+
+  const eps = useMemo(() => {
+    return cal.calEPS(sliderData)
   }, [sliderData])
   
   const onSliderChange = (type: SlidderCategory, val: number) => {
@@ -64,12 +72,15 @@ const Home = () => {
   }
 
   return (
-    <div className="bg-[#1d1f23] text-white h-screen w-screen block">
+    <div className="bg-[#1d1f23] text-white h-screen w-full block pt-20 overflow-scroll">
       <SankeyChart data={sankeyData} />
       <Settings
         onChange={onSliderChange}
         defaultSliderData={defaultSliderData}
         sliderData={sliderData}
+        eps={eps}
+        priceTarget={eps * peRatio}
+        setPeRatio={setPeRatio}
       />
     </div>
   )
