@@ -98,7 +98,8 @@ const Settings = ({
   onChange
 }: Setting) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const [height, setHeight] = useState(window.innerWidth <= 680 ? 0 : 250);
+  const isMobile = window.innerWidth <= 680
+  const [height, setHeight] = useState(isMobile ? 0 : 250);
   const [isDragging, setIsDragging] = useState(false);
 
   const calculatePercentage = (type: SlidderCategory): number => {
@@ -146,9 +147,12 @@ const Settings = ({
       e.preventDefault();
       setIsExpanded(true)
       const deltaY = (e.clientY || e.touches[0].clientY) - startY;
-      if(e.clientY <= 150) return;
-      setHeight((prevHeight) => prevHeight - deltaY);
-      startY = e.clientY || e.touches[0].clientY
+      setHeight((prevHeight) => {
+        const newHeight = prevHeight - deltaY;
+        if(!isMobile && newHeight <= 250 || newHeight > 550) return prevHeight;
+        startY = e.clientY || e.touches[0].clientY
+        return newHeight
+      });
     };
 
     const handleMouseUp = (e: any) => {
