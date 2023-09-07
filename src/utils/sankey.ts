@@ -3,11 +3,6 @@ import { SankeyCategory, SlidderCategory } from "../config/sankey";
 
 export type CalculationProps = { [key in SankeyCategory]?: number };
 
-const calculateAutoRevenue = (data: SliderData): number => 
-  data[SlidderCategory.AutoSalesRevenue] +
-  data[SlidderCategory.AutomotiveLeasingRevenue] +
-  data[SlidderCategory.AutoRegCreditsRevenue];
-
 const calculateCostOfRevenue = (data: SliderData): number => {
   const autoRevenue = calculateAutoRevenue(data);
   const autoMargin = data[SlidderCategory.AutoRevenueMargin] / 100;
@@ -21,10 +16,13 @@ const calculateCostOfRevenue = (data: SliderData): number => {
   );
 };
 
+const calculateAutoRevenue = (data: SliderData): number => 
+  data[SlidderCategory.AutoSalesRevenue] +
+  data[SlidderCategory.AutomotiveLeasingRevenue] +
+  data[SlidderCategory.AutoRegCreditsRevenue];
+
 const calculateTotalRevenue = (data: SliderData): number =>
   calculateAutoRevenue(data) +
-  data[SlidderCategory.AutoRegCreditsRevenue] +
-  data[SlidderCategory.AutomotiveLeasingRevenue] +
   data[SlidderCategory.EnergyGenerationAndStorageRevenue] +
   data[SlidderCategory.ServicesAndOtherRevenue];
 
@@ -42,12 +40,10 @@ const calculateOperationProfit = (data: SliderData): number =>
 const calculateTax = (data: SliderData): number => data[SlidderCategory.Taxes];
 
 const calculateNetProfit = (data: SliderData): number =>
-  calculateOperationProfit(data) -
-  data[SlidderCategory.ServicesAndOtherRevenue] * (1 - data[SlidderCategory.ServicesAndOtherMargin] / 100) -
-  calculateTax(data);
+  calculateOperationProfit(data) - calculateTax(data) - calculateOthers(data);
 
 const calculateOthers = (data: SliderData): number =>
-  data[SlidderCategory.InterestAndOther] * (1 - data[SlidderCategory.ServicesAndOtherMargin] / 100);
+  data[SlidderCategory.InterestAndOther]
 
 const calculateAutoCosts = (data: SliderData): number =>
   calculateAutoRevenue(data) * (1 - data[SlidderCategory.AutoRevenueMargin] / 100);
@@ -58,10 +54,7 @@ const calculateEnergyCosts = (data: SliderData): number =>
 const calculateRAndD = (data: SliderData): number => data[SlidderCategory.ResearchAndDevelopment];
 const calculateSGA = (data: SliderData): number => data[SlidderCategory.SGA];
 
-const calculateOtherOpex = (data: SliderData): number => 
-  data[SlidderCategory.SGA] +
-  data[SlidderCategory.ResearchAndDevelopment] +
-  data[SlidderCategory.OtherOperatingExpenses]
+const calculateOtherOpex = (data: SliderData): number => data[SlidderCategory.OtherOperatingExpenses]
 
 const getAutoSalesRevenue = (data: SliderData): number => data[SlidderCategory.AutoSalesRevenue]
 const getAutoLeasingRevenue = (data: SliderData): number => data[SlidderCategory.AutomotiveLeasingRevenue]
@@ -70,6 +63,8 @@ const getAutoRegCredits = (data: SliderData): number => data[SlidderCategory.Aut
 const getEnergyGenerationAndStorageRevenue = (data: SliderData): number => data[SlidderCategory.EnergyGenerationAndStorageRevenue]
 
 const getServicesAndOtherRevenue = (data: SliderData): number => data[SlidderCategory.ServicesAndOtherRevenue]
+
+const calEPS = (data:SliderData): number => calculateNetProfit(data) / 3.17;
 
 const calculations = {
   calculateAutoRevenue,
@@ -89,6 +84,7 @@ const calculations = {
   calculateRAndD,
   calculateSGA,
   calculateOtherOpex,
+  calEPS,
   getEnergyGenerationAndStorageRevenue,
   getServicesAndOtherRevenue
 };
