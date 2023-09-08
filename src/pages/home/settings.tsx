@@ -58,7 +58,7 @@ const InfoDiv = ({
     </div>
     <div className="flex gap-2 md:gap-4">
       EPS
-      <b> ${Math.ceil(eps)} BN </b>
+      <b> ${eps.toFixed(2)} </b>
     </div>
     <div className="gap-2 md:gap-4 hidden sm:flex">
       PRICE TARGET
