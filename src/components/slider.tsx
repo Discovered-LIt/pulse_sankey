@@ -1,5 +1,7 @@
 import React, { useState, ReactNode } from "react";
 import cn from 'classnames';
+// icon
+import Squares2X2Icon from '@heroicons/react/24/outline/Squares2X2Icon'
 
 import SliderCom from 'rc-slider'
 
@@ -21,6 +23,7 @@ interface Slider {
   prefix?: string;
   simple?: boolean;
   onChange: (val: number) => void;
+  onInfoClick?: (id: string) => void;
 }
 
 const InputBubble = ({ value, prefix }: { value: number, prefix: string }) => (
@@ -40,6 +43,7 @@ const Slider = ({
   type = SliderType.Basic,
   prefix,
   simple = false,
+  onInfoClick,
   onChange }: Slider) => {
   const [tempVal, setTempVal] = useState<any>(value)
 
@@ -47,15 +51,15 @@ const Slider = ({
     <div className="text-white w-full">
       <div className={cn({ 'hidden': simple })}>
         <div className="flex justify-between">
-          <label
-            htmlFor={id}
-            className="bold text-[12px] uppercase w-[75%]"
-          >
-            {label}
-          </label>
+          <div className="flex">
+            <div className="bold text-[12px] uppercase break-all max-w-[200px]">
+              {label}
+            </div>
+            <Squares2X2Icon className="h-4 w-4 ml-2" onClick={() => onInfoClick?.(id)} />
+          </div>
           <InputBubble value={tempVal} prefix={prefix} />
         </div>
-        <p className="text-[10px] font-light uppercase italic my-2">{description}</p>
+        <div className="text-[10px] font-light uppercase italic my-2">{description}</div>
       </div>
       <div className="flex gap-4 items-center">
         <div className={cn({ 'hidden': !simple })}>

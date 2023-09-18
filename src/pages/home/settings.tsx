@@ -21,6 +21,7 @@ interface Setting {
   priceTarget: number;
   setPeRatio: (peRatio: number) => void;
   onChange: (type: SlidderCategory, val: number) => void;
+  onSliderInfoClick: (string: SlidderCategory) => void;
 }
 
 type InfoDivProps = { 
@@ -95,7 +96,8 @@ const Settings = ({
   eps,
   priceTarget,
   setPeRatio,
-  onChange
+  onChange,
+  onSliderInfoClick
 }: Setting) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const isMobile = window.innerWidth <= 680
@@ -199,20 +201,21 @@ const Settings = ({
         >
           <div className="grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-6">
             {
-              Object.keys(SlidderSettings).map((type: SlidderCategory) => (
-                <div className="w-[300px] mb-2 m-auto">
-                <Slider
-                  id={type}
-                  label={type}
-                  description={getDescription(type)}
-                  min={SlidderSettings[type].min}
-                  max={SlidderSettings[type].max}
-                  step={SlidderSettings[type].step}
-                  prefix={SlidderSettings[type].prefix}
-                  value={sliderData[type] || 0}
-                  type={SlidderSettings[type].type}
-                  onChange={(val: number) => onChange(type, val)}
-                />
+              Object.keys(SlidderSettings).map((type: SlidderCategory, idx: number) => (
+                <div key={idx} className="w-[300px] mb-2 m-auto">
+                  <Slider
+                    id={type}
+                    label={type}
+                    description={getDescription(type)}
+                    min={SlidderSettings[type].min}
+                    max={SlidderSettings[type].max}
+                    step={SlidderSettings[type].step}
+                    prefix={SlidderSettings[type].prefix}
+                    value={sliderData[type] || 0}
+                    type={SlidderSettings[type].type}
+                    onChange={(val: number) => onChange(type, val)}
+                    onInfoClick={onSliderInfoClick}
+                  />
                 </div>
               ))
             }

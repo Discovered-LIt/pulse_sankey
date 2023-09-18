@@ -214,3 +214,19 @@ export const SlidderSettings: SlidderSettings = {
 export const sliderDefaultData: SliderData = Object.keys(SlidderSettings).reduce((obj, key: SlidderCategory) => {
   return {...obj, ...{ [key]: SlidderSettings[key].defaultValue }}
 }, {})
+
+export const slidderCategoryInfoMaping = {
+  [SlidderCategory.AutoSalesRevenue]: { category: "AUTO_SALES_REVENUE", url: "autosalesrevenue"},
+  [SlidderCategory.AutoRegCreditsRevenue]: { category: "AUTO_REG_CREDITS", url: "autoregcredits_quarterly"},
+  [SlidderCategory.AutomotiveLeasingRevenue]: { category: "AUTO_LEASE_REVENUE", url: "autoleaserevenue"},
+  [SlidderCategory.EnergyGenerationAndStorageRevenue]: { category: "ENERGY_REVENUE", url: "energyrevenue_quarterly"},
+  [SlidderCategory.ServicesAndOtherRevenue]: { category: "SERVICE_REVENUE", url: "servicerevenue_quarterly"},
+  [SlidderCategory.AutoRevenueMargin]: { category: "COST_OF_REVENUE", url: "grossmargin_auto_quarterly"},
+  [SlidderCategory.EnergyStorageMargin]: { category: "COST_OF_REVENUE", url: "grossmargin_auto_quarterly"},
+  [SlidderCategory.ServicesAndOtherMargin]: { category: "COST_OF_REVENUE", url: "grossmargin_auto_quarterly"},
+  [SlidderCategory.ResearchAndDevelopment]: { category: "RD", url: "RD"},
+  [SlidderCategory.SGA]: { category: "SGA", url: "sga"},
+  [SlidderCategory.OtherOperatingExpenses]: { category: "OTHER_OPERATING_EXPENSE", url: "sga"},
+  [SlidderCategory.InterestAndOther]: { category: "INTEREST_AND_OTHER_INCOME", url: "sga"},
+  [SlidderCategory.Taxes]: { category: "INCOME_TAX", url: "teslatax"},
+}
