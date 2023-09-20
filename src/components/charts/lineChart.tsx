@@ -1,13 +1,11 @@
-import React, { useEffect, useRef, useState, RefObject } from "react";
+import React, { useEffect, useRef, useState, RefObject, useMemo } from "react";
 import * as d3 from 'd3';
 import cn from 'classnames';
 import { format } from 'date-fns';
 import { LIGHT_GREEN } from "../../config/sankey";
 
 export type LineChartData = {
-  x: string;
-  y: string;
-  date: Date,
+  date: string,
   value: number
 }
 
@@ -15,6 +13,7 @@ interface Props {
   data: LineChartData[];
   category: string;
   activeZoom?: string;
+  isLoading?: boolean;
   parentRef?: RefObject<HTMLDivElement>;
   onZoomChange?: (type: ZoomType) => void;
 }
@@ -42,10 +41,19 @@ const LineChart = ({
   category,
   activeZoom = ZoomType.ALL,
   parentRef,
+  isLoading = false,
   onZoomChange
 }: Props) => {
   const lineChartRef = useRef(null);
   const [tooltip, setTooltip] = useState<{x: number, y: number, d: LineChartData}>()
+
+  data = useMemo(() => {
+    return data.sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateA.getTime() - dateB.getTime();
+    });
+  }, [data])
 
   const createGraph = () => {
     const svg = d3.select(lineChartRef.current);
@@ -61,14 +69,14 @@ const LineChart = ({
 
     const tickValues = Array.from({ length: numTicks }, (_, i) => {
       const index = Math.min(i * tickStep, dataLength - 1); // Ensure not to go beyond the last data point
-      return data[index].x;
+      return data[index].date;
     });
 
     const x = d3
       .scaleBand()
       // .scaleTime()
       // .domain(d3.extent(data, (d) => d.date) as [Date, Date])
-      .domain(data.map((d) => d.x))
+      .domain(data.map((d) => d.date))
       .range([margin.left, width - margin.right])
       .padding(0.1);
 
@@ -81,7 +89,7 @@ const LineChart = ({
     const line = d3
       .line<LineChartData>()
       // .x((d) => x(new Date(d.date)) || 0)
-      .x((d) => x(d.x) || 0)
+      .x((d) => x(d.date) || 0)
       .y((d) => y(d.value));
 
     svg
@@ -116,7 +124,7 @@ const LineChart = ({
       .data(data)
       .enter()
       .append("circle")
-      .attr("cx", (d) => x(d.x) || 0)
+      .attr("cx", (d) => x(d.date) || 0)
       .attr("cy", (d) => y(d.value))
       .attr("r", 3)
       .attr("fill", LIGHT_GREEN)
@@ -126,8 +134,8 @@ const LineChart = ({
 
     svg
       .append("circle")
-      .attr("cx", x(data[data.length - 1].x) || 0)
-      .attr("cx", x(data[data.length - 1].x) || 0)
+      .attr("cx", x(data[data.length - 1].date) || 0)
+      .attr("cx", x(data[data.length - 1].date) || 0)
       .attr("cy", y(data[data.length - 1].value))
       .attr("r", 7)
       .attr("fill", LIGHT_GREEN)
@@ -137,8 +145,8 @@ const LineChart = ({
 
     svg
       .append("circle")
-      .attr("cx", x(data[data.length - 1].x) || 0)
-      .attr("cx", x(data[data.length - 1].x) || 0)
+      .attr("cx", x(data[data.length - 1].date) || 0)
+      .attr("cx", x(data[data.length - 1].date) || 0)
       .attr("cy", y(data[data.length - 1].value))
       .attr("r", 4)
       .attr("fill", LIGHT_GREEN)
@@ -149,7 +157,7 @@ const LineChart = ({
     svg
       .append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x).tickValues(tickValues))
+      .call(d3.axisBottom(x).tickValues(tickValues).tickFormat((d) => format(new Date(d), "'Q'Q yy")))
 
     // Add y-axis
     svg
@@ -165,6 +173,8 @@ const LineChart = ({
     if(!data?.length) return;
     createGraph()
   }, [data, category])
+
+  if(isLoading) return <p className="text-center">Loading....</p>
 
   return(
     <>
@@ -194,8 +204,8 @@ const LineChart = ({
               className="bg-black px-4 py-2 rounded absolute text-[12px]"
               style={{ left: `${tooltip?.x}px`, top: `${tooltip?.y}px` }}
             >
-              <b className="mr-2">{format(tooltip.d.date, "'Q'Q yyyy")}:</b>
-              {tooltip?.d?.y || tooltip?.d?.value}
+              <b className="mr-2">{format(new Date(tooltip.d.date), "'Q'Q yyyy")}:</b>
+              {tooltip?.d?.value}B
             </div>}
           </>
       }

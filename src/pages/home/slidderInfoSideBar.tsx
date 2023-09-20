@@ -1,7 +1,8 @@
-import React, { useRef, useEffect, useState, useMemo } from "react";
+import React, { useRef, useState, useMemo } from "react";
 import axios from "axios";
-import { format, subMonths, isAfter, isEqual } from 'date-fns';
+import { format, subMonths } from 'date-fns';
 import cn from 'classnames';
+import { useQuery } from '@tanstack/react-query';
 // component
 import SideBar from "../../components/sideBar";
 import LineChart, { LineChartData, ZoomType, zoomsConfig } from "../../components/charts/lineChart";
@@ -9,19 +10,11 @@ import LineChart, { LineChartData, ZoomType, zoomsConfig } from "../../component
 import useOnOutsideClick from "../../hooks/useOnClickOutside";
 // types
 import { SliderMappingDataProps } from "../../context/SlidderContext";
-// utils
-import { formatToDate } from "../../utils/global";
 
 interface SliderInfoSideBar {
   showSidebar: boolean;
   data?: SliderMappingDataProps
   closeSideBar: () => void;
-}
-
-type StatsResponse = {
-  Q: string;
-  revenue: string;
-  value: number
 }
 
 const SliderInfoSideBar = ({
@@ -30,7 +23,6 @@ const SliderInfoSideBar = ({
   closeSideBar
 }: SliderInfoSideBar) => {
   const sideBarRef = useRef<HTMLDivElement>()
-  const [chartData, setChartData] = useState<LineChartData[]>([])
   const [activeTab, setActiveTab] = useState(0)
   const [activeZoom, setActiveZoom] = useState(ZoomType.ALL)
 
@@ -41,34 +33,21 @@ const SliderInfoSideBar = ({
     closeSideBar()
   })
 
-  useEffect(() => {
-    if(chartData.length > 0 && !data?.link) {
-      setChartData([])
-      return;
-    }
-    if(!data?.link) return;
-    axios.get(data.link).then(({ data }) => {
-      const formattedData = data.reduce((arr: LineChartData[], obj: StatsResponse) => {
-        const newObj = {
-          date: formatToDate(obj.Q) as Date,
-          x: obj.Q,
-          y: obj.revenue,
-          value: obj.value
-        }
-        arr.push(newObj)
-        return arr
-      }, [])
-      setChartData(formattedData)
-    }).catch((err) => alert(err))
-  }, [data])
+  const { data: chartData, isLoading } = useQuery({
+    queryKey: ['fetchChartData', data?.link],
+    queryFn: async (): Promise<LineChartData[]> => {
+      if(!data?.link) return []
+      const res = await axios.get(data.link)
+      return res?.data as LineChartData[]
+  } })
 
   const filteredChartData = useMemo(() => {
-    let data = chartData;
+    if(!chartData?.length) return [];
     if(activeZoom !== ZoomType.ALL) {
       const months = zoomsConfig.find(({ label }) => label === activeZoom)?.val
-      data = chartData.filter(({ date }) => date >= subMonths(new Date(), months))
+      return chartData.filter(({ date }) => new Date(date) >= subMonths(new Date(), months))
     }
-    return data.sort((a: any, b: any) => a.date - b.date)
+    return chartData;
   }, [activeZoom, chartData])
 
   const stats = useMemo(() => {
@@ -79,8 +58,8 @@ const SliderInfoSideBar = ({
     const min = sortByValue[0]
     return [
       ['latest', data?.category?.split('_').join(' '), latestVal, 'B'],
-      ['maximum', format(max.date, "'Q'Q yyyy"), max.value, 'B'],
-      ['minimum', format(min.date, "'Q'Q yyyy"), min.value, 'B'],
+      ['maximum', format(new Date(max.date), "'Q'Q yyyy"), max.value, 'B'],
+      ['minimum', format(new Date(min.date), "'Q'Q yyyy"), min.value, 'B'],
       ['change', 'Percent', min.value, '%'],
     ]
   }, [filteredChartData])
@@ -113,6 +92,7 @@ const SliderInfoSideBar = ({
               category={data?.category}
               activeZoom={activeZoom}
               parentRef={sideBarRef}
+              isLoading={isLoading}
               onZoomChange={onZoomChange}
             />
             <div className="flex uppercase my-4 gap-6 justify-between px-6">
