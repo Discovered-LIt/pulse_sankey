@@ -15,6 +15,7 @@ interface Props {
   activeZoom?: string;
   isLoading?: boolean;
   parentRef?: RefObject<HTMLDivElement>;
+  prefix?: string;
   onZoomChange?: (type: ZoomType) => void;
 }
 
@@ -41,6 +42,7 @@ const LineChart = ({
   category,
   activeZoom = ZoomType.ALL,
   parentRef,
+  prefix="",
   isLoading = false,
   onZoomChange
 }: Props) => {
@@ -163,7 +165,7 @@ const LineChart = ({
     svg
       .append("g")
       .attr("transform", `translate(${margin.left},0)`)
-      .call(d3.axisLeft(y).tickFormat((d) => `${d}B`));
+      .call(d3.axisLeft(y).tickFormat((d) => `${d}${prefix}`));
     
     svg.selectAll(".domain").remove();
     svg.selectAll(".tick line").remove();

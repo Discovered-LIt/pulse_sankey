@@ -8,10 +8,13 @@ import SideBar from "../../components/sideBar";
 import LineChart, { LineChartData, ZoomType, zoomsConfig } from "../../components/charts/lineChart";
 // hooks
 import useOnOutsideClick from "../../hooks/useOnClickOutside";
+import { useSliderContext } from "../../context/SlidderContext";
 // types
 import { SliderMappingDataProps } from "../../context/SlidderContext";
 // icons
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
+// Date
+import { SlidderSettings } from "../../config/sankey";
 
 interface SliderInfoSideBar {
   showSidebar: boolean;
@@ -27,6 +30,7 @@ const SliderInfoSideBar = ({
   const sideBarRef = useRef<HTMLDivElement>()
   const [activeTab, setActiveTab] = useState(0)
   const [activeZoom, setActiveZoom] = useState(ZoomType.ALL)
+  const { selectedSlider } = useSliderContext()
 
   useOnOutsideClick(sideBarRef.current, () => {
     if(!showSidebar) return;
@@ -58,10 +62,11 @@ const SliderInfoSideBar = ({
     const sortByValue = filteredChartData.sort((a, b) => a.value - b.value)
     const max = sortByValue[sortByValue.length - 1]
     const min = sortByValue[0]
+    const prefix = SlidderSettings[selectedSlider]?.prefix || '';
     return [
-      ['latest', data?.category?.split('_').join(' '), latestVal, 'B'],
-      ['maximum', format(new Date(max.date), "'Q'Q yyyy"), max.value, 'B'],
-      ['minimum', format(new Date(min.date), "'Q'Q yyyy"), min.value, 'B'],
+      ['latest', data?.category?.split('_').join(' '), latestVal, prefix],
+      ['maximum', format(new Date(max.date), "'Q'Q yyyy"), max.value, prefix],
+      ['minimum', format(new Date(min.date), "'Q'Q yyyy"), min.value, prefix],
       ['change', 'Percent', min.value, '%'],
     ]
   }, [filteredChartData])
@@ -100,6 +105,7 @@ const SliderInfoSideBar = ({
             activeZoom={activeZoom}
             parentRef={sideBarRef}
             isLoading={isLoading}
+            prefix={SlidderSettings[selectedSlider]?.prefix}
             onZoomChange={onZoomChange}
           />
           <div className="flex flex-wrap uppercase my-4 justify-between px-6">
