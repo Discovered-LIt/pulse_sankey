@@ -167,6 +167,14 @@ const LineChart = ({
     
     svg.selectAll(".domain").remove();
     svg.selectAll(".tick line").remove();
+
+    svg
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("preserveAspectRatio", "xMinYMin meet")
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
   }
 
   useEffect(() => {
@@ -199,7 +207,7 @@ const LineChart = ({
           <h2 className="text-center mt-10">No data found.</h2> 
         :
           <>
-            <svg ref={lineChartRef} width={1000} height={300}></svg>
+            <svg ref={lineChartRef} width={500} height={300} />
             {tooltip && <div
               className="bg-black px-4 py-2 rounded absolute text-[12px]"
               style={{ left: `${tooltip?.x}px`, top: `${tooltip?.y}px` }}

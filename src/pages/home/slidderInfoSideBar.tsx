@@ -10,6 +10,8 @@ import LineChart, { LineChartData, ZoomType, zoomsConfig } from "../../component
 import useOnOutsideClick from "../../hooks/useOnClickOutside";
 // types
 import { SliderMappingDataProps } from "../../context/SlidderContext";
+// icons
+import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
 
 interface SliderInfoSideBar {
   showSidebar: boolean;
@@ -83,43 +85,47 @@ const SliderInfoSideBar = ({
   }
   
   return(
-    <div>
-      <SideBar open={showSidebar}>
-        <div className="bg-[#232323] h-screen" ref={sideBarRef}>
-          <div className="p-6 h-[470px]">
-            <LineChart
-              data={filteredChartData}
-              category={data?.category}
-              activeZoom={activeZoom}
-              parentRef={sideBarRef}
-              isLoading={isLoading}
-              onZoomChange={onZoomChange}
-            />
-            <div className="flex uppercase my-4 gap-6 justify-between px-6">
-              {
-                stats.map((stat, idx) => (
-                  <div key={idx}>
-                    <h3 className="">{stat[0]}</h3>
-                    <p className="text-[12px] pt-1 pb-2 text-gray-400">{stat[1]}</p>
-                    <h1 className="text-green-500 font-bold text-[22px]">
-                      {`${stat[2]}${stat[3]}`}
-                    </h1>
-                  </div>
-                ))
-              }
-            </div>
-          </div>
-          <h1 className="py-4 text-center bg-black">{data?.category.split('_').join(' ')}</h1>
-          <div className="p-6 text-[14px] overflow-auto h-full">
-            <div className="flex justify-between w-[350px] m-auto mb-6">
-              <Button text="SUMMARY" active={activeTab === 0}/>
-              <Button text="DATA" active={activeTab === 1}/>
-            </div>
-            {data?.description}
+    <SideBar open={showSidebar}>
+      <div className="bg-[#232323] h-[92vh] overflow-auto" ref={sideBarRef}>
+        {showSidebar && 
+          <XMarkIcon
+            className="sm:hidden h-4 w-4 absolute top-[5px] right-[12px] pointer"
+            onClick={closeSideBar}
+          />
+        }
+        <div className="p-6">
+          <LineChart
+            data={filteredChartData}
+            category={data?.category}
+            activeZoom={activeZoom}
+            parentRef={sideBarRef}
+            isLoading={isLoading}
+            onZoomChange={onZoomChange}
+          />
+          <div className="flex flex-wrap uppercase my-4 justify-between px-6">
+            {
+              stats.map((stat, idx) => (
+                <div key={idx} className="mr-6">
+                  <h3 className="">{stat[0]}</h3>
+                  <p className="text-[12px] pt-1 pb-2 text-gray-400">{stat[1]}</p>
+                  <h1 className="text-green-500 font-bold text-[22px]">
+                    {`${stat[2]}${stat[3]}`}
+                  </h1>
+                </div>
+              ))
+            }
           </div>
         </div>
-      </SideBar>
-    </div>
+        <h1 className="py-4 text-center bg-black">{data?.category.split('_').join(' ')}</h1>
+        <div className="p-6 text-[14px] overflow-auto">
+          <div className="flex justify-between w-[350px] m-auto mb-6">
+            <Button text="SUMMARY" active={activeTab === 0}/>
+            <Button text="DATA" active={activeTab === 1}/>
+          </div>
+          {data?.description}
+        </div>
+      </div>
+    </SideBar>
   )
 }
 
