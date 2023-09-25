@@ -84,7 +84,7 @@ const LineChart = ({
 
     const y = d3
       .scaleLinear()
-      .domain([0, d3.max(data, (d) => d.value) as number])
+      .domain([d3.min(data, (d) => d.value), d3.max(data, (d) => d.value) as number])
       .nice()
       .range([height - margin.bottom, margin.top]);
 
