@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import cn from 'classnames';
 // components
 import Slider from "../../components/slider";
 import { SliderType, Prefix} from "../../config/sankey";
 // icons
-import AdjustmentsHorizontalIcon from '@heroicons/react/24/outline/AdjustmentsHorizontalIcon'
-import LockClosedIcon from '@heroicons/react/24/outline/LockClosedIcon'
 import ChevronDoubleUpIcon from '@heroicons/react/24/solid/ChevronDoubleUpIcon'
 import ChevronDownIcon from '@heroicons/react/24/solid/ChevronDoubleDownIcon'
 import MinusIcon from '@heroicons/react/24/solid/MinusIcon'
 import ChevronUpIcon from '@heroicons/react/24/solid/ChevronUpIcon'
+import CalendarIcon from '@heroicons/react/24/solid/CalendarIcon'
 // types
 import { SlidderSettings, SlidderCategory } from "../../config/sankey";
 import { SliderData } from ".";
@@ -42,50 +41,63 @@ const InfoDiv = ({
   <div
     className="
       bg-black w-full min-h-10 px-8 py-4 top-0 z-10 text-xs
-      gap-4 md:gap-12 shadow-md shadow-slate-600/50 flex flex-wrap items-center
-      sm:justify-normal justify-between"
+      shadow-md shadow-slate-600/50 flex flex-wrap items-center
+      justify-between cursor-n-resize" 
     >
-    <div className="flex gap-2 md:gap-4">
-      <b> Q3 2023 </b>
-      <AdjustmentsHorizontalIcon className="h-4 w-4"/>
+    <div className="flex justify-between gap-x-2 sm:gap-x-12 sm:justify-normal items-center flex-wrap cursor-pointer">
+      <div className="flex ">
+        <CalendarIcon className="h-4 w-4 mr-1"/>
+        <b> Q3 2023 </b>
+      </div>
+      <div>
+        PRICE TARGET
+        <b className="ml-2"> ${Math.ceil(priceTarget)} </b>
+      </div>
+      <div>
+        EPS
+        <b className="ml-2"> ${eps.toFixed(2)} </b>
+      </div>
+      <div className="flex pt-4 md:pt-0 justify-between w-full md:w-auto">
+        <div className="flex gap-2 items-center">
+          PE RATIO
+          <div className="w-[120px]">
+            <Slider
+              id={'pe-ratio'}
+              label=''
+              description=''
+              min={0}
+              max={1000}
+              step={1}
+              prefix=''
+              value={20}
+              type={SliderType.Positive}
+              onChange={(val: number) => setPeRatio(val)}
+              simple={true}
+            />
+          </div>
+        </div>
+        <button
+          className="bg-transparent text-white py-1 px-2 text-xs border border-gray-500 rounded md:hidden"
+          onClick={() => alert("Coming soon!")}
+        >
+          SAVE
+        </button>
+      </div>
+    </div>
+    <div className="md:flex gap-10 hidden cursor-pointer items-center">
+      <button
+        className="bg-transparent text-white py-1 px-2 text-xs border border-gray-500 rounded"
+        onClick={() => alert("Coming soon!")}
+      >
+        SAVE
+      </button>
       <ChevronUpIcon className={
         cn(
-          ["h-4 w-4 transition-transform duration-500"],
+          ["h-6 w-6 transition-transform duration-500"],
           { 'rotate-180': isExpanded }
         )}
         onClick={onExpandClick}
       />
-      <LockClosedIcon className="h-4 w-4 hidden sm:block"/>
-    </div>
-    <div className="flex gap-2 md:gap-4">
-      EPS
-      <b> ${eps.toFixed(2)} </b>
-    </div>
-    <div className="gap-2 md:gap-4 hidden sm:flex">
-      PRICE TARGET
-      <b> ${Math.ceil(priceTarget)} </b>
-    </div>
-    <div className="gap-2 md:gap-4 hidden sm:flex">
-      PE RATIO
-      <div className="w-[120px]">
-        <Slider
-          id={'pe-ratio'}
-          label=''
-          description=''
-          min={0}
-          max={1000}
-          step={1}
-          prefix=''
-          value={20}
-          type={SliderType.Positive}
-          onChange={(val: number) => setPeRatio(val)}
-          simple={true}
-        />
-      </div>
-    </div>
-    <div className="gap-2 md:gap-4 hidden sm:flex">
-      UPSIDE
-      <b className="text-green-500"> 20% </b>
     </div>
   </div>
 )
@@ -107,7 +119,6 @@ const Settings = ({
   const calculatePercentage = (type: SlidderCategory): number => {
     const defaultVal = defaultSliderData[type]
     const currentVal = sliderData[type]
-
     if((defaultVal + currentVal) === 0) return 0;
     if(defaultVal === 0) return 100;
     if(SlidderSettings[type].prefix === Prefix.Percentage) {
@@ -115,13 +126,42 @@ const Settings = ({
     }
     return Math.ceil(((currentVal - defaultVal) / defaultVal) * 100)
   }
-  
-  const getDescription = (type: SlidderCategory) => {
+
+  const getSlidderViewSettings = (type: SlidderCategory) => {
     const percentage = calculatePercentage(type)
     const base = percentage === 0
-    const Icon = base ? MinusIcon : percentage >= 0 ? ChevronDoubleUpIcon : ChevronDownIcon
-    const primary = base ? 'text-gray-500' : SlidderSettings[type].type === SliderType.Positive ? 'text-green-500' : 'text-red-500'
-    const secondary = SlidderSettings[type].type === SliderType.Positive ? 'text-red-500' : 'text-green-500'
+    const isPositive = SlidderSettings[type].type === SliderType.Positive
+    const primary = base ? 'text-gray-500' : isPositive ? 'text-green-500' : 'text-red-500'
+    const secondary = isPositive ? 'text-red-500' : 'text-green-500'
+    let Icon = MinusIcon;
+    let newSliderType = null;
+    if(!base) {
+      if(isPositive) {
+        Icon = percentage > 0 ? ChevronDoubleUpIcon : ChevronDownIcon;
+        newSliderType = percentage > 0 ? SliderType.Positive : SliderType.Negative
+      } else {
+        Icon = percentage > 0 ? ChevronDownIcon : ChevronDoubleUpIcon
+        newSliderType = percentage > 0 ? SliderType.Negative : SliderType.Positive
+      }
+    }
+    return {
+      primary,
+      secondary,
+      newSliderType,
+      Icon,
+      percentage
+    }
+  }
+
+  const dynamicSettings = useMemo(() => {
+    return Object.keys(SlidderSettings).reduce((obj: any, type: SlidderCategory) => {
+      obj[type] = getSlidderViewSettings(type)
+      return obj;
+    }, {})
+  }, [sliderData])
+  
+  const getDescription = (type: SlidderCategory) => {
+    const { primary, secondary, percentage, Icon } = dynamicSettings[type]
     return (
       <div className="flex items-center gap-1">
         <Icon className={cn(
@@ -192,7 +232,6 @@ const Settings = ({
         </div>
         <div className={cn([
             "overflow-auto block",
-            // isExpanded ? "md:h-[200px] h-0" : "md:h-[200px] h-[200px]",
             {
               'transition-height duration-500': !isDragging
             }
@@ -212,7 +251,7 @@ const Settings = ({
                     step={SlidderSettings[type].step}
                     prefix={SlidderSettings[type].prefix}
                     value={sliderData[type] || 0}
-                    type={SlidderSettings[type].type}
+                    type={dynamicSettings?.[type]?.newSliderType || SlidderSettings[type].type}
                     onChange={(val: number) => onChange(type, val)}
                     onInfoClick={onSliderInfoClick}
                   />
