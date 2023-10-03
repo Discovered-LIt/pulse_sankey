@@ -123,7 +123,7 @@ const SliderInfoSideBar = ({
           </div>
         </div>
         <h1 className="py-4 text-center bg-black">{data?.category.split('_').join(' ')}</h1>
-        <div className="p-6 text-[14px] overflow-auto">
+        <div className="p-6 text-[14px] overflow-hidden">
           <div className="flex justify-between w-[350px] m-auto mb-6">
             <Button text="SUMMARY" active={activeTab === 0}/>
             <Button text="DATA" active={activeTab === 1}/>

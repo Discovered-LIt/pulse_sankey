@@ -88,14 +88,13 @@ export const sankeySettings: { [key in SankeyCategory]: { nodeFill: string, link
   [SankeyCategory["SG&A"]]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
 }
 
-
 export const SlidderSettings: SlidderSettings = {
   [SlidderCategory.AutoSalesRevenue]: {
     min: 0,
     max: 55,
     prefix: Prefix.Currency,
     step: 0.1,
-    defaultValue: 26.4,
+    defaultValue: 20.4,
     description: "less than Q2 auti revenue",
     type: SliderType.Positive
   },

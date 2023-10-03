@@ -88,7 +88,7 @@ const Home = () => {
         defaultSliderData={defaultSliderData}
         sliderData={sliderData}
         eps={eps}
-        priceTarget={eps * peRatio}
+        priceTarget={(eps + 2.58) * peRatio}
         setPeRatio={setPeRatio}
         onSliderInfoClick={onSliderInfoClick}
       />
