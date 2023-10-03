@@ -58,16 +58,16 @@ const SliderInfoSideBar = ({
 
   const stats = useMemo(() => {
     if(!filteredChartData?.length || !data) return [];
-    const latestVal = filteredChartData[filteredChartData.length - 1].value
+    const latest = filteredChartData[filteredChartData.length - 1]
     const sortByValue = filteredChartData.sort((a, b) => a.value - b.value)
     const max = sortByValue[sortByValue.length - 1]
     const min = sortByValue[0]
     const prefix = SlidderSettings[selectedSlider]?.prefix || '';
     return [
-      ['latest', data?.category?.split('_').join(' '), latestVal, prefix],
+      ['latest', format(new Date(latest.date), "'Q'Q yyyy"), latest.value, prefix],
       ['maximum', format(new Date(max.date), "'Q'Q yyyy"), max.value, prefix],
       ['minimum', format(new Date(min.date), "'Q'Q yyyy"), min.value, prefix],
-      ['change', 'Percent', min.value, '%'],
+      ['change', format(new Date(min.date), "'Q'Q yyyy"), min.value, '%'],
     ]
   }, [filteredChartData])
 
@@ -94,7 +94,7 @@ const SliderInfoSideBar = ({
       <div className="bg-[#232323] h-[92vh] overflow-auto" ref={sideBarRef}>
         {showSidebar && 
           <XMarkIcon
-            className="sm:hidden h-4 w-4 absolute top-[5px] right-[12px] pointer"
+            className="sm:hidden h-5 w-5 absolute top-[5px] right-[12px] pointer"
             onClick={closeSideBar}
           />
         }
@@ -108,13 +108,13 @@ const SliderInfoSideBar = ({
             prefix={SlidderSettings[selectedSlider]?.prefix}
             onZoomChange={onZoomChange}
           />
-          <div className="flex flex-wrap uppercase my-4 justify-between px-6">
+          <div className="flex flex-wrap uppercase mt-4 justify-between px-2 py-2 md:px-6 md:py-4 bg-[#2d2d2e] rounded-md">
             {
               stats.map((stat, idx) => (
-                <div key={idx} className="mr-6">
-                  <h3 className="">{stat[0]}</h3>
-                  <p className="text-[12px] pt-1 pb-2 text-gray-400">{stat[1]}</p>
-                  <h1 className="text-green-500 font-bold text-[22px]">
+                <div key={idx}>
+                  <h3 className="text-[12px] md:text-[16px]">{stat[0]}</h3>
+                  <p className="text-[12px] text-gray-400">{stat[1]}</p>
+                  <h1 className="text-green-500 font-bold md:text-[22px]">
                     {`${stat[2]}${stat[3]}`}
                   </h1>
                 </div>

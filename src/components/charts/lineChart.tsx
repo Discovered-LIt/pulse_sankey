@@ -211,7 +211,7 @@ const LineChart = ({
           <>
             <svg ref={lineChartRef} width={500} height={300} />
             {tooltip && <div
-              className="bg-black px-4 py-2 rounded absolute text-[12px]"
+              className="bg-zinc-200 text-black px-4 py-2 rounded absolute text-[12px]"
               style={{ left: `${tooltip?.x}px`, top: `${tooltip?.y}px` }}
             >
               <b className="mr-2">{format(new Date(tooltip.d.date), "'Q'Q yyyy")}:</b>
