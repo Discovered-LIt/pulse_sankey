@@ -65,9 +65,9 @@ const SliderInfoSideBar = ({
     const prefix = SlidderSettings[selectedSlider]?.prefix || '';
     return [
       ['latest', format(new Date(latest.date), "'Q'Q yyyy"), latest.value, prefix],
+      ['change', format(new Date(min.date), "'Q'Q yyyy"), min.value, '%'],
       ['maximum', format(new Date(max.date), "'Q'Q yyyy"), max.value, prefix],
       ['minimum', format(new Date(min.date), "'Q'Q yyyy"), min.value, prefix],
-      ['change', format(new Date(min.date), "'Q'Q yyyy"), min.value, '%'],
     ]
   }, [filteredChartData])
 
