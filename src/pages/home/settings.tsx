@@ -47,7 +47,7 @@ const InfoDiv = ({
     <div className="flex justify-between gap-x-2 sm:gap-x-12 sm:justify-normal items-center flex-wrap cursor-pointer">
       <div className="flex ">
         <CalendarIcon className="h-4 w-4 mr-1"/>
-        <b> Q3 2023 </b>
+        Q3 2023 
       </div>
       <div>
         PRICE TARGET
