@@ -238,7 +238,7 @@ const Settings = ({
         <div
           id={sliderContainerId}
           className={cn([
-            "overflow-auto block w-[80%] m-auto",
+            "overflow-auto block w-[80%] m-auto pl-[10px]",
             {
               'transition-height duration-500': !isDragging
             }

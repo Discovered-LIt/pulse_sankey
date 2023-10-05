@@ -219,7 +219,7 @@ export const SlidderSettings: SlidderSettings = {
     type: SliderType.Negative
   },
   [SlidderCategory.InterestAndOther]: {
-    min: 0,
+    min: -1,
     max: 1,
     prefix: Prefix.Currency,
     step: 0.1,
