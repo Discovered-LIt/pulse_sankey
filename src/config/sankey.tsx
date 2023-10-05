@@ -37,6 +37,12 @@ export enum SlidderCategory {
   Taxes = "Taxes (TAX)"
 }
 
+export enum SlidderGroupType {
+  RevenueSection = "Revenue section",
+  CostOfRevenue = "Cost of revenue",
+  OtherExpense = "Other expense"
+}
+
 export enum Prefix {
   Percentage = '%',
   Currency = 'BN'
@@ -86,6 +92,28 @@ export const sankeySettings: { [key in SankeyCategory]: { nodeFill: string, link
   [SankeyCategory.OtherOpex]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
   [SankeyCategory["R&D"]]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
   [SankeyCategory["SG&A"]]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
+}
+
+export const slidderGroups: {[key in SlidderGroupType]: SlidderCategory[]} = {
+  [SlidderGroupType.RevenueSection]: [
+    SlidderCategory.AutoSalesRevenue,
+    SlidderCategory.AutoRegCreditsRevenue,
+    SlidderCategory.AutomotiveLeasingRevenue,
+    SlidderCategory.EnergyGenerationAndStorageRevenue,
+    SlidderCategory.ServicesAndOtherRevenue
+  ],
+  [SlidderGroupType.CostOfRevenue]: [
+    SlidderCategory.AutoRevenueMargin,
+    SlidderCategory.EnergyStorageMargin,
+    SlidderCategory.ServicesAndOtherMargin,
+  ],
+  [SlidderGroupType.OtherExpense]: [
+    SlidderCategory.ResearchAndDevelopment,
+    SlidderCategory.SGA,
+    SlidderCategory.OtherOperatingExpenses,
+    SlidderCategory.InterestAndOther,
+    SlidderCategory.Taxes,
+  ],
 }
 
 export const SlidderSettings: SlidderSettings = {

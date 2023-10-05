@@ -3,6 +3,7 @@ import cn from 'classnames';
 // components
 import Slider from "../../components/slider";
 import { SliderType, Prefix} from "../../config/sankey";
+import ProgressTabMenu from "../../components/progressTabMenu";
 // icons
 import ChevronDoubleUpIcon from '@heroicons/react/24/solid/ChevronDoubleUpIcon'
 import ChevronDownIcon from '@heroicons/react/24/solid/ChevronDoubleDownIcon'
@@ -10,7 +11,7 @@ import MinusIcon from '@heroicons/react/24/solid/MinusIcon'
 import ChevronUpIcon from '@heroicons/react/24/solid/ChevronUpIcon'
 import CalendarIcon from '@heroicons/react/24/solid/CalendarIcon'
 // types
-import { SlidderSettings, SlidderCategory } from "../../config/sankey";
+import { SlidderSettings, SlidderCategory, slidderGroups, SlidderGroupType } from "../../config/sankey";
 import { SliderData } from ".";
 
 interface Setting {
@@ -40,9 +41,10 @@ const InfoDiv = ({
 }: InfoDivProps) => (
   <div
     className="
-      bg-black w-full min-h-10 px-8 py-4 top-0 z-10 text-xs
-      shadow-md shadow-slate-600/50 flex flex-wrap items-center
-      justify-between cursor-n-resize" 
+      bg-black w-full min-h-10 px-8 py-4 top-0 z-20 text-xs
+      flex flex-wrap items-center
+      justify-between cursor-n-resize
+      border-b-2 border-b-slate-600/50" 
     >
     <div className="flex justify-between gap-x-2 sm:gap-x-12 sm:justify-normal items-center flex-wrap cursor-pointer">
       <div className="flex ">
@@ -216,8 +218,11 @@ const Settings = ({
     setHeight(isExpanded ? 0 : 500)
   }
 
+  const sliderContainerId = 'slider-container';
+  const sliderContentClassName = 'slider-group'
+
   return(
-      <div className="w-full bg-black fixed bottom-0 left-0 right-0 cursor-pointer overflow-auto">
+      <div className="w-full bg-black fixed bottom-0 left-0 right-0 overflow-auto">
         <div
           onMouseDown={handleMouseDown}
           onTouchStart={handleMouseDown}
@@ -230,35 +235,69 @@ const Settings = ({
             onExpandClick={onExpandClick}
           />
         </div>
-        <div className={cn([
-            "overflow-auto block",
+        <div
+          id={sliderContainerId}
+          className={cn([
+            "overflow-auto block w-[80%] m-auto",
             {
               'transition-height duration-500': !isDragging
             }
           ])}
           style={{ height: `${height}px` }}
         >
-          <div className="grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-6">
-            {
-              Object.keys(SlidderSettings).map((type: SlidderCategory, idx: number) => (
-                <div key={idx} className="w-[300px] mb-2 m-auto">
-                  <Slider
-                    id={type}
-                    label={type}
-                    description={getDescription(type)}
-                    min={SlidderSettings[type].min}
-                    max={SlidderSettings[type].max}
-                    step={SlidderSettings[type].step}
-                    prefix={SlidderSettings[type].prefix}
-                    value={sliderData[type] || 0}
-                    type={dynamicSettings?.[type]?.newSliderType || SlidderSettings[type].type}
-                    onChange={(val: number) => onChange(type, val)}
-                    onInfoClick={onSliderInfoClick}
-                  />
-                </div>
-              ))
-            }
+          <div className="flex flex-wrap sticky top-0 w-full pt-4 pb-2 m-auto bg-black mt-[2px] z-10">
+            <ProgressTabMenu
+              options={Object.keys(slidderGroups)}
+              mainContainerId={sliderContainerId}
+              contentClassName={sliderContentClassName}
+            />
           </div>
+          {
+            Object.keys(slidderGroups).map((group: SlidderGroupType, idx) => (
+              <div
+                id={`${sliderContentClassName}-${idx}`} 
+                key={idx}
+                className={`grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-6 ${sliderContentClassName}`}
+              >
+                {
+                  slidderGroups[group].map((type, index) => (
+                    <div key={index} className="w-[300px] mb-2">
+                      <Slider
+                        id={type}
+                        label={type}
+                        description={getDescription(type)}
+                        min={SlidderSettings[type].min}
+                        max={SlidderSettings[type].max}
+                        step={SlidderSettings[type].step}
+                        prefix={SlidderSettings[type].prefix}
+                        value={sliderData[type] || 0}
+                        type={dynamicSettings?.[type]?.newSliderType || SlidderSettings[type].type}
+                        onChange={(val: number) => onChange(type, val)}
+                        onInfoClick={onSliderInfoClick}
+                      />
+                    </div>
+                  ))
+                }
+              </div>
+            ))
+            // Object.keys(SlidderSettings).map((type: SlidderCategory, idx: number) => (
+            //   <div key={idx} className="w-[300px] mb-2 m-auto">
+            //     <Slider
+            //       id={type}
+            //       label={type}
+            //       description={getDescription(type)}
+            //       min={SlidderSettings[type].min}
+            //       max={SlidderSettings[type].max}
+            //       step={SlidderSettings[type].step}
+            //       prefix={SlidderSettings[type].prefix}
+            //       value={sliderData[type] || 0}
+            //       type={dynamicSettings?.[type]?.newSliderType || SlidderSettings[type].type}
+            //       onChange={(val: number) => onChange(type, val)}
+            //       onInfoClick={onSliderInfoClick}
+            //     />
+            //   </div>
+            // ))
+          }
         </div>
       </div>
   )
