@@ -225,7 +225,7 @@ export const SlidderSettings: SlidderSettings = {
     step: 0.1,
     defaultValue: 0.5,
     description: "less than Q2 auti revenue",
-    type: SliderType.Negative
+    type: SliderType.Positive
   },
   [SlidderCategory.Taxes]: {
     min: 0,
