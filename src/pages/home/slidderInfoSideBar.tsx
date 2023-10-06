@@ -65,11 +65,14 @@ const SliderInfoSideBar = ({
     const prefix = SlidderSettings[selectedSlider]?.prefix || '';
 
     const firstVal = filteredChartData[0].value;
-    const changeValue = Math.floor(((latest.value - firstVal) / Math.abs(firstVal)) * 100);
+    let changeValue = ((latest.value - firstVal) / Math.abs(firstVal));
+    if(prefix !== '%') {
+      changeValue = changeValue * 100
+    }
 
     return [
       ['latest', format(new Date(latest.date), "'Q'Q yyyy"), latest.value, prefix],
-      ['change', `Since ${format(new Date(min.date), "'Q'Q yyyy")}`, changeValue, '%'],
+      ['change', `Since ${format(new Date(min.date), "'Q'Q yyyy")}`, parseFloat(changeValue.toFixed(1)), '%'],
       ['maximum', format(new Date(max.date), "'Q'Q yyyy"), max.value, prefix],
       ['minimum', format(new Date(min.date), "'Q'Q yyyy"), min.value, prefix],
     ]
