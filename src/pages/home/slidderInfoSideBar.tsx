@@ -56,16 +56,20 @@ const SliderInfoSideBar = ({
     return chartData;
   }, [activeZoom, chartData])
 
-  const stats = useMemo(() => {
+  const stats = useMemo((): [string, string, number, string][] => {
     if(!filteredChartData?.length || !data) return [];
     const latest = filteredChartData[filteredChartData.length - 1]
     const sortByValue = filteredChartData.sort((a, b) => a.value - b.value)
     const max = sortByValue[sortByValue.length - 1]
     const min = sortByValue[0]
     const prefix = SlidderSettings[selectedSlider]?.prefix || '';
+
+    const firstVal = filteredChartData[0].value;
+    const changeValue = Math.floor(((latest.value - firstVal) / Math.abs(firstVal)) * 100);
+
     return [
       ['latest', format(new Date(latest.date), "'Q'Q yyyy"), latest.value, prefix],
-      ['change', `Since ${format(new Date(min.date), "'Q'Q yyyy")}`, min.value, '%'],
+      ['change', `Since ${format(new Date(min.date), "'Q'Q yyyy")}`, changeValue, '%'],
       ['maximum', format(new Date(max.date), "'Q'Q yyyy"), max.value, prefix],
       ['minimum', format(new Date(min.date), "'Q'Q yyyy"), min.value, prefix],
     ]
