@@ -245,22 +245,26 @@ const Settings = ({
           ])}
           style={{ height: `${height}px` }}
         >
-          <div className="flex flex-wrap sticky top-0 w-full pt-4 pb-2 m-auto bg-black mt-[2px] z-10">
+          {/* <div className="flex flex-wrap sticky top-0 w-full pt-4 pb-2 m-auto bg-black mt-[2px] z-10">
             <ProgressTabMenu
               options={Object.keys(slidderGroups)}
               mainContainerId={sliderContainerId}
               contentClassName={sliderContentClassName}
             />
-          </div>
+          </div> */}
+          {/* <div className={`grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-6`}> */}
           {
             Object.keys(slidderGroups).map((group: SlidderGroupType, idx) => (
-              <div
-                id={`${sliderContentClassName}-${idx}`} 
-                key={idx}
-                className={`grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-6 ${sliderContentClassName}`}
-              >
-                {
-                  slidderGroups[group].map((type, index) => (
+              <>
+                <div className="bg-[#1d1f23] p-2 rounded sticky top-0 z-10 w-[98%] uppercase text-[12px]">
+                  {group}
+                </div>
+                <div
+                  id={`${sliderContentClassName}-${idx}`} 
+                  key={idx}
+                  className={`grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-6 ${sliderContentClassName}`}
+                >
+                  {slidderGroups[group].map((type, index) => (
                     <div key={index} className="w-[300px] mb-2">
                       <Slider
                         id={type}
@@ -276,9 +280,9 @@ const Settings = ({
                         onInfoClick={onSliderInfoClick}
                       />
                     </div>
-                  ))
-                }
-              </div>
+                  ))}
+                </div>
+              </>
             ))
             // Object.keys(SlidderSettings).map((type: SlidderCategory, idx: number) => (
             //   <div key={idx} className="w-[300px] mb-2 m-auto">
@@ -298,7 +302,8 @@ const Settings = ({
             //   </div>
             // ))
           }
-        </div>
+          </div>
+        {/* </div> */}
       </div>
   )
 }
