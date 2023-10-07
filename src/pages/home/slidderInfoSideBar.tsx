@@ -98,7 +98,7 @@ const SliderInfoSideBar = ({
   
   return(
     <SideBar open={showSidebar}>
-      <div className="bg-[#232323] h-[92vh] overflow-auto" ref={sideBarRef}>
+      <div className="bg-[#232323] h-full overflow-auto" ref={sideBarRef}>
         {showSidebar && 
           <XMarkIcon
             className="sm:hidden h-5 w-5 absolute top-[5px] right-[12px] pointer"
