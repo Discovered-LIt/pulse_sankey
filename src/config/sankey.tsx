@@ -38,7 +38,7 @@ export enum SlidderCategory {
 }
 
 export enum SlidderGroupType {
-  RevenueSection = "Revenue section",
+  Revenue = "Revenue",
   CostOfRevenue = "Cost of revenue",
   OtherExpense = "Other expense"
 }
@@ -95,7 +95,7 @@ export const sankeySettings: { [key in SankeyCategory]: { nodeFill: string, link
 }
 
 export const slidderGroups: {[key in SlidderGroupType]: SlidderCategory[]} = {
-  [SlidderGroupType.RevenueSection]: [
+  [SlidderGroupType.Revenue]: [
     SlidderCategory.AutoSalesRevenue,
     SlidderCategory.AutoRegCreditsRevenue,
     SlidderCategory.AutomotiveLeasingRevenue,
