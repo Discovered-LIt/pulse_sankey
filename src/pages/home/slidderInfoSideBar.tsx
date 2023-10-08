@@ -65,9 +65,9 @@ const SliderInfoSideBar = ({
     const prefix = SlidderSettings[selectedSlider]?.prefix || '';
 
     const firstVal = filteredChartData[0].value;
-    let changeValue = ((latest.value - firstVal) / Math.abs(firstVal));
+    let changeValue = latest.value - firstVal;
     if(prefix !== '%') {
-      changeValue = changeValue * 100
+      changeValue = (changeValue / Math.abs(firstVal)) * 100
     }
 
     return [
