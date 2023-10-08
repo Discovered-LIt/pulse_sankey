@@ -59,7 +59,7 @@ const SliderInfoSideBar = ({
   const stats = useMemo((): [string, string, number, string][] => {
     if(!filteredChartData?.length || !data) return [];
     const latest = filteredChartData[filteredChartData.length - 1]
-    const sortByValue = filteredChartData.sort((a, b) => a.value - b.value)
+    const sortByValue = [...filteredChartData].sort((a, b) => a.value - b.value)
     const max = sortByValue[sortByValue.length - 1]
     const min = sortByValue[0]
     const prefix = SlidderSettings[selectedSlider]?.prefix || '';
