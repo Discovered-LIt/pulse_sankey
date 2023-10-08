@@ -18,6 +18,7 @@ interface Setting {
   defaultSliderData: SliderData;
   eps: number;
   priceTarget: number;
+  peRatio: number;
   setPeRatio: (peRatio: number) => void;
   onChange: (type: SlidderCategory, val: number) => void;
   onSliderInfoClick: (string: SlidderCategory) => void;
@@ -27,6 +28,7 @@ type InfoDivProps = {
   isExpanded: boolean;
   eps: number;
   priceTarget: number;
+  peRatio: number;
   setPeRatio: (peRatio: number) => void;
   onExpandClick: () => void;
 }
@@ -35,6 +37,7 @@ const InfoDiv = ({
   isExpanded,
   eps,
   priceTarget,
+  peRatio,
   setPeRatio,
   onExpandClick
 }: InfoDivProps) => (
@@ -69,7 +72,7 @@ const InfoDiv = ({
               max={1000}
               step={1}
               prefix=''
-              value={20}
+              value={peRatio}
               type={SliderType.Positive}
               onChange={(val: number) => setPeRatio(val)}
               simple={true}
@@ -107,6 +110,7 @@ const Settings = ({
   defaultSliderData,
   eps,
   priceTarget,
+  peRatio,
   setPeRatio,
   onChange,
   onSliderInfoClick
@@ -227,6 +231,7 @@ const Settings = ({
             eps={eps}
             priceTarget={priceTarget}
             setPeRatio={setPeRatio}
+            peRatio={peRatio}
             onExpandClick={onExpandClick}
           />
         </div>

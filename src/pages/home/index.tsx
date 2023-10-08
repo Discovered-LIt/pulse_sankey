@@ -22,7 +22,7 @@ export type SankeyData = {
 const Home = () => {
   const [defaultSliderData] = useState<SliderData>(sliderDefaultData)
   const [sliderData, setSlider] = useState<SliderData>(sliderDefaultData)
-  const [peRatio, setPeRatio] = useState<number>(20)
+  const [peRatio, setPeRatio] = useState<number>(70)
   const { selectedSlider, sliderCategoryData, setSelectedSlider } = useSliderContext();
 
   const sankeyData = useMemo((): SankeyData => {
@@ -89,6 +89,7 @@ const Home = () => {
         sliderData={sliderData}
         eps={eps}
         priceTarget={(eps + 2.58) * peRatio}
+        peRatio={peRatio}
         setPeRatio={setPeRatio}
         onSliderInfoClick={onSliderInfoClick}
       />
