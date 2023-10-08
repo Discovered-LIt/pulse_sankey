@@ -215,7 +215,7 @@ const LineChart = ({
               style={{ left: `${tooltip?.x}px`, top: `${tooltip?.y}px` }}
             >
               <b className="mr-2">{format(new Date(tooltip.d.date), "'Q'Q yyyy")}:</b>
-              {tooltip?.d?.value}B
+              {tooltip?.d?.value}{prefix}
             </div>}
           </>
       }
