@@ -64,7 +64,7 @@ const getEnergyGenerationAndStorageRevenue = (data: SliderData): number => data[
 
 const getServicesAndOtherRevenue = (data: SliderData): number => data[SlidderCategory.ServicesAndOtherRevenue]
 
-const calEPS = (data:SliderData): number => calculateNetProfit(data) / 3.17;
+const calEPS = (data:SliderData): number => calculateNetProfit(data) / 3.478;
 
 const calculations = {
   calculateAutoRevenue,
