@@ -14,7 +14,7 @@ import { SliderMappingDataProps } from "../../context/SlidderContext";
 // icons
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
 // Date
-import { SlidderSettings } from "../../config/sankey";
+import { SlidderSettings, SliderType } from "../../config/sankey";
 
 interface SliderInfoSideBar {
   showSidebar: boolean;
@@ -56,7 +56,7 @@ const SliderInfoSideBar = ({
     return chartData;
   }, [activeZoom, chartData])
 
-  const stats = useMemo((): [string, string, number, string][] => {
+  const stats = useMemo((): [string, string, number, string, boolean][] => {
     if(!filteredChartData?.length || !data) return [];
     const latest = filteredChartData[filteredChartData.length - 1]
     const sortByValue = [...filteredChartData].sort((a, b) => a.value - b.value)
@@ -70,11 +70,18 @@ const SliderInfoSideBar = ({
       changeValue = (changeValue / Math.abs(firstVal)) * 100
     }
 
+    let isChangePositive = true
+    if(SlidderSettings[selectedSlider].type === SliderType.Positive) {
+      isChangePositive = changeValue >= 0
+    } else {
+      isChangePositive = changeValue < 0
+    }
+
     return [
-      ['latest', format(new Date(latest.date), "'Q'Q yyyy"), latest.value, prefix],
-      ['change', `Since ${format(new Date(min.date), "'Q'Q yyyy")}`, parseFloat(changeValue.toFixed(1)), '%'],
-      ['maximum', format(new Date(max.date), "'Q'Q yyyy"), max.value, prefix],
-      ['minimum', format(new Date(min.date), "'Q'Q yyyy"), min.value, prefix],
+      ['latest', format(new Date(latest.date), "'Q'Q yyyy"), latest.value, prefix, true],
+      ['change', `Since ${format(new Date(min.date), "'Q'Q yyyy")}`, parseFloat(changeValue.toFixed(1)), '%', isChangePositive],
+      ['maximum', format(new Date(max.date), "'Q'Q yyyy"), max.value, prefix, true],
+      ['minimum', format(new Date(min.date), "'Q'Q yyyy"), min.value, prefix, true],
     ]
   }, [filteredChartData])
 
@@ -121,7 +128,10 @@ const SliderInfoSideBar = ({
                 <div key={idx}>
                   <h3 className="text-[12px] md:text-[16px]">{stat[0]}</h3>
                   <p className="text-[12px] text-gray-400">{stat[1]}</p>
-                  <h1 className="text-green-500 font-bold md:text-[22px]">
+                  <h1 className={cn([
+                    "font-bold md:text-[22px]",
+                    stat[4] ? 'text-green-500' : 'text-red-500'
+                  ])}>
                     {`${stat[2]}${stat[3]}`}
                   </h1>
                 </div>
