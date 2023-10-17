@@ -45,7 +45,7 @@ const InfoDiv = ({
     className="
       bg-black w-full min-h-10 px-8 py-4 top-0 z-10 text-xs
       shadow-md shadow-slate-600/50 flex flex-wrap items-center
-      justify-between cursor-n-resize" 
+      justify-between" 
     >
     <div className="flex justify-between gap-x-2 sm:gap-x-12 sm:justify-normal items-center flex-wrap cursor-pointer">
       <div className="flex ">
@@ -97,7 +97,7 @@ const InfoDiv = ({
       <ChevronUpIcon className={
         cn(
           ["h-6 w-6 transition-transform duration-500"],
-          { 'rotate-180': isExpanded }
+          { 'rotate-180': !isExpanded }
         )}
         onClick={onExpandClick}
       />
@@ -116,23 +116,24 @@ const Settings = ({
   onSliderInfoClick
 }: Setting) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const isMobile = window.innerWidth <= 680
-  const [height, setHeight] = useState(isMobile ? 0 : 250);
+  const [height, setHeight] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
 
-  const calculatePercentage = (type: SlidderCategory): number => {
-    const defaultVal = defaultSliderData[type]
-    const currentVal = sliderData[type]
-    if((defaultVal + currentVal) === 0) return 0;
-    if(defaultVal === 0) return 100;
-    if(SlidderSettings[type].prefix === Prefix.Percentage) {
-      return Math.ceil(currentVal - defaultVal)
+  const calculateChangePercentage = (currVal: number, prevVal: number, prefix: string): number => {
+    if((prevVal + currVal) === 0) return 0;
+    if(prevVal === 0) return 100;
+    if(prefix === Prefix.Percentage) {
+      return Math.ceil(currVal - prevVal)
     }
-    return Math.ceil(((currentVal - defaultVal) / defaultVal) * 100)
+    return Math.ceil(((currVal - prevVal) / prevVal) * 100)
   }
 
   const getSlidderViewSettings = (type: SlidderCategory) => {
-    const percentage = calculatePercentage(type)
+    const percentage = calculateChangePercentage(
+      sliderData[type],
+      defaultSliderData[type],
+      SlidderSettings[type].prefix
+    )
     const base = percentage === 0
     const isPositive = SlidderSettings[type].type === SliderType.Positive
     const primary = base ? 'text-gray-500' : isPositive ? 'text-green-500' : 'text-red-500'
@@ -191,13 +192,16 @@ const Settings = ({
 
     const handleMouseMove = (e: any) => {
       e.preventDefault();
-      setIsExpanded(true)
-      const deltaY = (e.clientY || e.touches[0].clientY) - startY;
+      setIsExpanded(true);
+      const deltaY = startY - (e.clientY || e.touches[0].clientY); // Invert the deltaY calculation
       setHeight((prevHeight) => {
-        const newHeight = prevHeight - deltaY;
-        if(!isMobile && newHeight <= 250 || newHeight > 550) return prevHeight;
-        startY = e.clientY || e.touches[0].clientY
-        return newHeight
+        const newHeight = prevHeight + deltaY; // Invert the deltaY here as well
+        startY = e.clientY || e.touches[0].clientY;
+        if(newHeight >= -10){
+          setIsExpanded(false)
+          return prevHeight
+        };
+        return newHeight;
       });
     };
 
@@ -217,33 +221,28 @@ const Settings = ({
 
   const onExpandClick = () => {
     setIsExpanded(!isExpanded)
-    setHeight(isExpanded ? 0 : 500)
+    setHeight(isExpanded ? 0 : -250)
   }
 
   return(
-      <div className="w-full bg-black fixed bottom-0 left-0 right-0 overflow-auto">
-        <div
-          onMouseDown={handleMouseDown}
-          onTouchStart={handleMouseDown}
-        >
-          <InfoDiv
-            isExpanded={isExpanded}
-            eps={eps}
-            priceTarget={priceTarget}
-            setPeRatio={setPeRatio}
-            peRatio={peRatio}
-            onExpandClick={onExpandClick}
-          />
-        </div>
+      <div className="w-full bg-black fixed top-[65px] left-0 right-0 overflow-auto z-10">
+        <InfoDiv
+          isExpanded={isExpanded}
+          eps={eps}
+          priceTarget={priceTarget}
+          setPeRatio={setPeRatio}
+          peRatio={peRatio}
+          onExpandClick={onExpandClick}
+        />
         <div
           id="slider-container"
           className={cn([
-            "overflow-auto block",
+            "overflow-auto block fixed w-full top-30 bg-black",
             {
               'transition-height duration-500': !isDragging
             }
           ])}
-          style={{ height: `${height}px` }}
+          style={{ height: `${Math.abs(height || 10)}px` }}
         >
           {Object.keys(slidderGroups).map((group: SlidderGroupType, idx) => (
             <>
@@ -252,7 +251,7 @@ const Settings = ({
               </div>
               <div className="grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-6">
                 {
-                  slidderGroups[group].map((type, index) => (
+                  slidderGroups[group].map((type) => (
                     <div key={idx} className="w-[300px] mb-2 m-auto">
                       <Slider
                         id={type}
@@ -273,6 +272,13 @@ const Settings = ({
               </div>
             </>
           ))}
+          <div
+            className="bg-white text-black rounded-lg w-6 h-2 sticky bottom-0 flex justify-center items-center m-auto cursor-s-resize z-20"
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleMouseDown}
+          >
+            <div className="w-[15px] h-[2px] bg-black"/>
+          </div>
         </div>
       </div>
   )

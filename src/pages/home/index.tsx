@@ -87,8 +87,7 @@ const Home = () => {
   }, [selectedSlider])
 
   return (
-    <div className="bg-[#1d1f23] text-white h-screen w-full block pt-20 overflow-scroll">
-      <SankeyChart data={sankeyData} />
+    <div className="bg-[#1d1f23] text-white h-screen w-full block pt-[65px] overflow-scroll">
       <Settings
         onChange={onSliderChange}
         defaultSliderData={defaultSliderData}
@@ -99,6 +98,9 @@ const Home = () => {
         setPeRatio={setPeRatio}
         onSliderInfoClick={onSliderInfoClick}
       />
+      <div className="sm:w-full sm:h-[80vh] sm:flex sm:items-center mt-[70px]">
+        <SankeyChart data={sankeyData} />
+      </div>
       <SliderInfoSideBar
         showSidebar={!!selectedSlider}
         data={sideBarData}
