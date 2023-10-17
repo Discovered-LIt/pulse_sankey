@@ -197,9 +197,9 @@ const Settings = ({
       setHeight((prevHeight) => {
         const newHeight = prevHeight + deltaY; // Invert the deltaY here as well
         startY = e.clientY || e.touches[0].clientY;
-        if(newHeight >= -10){
+        if(newHeight >= -20){
           setIsExpanded(false)
-          return prevHeight
+          return 0
         };
         return newHeight;
       });
@@ -225,7 +225,7 @@ const Settings = ({
   }
 
   return(
-      <div className="w-full bg-black fixed top-[65px] left-0 right-0 overflow-auto z-10">
+      <div className="w-full bg-black fixed top-[65px] left-0 right-0 overflow-auto">
         <InfoDiv
           isExpanded={isExpanded}
           eps={eps}
@@ -245,14 +245,17 @@ const Settings = ({
           style={{ height: `${Math.abs(height || 10)}px` }}
         >
           {Object.keys(slidderGroups).map((group: SlidderGroupType, idx) => (
-            <>
+            <div key={`${group}-${idx}`}>
               <div className="bg-[#1d1f23] py-2 px-8 sticky top-0 z-10 w-full uppercase text-[12px]">
                 {group}
               </div>
               <div className="grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-6">
                 {
                   slidderGroups[group].map((type) => (
-                    <div key={`${type}-${group}-${idx}`} className="w-[300px] mb-2 m-auto">
+                    <div
+                      className="w-[300px] mb-2 m-auto"
+                      key={`${type}-${group}-${idx}`}
+                    >
                       <Slider
                         id={type}
                         label={type}
@@ -270,7 +273,7 @@ const Settings = ({
                   ))
                 }
               </div>
-            </>
+            </div>
           ))}
           <div
             className="bg-white text-black rounded-lg w-6 h-2 sticky bottom-0 flex justify-center items-center m-auto cursor-s-resize z-20"

@@ -15,7 +15,7 @@ interface Sankey {
 }
 
 const Sankey = ({ data }: Sankey) => {
-  const [windowWidth, setWindowWidth] = useState<number>();
+  const [windowWidth, setWindowWidth] = useState<number>(0);
   const isMobile = window.innerWidth <= 680;
 
   useEffect(() => {
@@ -83,10 +83,10 @@ const Sankey = ({ data }: Sankey) => {
     return (
       <g key={node.index}>
         <rect
-          height={node.y1 - node.y0}
-          width={sankeyGenerator.nodeWidth()}
-          x={node.x0}
-          y={node.y0}
+          height={(node.y1 - node.y0) || 0}
+          width={sankeyGenerator.nodeWidth() || 0}
+          x={node.x0 || 0}
+          y={node.y0 || 0}
           stroke='none'
           fill={node?.color?.dark || nodeFill || GREY}
           fillOpacity={0.8}
@@ -95,7 +95,7 @@ const Sankey = ({ data }: Sankey) => {
         {showLabel && 
           <g transform={transform} className="label">
           <foreignObject
-            x={showLeftLabel ? (node.x0 + (node.x1 - node.x0) / 2) - 80 : node.x1 + 15}
+            x={(showLeftLabel ? (node.x0 + (node.x1 - node.x0) / 2) - 80 : node.x1 + 15) || 0}
             y={node.y0 + (node.y1 - node.y0) / 2 - 10}
             width={isMobile ? 90 : 200}
             height={100}
