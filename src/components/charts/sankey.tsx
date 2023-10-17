@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { sankey, sankeyCenter, sankeyLinkHorizontal } from "d3-sankey";
 // types
-import { sankeySettings, SankeyCategory } from "../../../config/sankey";
-import { SankeyData } from "../../../pages/home";
+import { sankeySettings, SankeyCategory } from "../../config/sankey";
+import { SankeyData } from "../../pages/home";
 // constant
-import { GREY } from "../../../config/sankey";
+import { GREY } from "../../config/sankey";
 
 const MARGIN_Y = 25;
 const MARGIN_X = 150;
@@ -44,15 +44,15 @@ const Sankey = ({ data }: Sankey) => {
   const { nodes, links } = sankeyGenerator(data as any);
 
   // Draw the nodes
-  const allNodes = nodes.map((node: any, idx: number) => {
-    const { nodeFill, showVal } = sankeySettings[node.id as SankeyCategory] || {}
-    const { heading, layer } = node
-    const showLeftLabel = [0, 1].includes(layer)
+  const allNodes = nodes.map((node: any) => {
+    const { nodeFill } = sankeySettings[node.id as SankeyCategory] || {}
+    const { heading, depth } = node
+    const showLeftLabel = depth === 0
     const showLabel = showLeftLabel || !node.sourceLinks.length
     // Define the transform origin for the rotation
     let transformOriginX = (node.x0 + (node.x1 - node.x0) / 2 + (showLeftLabel ? - 40 : + 50)) || 1;
     let transformOriginY = node.y0 + (node.y1 - node.y0) / 2;
-    
+
     if(isMobile) {
       let isOverlap = false;
       for (const otherNode of nodes) {
@@ -73,10 +73,13 @@ const Sankey = ({ data }: Sankey) => {
         transformOriginY += 40;  // Move it down (adjust as needed)
       }
     }
-
-    const transform = isMobile ? `rotate(90 ${transformOriginX} ${transformOriginY})` : ''
     
-    if(node.value <= 0) return null;
+    const value = 
+      node.sourceLinks.find((link: any) => link.source.id === node.id)?.displayValue ||
+      node.value || 0;
+    const transform = isMobile ? `rotate(90 ${transformOriginX} ${transformOriginY})` : ''
+    if(value === 0) return null;
+
     return (
       <g key={node.index}>
         <rect
@@ -85,7 +88,7 @@ const Sankey = ({ data }: Sankey) => {
           x={node.x0}
           y={node.y0}
           stroke='none'
-          fill={nodeFill || GREY}
+          fill={node?.color?.dark || nodeFill || GREY}
           fillOpacity={0.8}
           strokeLinecap="round"
         />
@@ -110,7 +113,7 @@ const Sankey = ({ data }: Sankey) => {
             >
               {node.id}
               <br />
-              {`$${(node.value).toFixed(1)} BN`}
+              {`$${(value).toFixed(1)} BN`}
             </div>
           </foreignObject>
           </g>
@@ -124,15 +127,15 @@ const Sankey = ({ data }: Sankey) => {
     const linkGenerator = sankeyLinkHorizontal();
     const path = linkGenerator(link);
     const { linkFill } = sankeySettings[link?.target?.id as SankeyCategory] || { linkFill: '' }
-    const { layer } = link?.source;
-    const showLabel = layer !== 0 && !!link.target.sourceLinks.length
+    const { layer, color } = link?.source;
+    const showLabel = layer !== 0 && !!link.target.sourceLinks.length;
     
     return (
       <svg key={i}>
         <path
           id={`path-${i}`}
           d={path}
-          stroke={linkFill}
+          stroke={color?.lite || linkFill}
           fill="none"
           strokeOpacity={1}
           strokeWidth={link.width}

@@ -9,6 +9,7 @@ import { SlidderCategory, SankeyCategory } from "../../config/sankey";
 import { sliderDefaultData, slidderCategoryInfoMaping } from "../../config/sankey";
 // utils
 import cal from "../../utils/sankey";
+import { getSankeyDisplayColor } from "../../utils/global";
 // context
 import { useSliderContext } from "../../context/SlidderContext";
 
@@ -40,23 +41,28 @@ const Home = () => {
         cal.calculateNetProfit
       ],
       [SankeyCategory.OperationProfit, SankeyCategory.Tax, cal.calculateTax],
-      [SankeyCategory.OperationProfit, SankeyCategory.Others, cal.calculateOthers],
+      [SankeyCategory.Others, SankeyCategory.NetProfite, cal.calculateOthers],
       [SankeyCategory.OperationExpenses, SankeyCategory["R&D"], cal.calculateRAndD],
       [SankeyCategory.OperationExpenses, SankeyCategory["SG&A"], cal.calculateSGA],
       [SankeyCategory.OperationExpenses, SankeyCategory.OtherOpex, cal.calculateOtherOpex],
       [SankeyCategory.TotalRevenue, SankeyCategory.CostOfRevenue, cal.calculateCostOfRevenue],
     ];
+    
+    // to show dynamic color for others sankey line
+    const othersLineColor = getSankeyDisplayColor(cal.calculateOthers(sliderData), SankeyCategory.Others)
+
     return {
-      nodes: [...new Set(sankeyLinks.map((ar) => [ar[1], ar[0]] ).flat())].map((key) => {
+      nodes: [...new Set(sankeyLinks.map((ar) => [ar[1], ar[0]]).flat())].map(key => {
         return { 
           id: key,
           heading: [SankeyCategory.AutoRevenue, SankeyCategory.NetProfite].includes(key),
+          ...(key === SankeyCategory.Others ? { color: othersLineColor } : {})
         }
       }),
       links: sankeyLinks.map((link) => {
         const [source, target, fn] = link;
-        const val = parseFloat(Math.abs(fn?.(sliderData)).toFixed(1))
-        return { source, target, value: val }
+        const value = Math.abs(fn?.(sliderData))
+        return { source, target, value, displayValue: fn?.(sliderData) }
       })
     }
   }, [sliderData])

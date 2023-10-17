@@ -9,7 +9,7 @@ import React, {
 // types
 import { SlidderCategory } from "../config/sankey";
 // actions
-import { fetchSlidderMapping } from "../actions/slidderInfo";
+import { fetchSlidderMapping } from "../actions/slidder";
 
 export interface SlidderContextType {
   selectedSlider: SlidderCategory;
