@@ -197,7 +197,7 @@ const Settings = ({
       setHeight((prevHeight) => {
         const newHeight = prevHeight + deltaY; // Invert the deltaY here as well
         startY = e.clientY || e.touches[0].clientY;
-        if(newHeight >= -20){
+        if(newHeight >= -40){
           setIsExpanded(false)
           return 0
         };
