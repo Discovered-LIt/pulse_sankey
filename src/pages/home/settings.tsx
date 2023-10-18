@@ -287,7 +287,7 @@ const Settings = ({
           </div>
         ))}
         <div
-          className="hidden sm:flex bg-white text-black rounded-lg w-6 h-2 sticky bottom-0 justify-center items-center m-auto cursor-s-resize z-20"
+          className="hidden sm:flex bg-white text-black rounded-lg w-6 h-2 sticky bottom-0 justify-center items-center m-auto cursor-ns-resize z-20"
           onMouseDown={handleMouseDown}
           onTouchStart={handleMouseDown}
         >
