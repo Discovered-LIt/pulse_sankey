@@ -2,7 +2,11 @@ import React, { useEffect, useRef, useState, RefObject, useMemo } from "react";
 import * as d3 from 'd3';
 import cn from 'classnames';
 import { format } from 'date-fns';
+import isEqual from 'lodash-es/isEqual'
+// utils
 import { LIGHT_GREEN } from "../../config/sankey";
+// components
+import TimelineRangeSlider from "../../components/rangeSlider";
 
 export type LineChartData = {
   date: string,
@@ -11,11 +15,14 @@ export type LineChartData = {
 
 interface Props {
   data: LineChartData[];
+  timeLineData: LineChartData[];
   category: string;
   activeZoom?: string;
   isLoading?: boolean;
   parentRef?: RefObject<HTMLDivElement>;
   prefix?: string;
+  timelineFilter: { startDate: Date, endDate: Date };
+  onTimelineFilterChange: (startDate: Date, endDate: Date) => void;
   onZoomChange?: (type: ZoomType) => void;
 }
 
@@ -37,33 +44,46 @@ export const zoomsConfig: { label: ZoomType, val?: number}[] = [
   { label: ZoomType.ALL },
 ]
 
+type CreateGraphProps = {
+  width?: number;
+  height?: number;
+  margin?: {
+    top: number;
+    right: number;
+    bottom: number;
+    left: number;
+  };
+  pathOnly?: boolean;
+  ref: React.MutableRefObject<any>
+  data: LineChartData[]
+}
+
 const LineChart = ({
   data,
+  timeLineData,
   category,
   activeZoom = ZoomType.ALL,
   parentRef,
   prefix="",
   isLoading = false,
+  timelineFilter,
+  onTimelineFilterChange,
   onZoomChange
 }: Props) => {
   const lineChartRef = useRef(null);
+  const sublinePathChartRef = useRef(null);
   const [tooltip, setTooltip] = useState<{x: number, y: number, d: LineChartData}>()
 
-  data = useMemo(() => {
-    return data.sort((a, b) => {
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
-      return dateA.getTime() - dateB.getTime();
-    });
-  }, [data])
-
-  const createGraph = () => {
-    const svg = d3.select(lineChartRef.current);
+  const createGraph = ({
+    width=500,
+    height=300,
+    margin={ top: 20, right: 20, bottom: 30, left: 50 },
+    ref,
+    pathOnly=false,
+    data
+  }: CreateGraphProps) => {
+    const svg = d3.select(ref.current);
     svg.selectAll("*").remove();
-
-    const width = 500;
-    const height = 300;
-    const margin = { top: 20, right: 20, bottom: 30, left: 50 };
 
     const numTicks = 7; // Number of desired ticks
     const dataLength = data.length;
@@ -101,6 +121,17 @@ const LineChart = ({
       .attr("stroke", LIGHT_GREEN)
       .attr("stroke-width", 2)
       .attr("d", line);
+
+    // Add x-axis
+    svg
+      .append("g")
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(d3.axisBottom(x).tickValues(tickValues).tickFormat((d) => format(new Date(d), !pathOnly ? "'Q'Q yy" : "yyyy")))
+
+    svg.selectAll(".domain").remove();
+    svg.selectAll(".tick line").remove();
+
+    if(pathOnly) return;
 
     const handleMouseOver = (e: MouseEvent, d: LineChartData) => {
       let x = e.pageX;
@@ -155,12 +186,6 @@ const LineChart = ({
       .on('mouseover', handleMouseOver)
       .on('mouseout', handleMouseOut)
 
-    // Add x-axis
-    svg
-      .append("g")
-      .attr("transform", `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x).tickValues(tickValues).tickFormat((d) => format(new Date(d), "'Q'Q yy")))
-
     // Add y-axis
     svg
       .append("g")
@@ -181,7 +206,15 @@ const LineChart = ({
 
   useEffect(() => {
     if(!data?.length) return;
-    createGraph()
+    createGraph({ ref: lineChartRef, data })
+    createGraph({
+      ref: sublinePathChartRef,
+      pathOnly: true,
+      width: 500,
+      height: 60,
+      margin: { top: 10, right: 10, bottom: 10, left: 20},
+      data: timeLineData
+    })
   }, [data, category])
 
   if(isLoading) return <p className="text-center">Loading....</p>
@@ -210,6 +243,14 @@ const LineChart = ({
         :
           <>
             <svg ref={lineChartRef} width={500} height={300} />
+            <TimelineRangeSlider
+              onChange={onTimelineFilterChange}
+              dateRange={timelineFilter}
+            >
+              <div className="h-[80px]">
+                <svg ref={sublinePathChartRef} width={500} height={80} />
+              </div>
+            </TimelineRangeSlider>
             {tooltip && <div
               className="bg-zinc-200 text-black px-4 py-2 rounded absolute text-[12px]"
               style={{ left: `${tooltip?.x}px`, top: `${tooltip?.y}px` }}

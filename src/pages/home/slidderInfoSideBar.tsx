@@ -1,11 +1,11 @@
-import React, { useRef, useState, useMemo } from "react";
+import React, { useRef, useState, useMemo, useEffect } from "react";
 import axios from "axios";
 import { format, subMonths } from 'date-fns';
 import cn from 'classnames';
 import { useQuery } from '@tanstack/react-query';
 // component
 import SideBar from "../../components/sideBar";
-import LineChart, { LineChartData, ZoomType, zoomsConfig } from "../../components/charts/lineChart";
+import LineChart, { LineChartData, ZoomType, zoomsConfig } from "../../components/charts/line";
 // hooks
 import useOnOutsideClick from "../../hooks/useOnClickOutside";
 import { useSliderContext } from "../../context/SlidderContext";
@@ -31,6 +31,7 @@ const SliderInfoSideBar = ({
   const [activeTab, setActiveTab] = useState(0)
   const [activeZoom, setActiveZoom] = useState(ZoomType.ALL)
   const { selectedSlider } = useSliderContext()
+  const [timelineFilter, setTimeLineFilter] = useState<{ startDate: Date, endDate: Date}>()
 
   useOnOutsideClick(sideBarRef.current, () => {
     if(!showSidebar) return;
@@ -51,20 +52,38 @@ const SliderInfoSideBar = ({
     if(!chartData?.length) return [];
     if(activeZoom !== ZoomType.ALL) {
       const months = zoomsConfig.find(({ label }) => label === activeZoom)?.val
-      return chartData.filter(({ date }) => new Date(date) >= subMonths(new Date(), months))
+      return chartData.filter(({ date }) => new Date(date) >= subMonths(new Date(), months)).sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateA.getTime() - dateB.getTime();
+      })
     }
     return chartData;
   }, [activeZoom, chartData])
 
+  useEffect(() => {
+    if(!filteredChartData.length) return;
+    setTimeLineFilter({
+      startDate: new Date(filteredChartData[0].date),
+      endDate: new Date(filteredChartData[filteredChartData.length - 1].date),
+    })
+  }, [filteredChartData])
+
+  const timeLineFilteredData = useMemo(() => {
+    if(!timelineFilter?.startDate) return filteredChartData;
+    return filteredChartData.filter(({ date }) => 
+      new Date(date) >= timelineFilter?.startDate && 
+      new Date(date) <= timelineFilter?.endDate);
+  }, [filteredChartData, timelineFilter])
+
   const stats = useMemo((): [string, string, number, string, boolean][] => {
-    if(!filteredChartData?.length || !data) return [];
-    const latest = filteredChartData[filteredChartData.length - 1]
-    const sortByValue = [...filteredChartData].sort((a, b) => a.value - b.value)
-    const max = sortByValue[sortByValue.length - 1]
-    const min = sortByValue[0]
+    if(!timeLineFilteredData?.length || !data) return [];
+    const latest = timeLineFilteredData[timeLineFilteredData.length - 1]
+    const max = timeLineFilteredData[timeLineFilteredData.length - 1]
+    const min = timeLineFilteredData[0]
     const prefix = SlidderSettings[selectedSlider]?.prefix || '';
 
-    const firstVal = filteredChartData[0].value;
+    const firstVal = timeLineFilteredData[0].value;
     let changeValue = latest.value - firstVal;
     if(prefix !== '%') {
       changeValue = (changeValue / Math.abs(firstVal)) * 100
@@ -83,7 +102,7 @@ const SliderInfoSideBar = ({
       ['maximum', format(new Date(max.date), "'Q'Q yyyy"), max.value, prefix, true],
       ['minimum', format(new Date(min.date), "'Q'Q yyyy"), min.value, prefix, true],
     ]
-  }, [filteredChartData])
+  }, [timeLineFilteredData])
 
   const Button = ({ text, active=false }: { text: string, active?: boolean }) => (
     <button className={cn(
@@ -102,6 +121,11 @@ const SliderInfoSideBar = ({
   const onZoomChange = (zoom: ZoomType) => {
     setActiveZoom(zoom)
   }
+
+  const timeLineDates = {
+    startDate: new Date(filteredChartData?.[0]?.date),
+    endDate: new Date(filteredChartData[filteredChartData.length - 1]?.date),
+  }
   
   return(
     <SideBar open={showSidebar}>
@@ -114,12 +138,15 @@ const SliderInfoSideBar = ({
         }
         <div className="p-6">
           <LineChart
-            data={filteredChartData}
+            data={timeLineFilteredData}
+            timeLineData={filteredChartData}
             category={data?.category}
             activeZoom={activeZoom}
             parentRef={sideBarRef}
             isLoading={isLoading}
             prefix={SlidderSettings[selectedSlider]?.prefix}
+            timelineFilter={timeLineDates}
+            onTimelineFilterChange={(startDate, endDate) => setTimeLineFilter({ startDate, endDate })}
             onZoomChange={onZoomChange}
           />
           <div className="flex flex-wrap uppercase mt-4 justify-between px-2 py-2 md:px-6 md:py-4 bg-[#2d2d2e] rounded-md">
