@@ -52,7 +52,6 @@ const TimelineRangeSlider = ({ children, dateRange, onChange }: TimelineRangeSli
 
   const handleDragEnd = () => {
     if(!dateRange?.endDate || !dateRange?.startDate) return;
-    console.log('leftPosition', leftPosition, rightPosition)
     const totalMilliseconds = dateRange.endDate.getTime() - dateRange.startDate.getTime();
     const startDate = new Date(dateRange.startDate.getTime() + (totalMilliseconds * (leftPosition / 100)));
     const endDate = new Date(dateRange.startDate.getTime() + (totalMilliseconds * (rightPosition / 100)));

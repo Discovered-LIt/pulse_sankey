@@ -61,7 +61,7 @@ const Home = () => {
       }),
       links: sankeyLinks.map((link) => {
         const [source, target, fn] = link;
-        const value = Math.abs(fn?.(sliderData))
+        const value = fn?.(sliderData)
         return { source, target, value, displayValue: fn?.(sliderData) }
       })
     }
@@ -87,7 +87,7 @@ const Home = () => {
   }, [selectedSlider])
 
   return (
-    <div className="bg-[#1d1f23] text-white h-screen w-full block overflow-scroll">
+    <div className="bg-[#1d1f23] text-white h-screen w-full block overflow-y-scroll overflow-x-hidden">
       <Settings
         onChange={onSliderChange}
         defaultSliderData={defaultSliderData}
@@ -98,7 +98,7 @@ const Home = () => {
         setPeRatio={setPeRatio}
         onSliderInfoClick={onSliderInfoClick}
       />
-      <div className="sm:w-full sm:h-[80vh] sm:flex sm:items-center mt-[70px]">
+      <div className="md:mt-[70px] z-0">
         <SankeyChart data={sankeyData} />
       </div>
       <SliderInfoSideBar

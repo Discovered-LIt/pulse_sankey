@@ -74,8 +74,9 @@ const Sankey = ({ data }: Sankey) => {
       }
     }
     
+    const nodeLink = node.sourceLinks.find((link: any) => link.source.id === node.id)
     const value = 
-      node.sourceLinks.find((link: any) => link.source.id === node.id)?.displayValue ||
+      nodeLink?.displayValue ||
       node.value || 0;
     const transform = isMobile ? `rotate(90 ${transformOriginX} ${transformOriginY})` : ''
     if(value === 0) return null;
@@ -83,10 +84,10 @@ const Sankey = ({ data }: Sankey) => {
     return (
       <g key={node.index}>
         <rect
-          height={(node.y1 - node.y0) || 0}
-          width={sankeyGenerator.nodeWidth() || 0}
+          height={node.y1 - node.y0 || Math.abs(nodeLink?.width)}
+          width={sankeyGenerator.nodeWidth()}
           x={node.x0 || 0}
-          y={node.y0 || 0}
+          y={node.y0 + (value < 0 ? nodeLink?.width : 0) || 0}
           stroke='none'
           fill={node?.color?.dark || nodeFill || GREY}
           fillOpacity={0.8}
@@ -138,7 +139,7 @@ const Sankey = ({ data }: Sankey) => {
           stroke={color?.lite || linkFill}
           fill="none"
           strokeOpacity={1}
-          strokeWidth={link.width}
+          strokeWidth={Math.abs(link.width)}
         />
         {showLabel && <text>
           <textPath

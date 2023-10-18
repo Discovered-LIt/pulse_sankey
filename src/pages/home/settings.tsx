@@ -33,6 +33,28 @@ type InfoDivProps = {
   onExpandClick: () => void;
 }
 
+const SaveBtn = ({
+  isExpanded,
+  onExpandClick,
+  className
+}: any) => (
+  <div className={cn('flex', className)}>
+    <button
+      className="bg-transparent text-white py-1 px-2 text-xs border border-gray-500 rounded"
+      onClick={() => alert("Coming soon!")}
+    >
+      SAVE
+    </button>
+    <ChevronUpIcon className={
+      cn(
+        ["h-6 w-6 transition-transform duration-500 z-20"],
+        { 'rotate-180': !isExpanded }
+      )}
+      onClick={onExpandClick}
+    />
+  </div>
+)
+
 const InfoDiv = ({
   isExpanded,
   eps,
@@ -79,29 +101,14 @@ const InfoDiv = ({
             />
           </div>
         </div>
-        <button
-          className="bg-transparent text-white py-1 px-2 text-xs border border-gray-500 rounded md:hidden"
-          onClick={() => alert("Coming soon!")}
-        >
-          SAVE
-        </button>
+        <SaveBtn isExpanded={isExpanded} onExpandClick={onExpandClick} className="md:hidden gap-6" />
       </div>
     </div>
-    <div className="md:flex gap-10 hidden cursor-pointer items-center">
-      <button
-        className="bg-transparent text-white py-1 px-2 text-xs border border-gray-500 rounded"
-        onClick={() => alert("Coming soon!")}
-      >
-        SAVE
-      </button>
-      <ChevronUpIcon className={
-        cn(
-          ["h-6 w-6 transition-transform duration-500"],
-          { 'rotate-180': !isExpanded }
-        )}
-        onClick={onExpandClick}
-      />
-    </div>
+    <SaveBtn
+      isExpanded={isExpanded}
+      onExpandClick={onExpandClick}
+      className="md:flex gap-10 hidden cursor-pointer items-center"
+    />
   </div>
 )
 
@@ -225,65 +232,65 @@ const Settings = ({
   }
 
   return(
-      <div className="w-full bg-black fixed left-0 right-0 overflow-auto">
-        <InfoDiv
-          isExpanded={isExpanded}
-          eps={eps}
-          priceTarget={priceTarget}
-          setPeRatio={setPeRatio}
-          peRatio={peRatio}
-          onExpandClick={onExpandClick}
-        />
-        <div
-          id="slider-container"
-          className={cn([
-            "overflow-auto block fixed w-full top-30 bg-black",
-            {
-              'transition-height duration-500': !isDragging
-            }
-          ])}
-          style={{ height: `${Math.abs(height || 10)}px` }}
-        >
-          {Object.keys(slidderGroups).map((group: SlidderGroupType, idx) => (
-            <div key={`${group}-${idx}`}>
-              <div className="bg-[#1d1f23] py-2 px-8 sticky top-0 z-10 w-full uppercase text-[12px]">
-                {group}
-              </div>
-              <div className="grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-6">
-                {
-                  slidderGroups[group].map((type) => (
-                    <div
-                      className="w-[300px] mb-2 m-auto"
-                      key={`${type}-${group}-${idx}`}
-                    >
-                      <Slider
-                        id={type}
-                        label={type}
-                        description={getDescription(type)}
-                        min={SlidderSettings[type].min}
-                        max={SlidderSettings[type].max}
-                        step={SlidderSettings[type].step}
-                        prefix={SlidderSettings[type].prefix}
-                        value={sliderData[type] || 0}
-                        type={dynamicSettings?.[type]?.newSliderType || SlidderSettings[type].type}
-                        onChange={(val: number) => onChange(type, val)}
-                        onInfoClick={onSliderInfoClick}
-                      />
-                    </div>
-                  ))
-                }
-              </div>
+    <div className="w-full bg-black overflow-auto">
+      <InfoDiv
+        isExpanded={isExpanded}
+        eps={eps}
+        priceTarget={priceTarget}
+        setPeRatio={setPeRatio}
+        peRatio={peRatio}
+        onExpandClick={onExpandClick}
+      />
+      <div
+        id="slider-container"
+        className={cn([
+          "overflow-auto block w-full top-30 bg-black",
+          {
+            'transition-height duration-500': !isDragging
+          }
+        ])}
+        style={{ height: `${Math.abs(height || 10)}px` }}
+      >
+        {Object.keys(slidderGroups).map((group: SlidderGroupType, idx) => (
+          <div key={`${group}-${idx}`}>
+            <div className="bg-[#1d1f23] py-2 px-8 sticky top-0 z-10 w-full uppercase text-[12px]">
+              {group}
             </div>
-          ))}
-          <div
-            className="bg-white text-black rounded-lg w-6 h-2 sticky bottom-0 flex justify-center items-center m-auto cursor-s-resize z-20"
-            onMouseDown={handleMouseDown}
-            onTouchStart={handleMouseDown}
-          >
-            <div className="w-[15px] h-[2px] bg-black"/>
+            <div className="grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-6">
+              {
+                slidderGroups[group].map((type) => (
+                  <div
+                    className="w-[300px] mb-2 m-auto"
+                    key={`${type}-${group}-${idx}`}
+                  >
+                    <Slider
+                      id={type}
+                      label={type}
+                      description={getDescription(type)}
+                      min={SlidderSettings[type].min}
+                      max={SlidderSettings[type].max}
+                      step={SlidderSettings[type].step}
+                      prefix={SlidderSettings[type].prefix}
+                      value={sliderData[type] || 0}
+                      type={dynamicSettings?.[type]?.newSliderType || SlidderSettings[type].type}
+                      onChange={(val: number) => onChange(type, val)}
+                      onInfoClick={onSliderInfoClick}
+                    />
+                  </div>
+                ))
+              }
+            </div>
           </div>
+        ))}
+        <div
+          className="hidden sm:flex bg-white text-black rounded-lg w-6 h-2 sticky bottom-0 justify-center items-center m-auto cursor-s-resize"
+          onMouseDown={handleMouseDown}
+          onTouchStart={handleMouseDown}
+        >
+          <div className="w-[15px] h-[2px] bg-black"/>
         </div>
       </div>
+    </div>
   )
 }
 

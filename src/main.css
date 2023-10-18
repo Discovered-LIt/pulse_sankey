@@ -10,21 +10,21 @@
 
 @media (max-width: 680px) {
   .mobile-view {
-    margin-top: 290px;
+    margin-top: 220px;
     margin-bottom: 30px !important;
   }
 }
 
 @media (max-width: 600px) {
   .mobile-view {
-    margin-top: 370px;
+    margin-top: 300px;
     margin-bottom: 30px !important;
   }
 }
 
 @media (max-width: 440px) {
   .mobile-view {
-    margin-top: 420px;
+    margin-top: 330px;
     margin-bottom: 30px !important;
   }
 }

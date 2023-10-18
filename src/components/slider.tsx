@@ -55,7 +55,7 @@ const Slider = ({
             <div className="bold text-[12px] uppercase break-all max-w-[200px]">
               {label}
             </div>
-            <Squares2X2Icon className="h-4 w-4 ml-2" onClick={() => onInfoClick?.(id)} />
+            <Squares2X2Icon className="h-4 w-4 ml-2 z-10" onClick={() => onInfoClick?.(id)} />
           </div>
           <InputBubble value={tempVal} prefix={prefix} />
         </div>
