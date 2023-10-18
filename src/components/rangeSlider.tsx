@@ -24,7 +24,7 @@ const TimelineRangeSlider = ({ children, dateRange, onChange }: TimelineRangeSli
 
   const handleLeftDrag = (e: any) => {
     const sliderRect = sliderRef.current.getBoundingClientRect();
-    const newPosition = ((e.clientX - sliderRect.left) / sliderRect.width) * 100;
+    const newPosition = (((e?.clientX || e.touches[0].clientX) - sliderRect.left) / sliderRect.width) * 100;
     if (newPosition >= 0 && newPosition < rightPosition - 10) {
       setLeftPosition(newPosition);
     }
@@ -32,7 +32,7 @@ const TimelineRangeSlider = ({ children, dateRange, onChange }: TimelineRangeSli
 
   const handleRightDrag = (e: any) => {
     const sliderRect = sliderRef.current.getBoundingClientRect();
-    const newPosition = ((e.clientX - sliderRect.left) / sliderRect.width) * 100;
+    const newPosition = (((e?.clientX || e.touches[0].clientX) - sliderRect.left) / sliderRect.width) * 100;
     if (newPosition <= 100 && newPosition > leftPosition + 10) {
       setRightPosition(newPosition);
     }
@@ -45,8 +45,12 @@ const TimelineRangeSlider = ({ children, dateRange, onChange }: TimelineRangeSli
   const mouseHandler = (e: any, fn: any) => {
     e.preventDefault();
     document.addEventListener('mousemove', fn);
+    document.addEventListener('touchmove', fn);
     document.addEventListener('mouseup', () => {
       document.removeEventListener('mousemove', fn);
+    });
+    document.addEventListener('touchend', () => {
+      document.removeEventListener('touchmove', fn);
     });
   }
 
