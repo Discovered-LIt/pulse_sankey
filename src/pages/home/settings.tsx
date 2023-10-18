@@ -204,11 +204,15 @@ const Settings = ({
       setHeight((prevHeight) => {
         const newHeight = prevHeight + deltaY; // Invert the deltaY here as well
         startY = e.clientY || e.touches[0].clientY;
+        const scrollHeight = document.getElementById('slider-container').scrollHeight
         if(newHeight >= -20){
           setIsExpanded(false)
           return 0
-        };
-        return newHeight;
+        } else if(Math.abs(newHeight) >= scrollHeight) {
+          return -scrollHeight;
+        } else {
+          return newHeight;
+        }
       });
     };
 
