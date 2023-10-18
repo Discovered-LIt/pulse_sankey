@@ -10,7 +10,7 @@ interface SideBar {
 const SideBar = ({ children, open, ref }: SideBar) => {
   return(
     <div ref={ref} className={cn([
-      "fixed top-[64px] right-0 bottom-0 bg-black",
+      "fixed top-[58px] right-0 bottom-0 bg-black",
       "transition-width duration-500",
       open ? "w-full sm:w-[600px] px-2" : "w-0"
     ])}>
