@@ -225,7 +225,7 @@ const Settings = ({
   }
 
   return(
-      <div className="w-full bg-black fixed top-[65px] left-0 right-0 overflow-auto">
+      <div className="w-full bg-black fixed left-0 right-0 overflow-auto">
         <InfoDiv
           isExpanded={isExpanded}
           eps={eps}

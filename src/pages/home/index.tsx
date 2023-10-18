@@ -87,7 +87,7 @@ const Home = () => {
   }, [selectedSlider])
 
   return (
-    <div className="bg-[#1d1f23] text-white h-screen w-full block pt-[65px] overflow-scroll">
+    <div className="bg-[#1d1f23] text-white h-screen w-full block overflow-scroll">
       <Settings
         onChange={onSliderChange}
         defaultSliderData={defaultSliderData}
