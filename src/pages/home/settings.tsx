@@ -257,7 +257,7 @@ const Settings = ({
       >
         {Object.keys(slidderGroups).map((group: SlidderGroupType, idx) => (
           <div key={`${group}-${idx}`}>
-            <div className="bg-[#1d1f23] py-2 px-8 sticky top-0 z-10 w-full uppercase text-[12px]">
+            <div className="bg-[#1d1f23] py-2 px-8 sticky top-0 z-20 w-full uppercase text-[12px]">
               {group}
             </div>
             <div className="grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-6">
@@ -287,7 +287,7 @@ const Settings = ({
           </div>
         ))}
         <div
-          className="hidden sm:flex bg-white text-black rounded-lg w-6 h-2 sticky bottom-0 justify-center items-center m-auto cursor-s-resize z-10"
+          className="hidden sm:flex bg-white text-black rounded-lg w-6 h-2 sticky bottom-0 justify-center items-center m-auto cursor-s-resize z-20"
           onMouseDown={handleMouseDown}
           onTouchStart={handleMouseDown}
         >
