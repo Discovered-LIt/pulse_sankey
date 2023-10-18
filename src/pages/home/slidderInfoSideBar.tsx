@@ -132,11 +132,11 @@ const SliderInfoSideBar = ({
       <div className="bg-[#232323] h-full overflow-auto" ref={sideBarRef}>
         {showSidebar && 
           <XMarkIcon
-            className="sm:hidden h-5 w-5 absolute top-[5px] right-[12px] pointer"
+            className="h-5 w-5 absolute top-[10px] right-[12px] pointer"
             onClick={closeSideBar}
           />
         }
-        <div className="p-6">
+        <div className="p-6 mt-2">
           <LineChart
             data={timeLineFilteredData}
             timeLineData={filteredChartData}
