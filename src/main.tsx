@@ -7,7 +7,6 @@ import Header from "./components/header";
 import { Compose } from "./context/Compose";
 import SliderContextProvider from "./context/SlidderContext";
 
-
 const Main = () => {
   const providers = [SliderContextProvider]
   // Create a client
@@ -16,7 +15,7 @@ const Main = () => {
     <>
       <QueryClientProvider client={queryClient}>
         <Compose providers={providers}>
-          <Header />
+          {/* <Header /> */}
           <Router />
         </Compose>
       </QueryClientProvider>
