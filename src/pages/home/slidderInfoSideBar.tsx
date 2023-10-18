@@ -153,10 +153,10 @@ const SliderInfoSideBar = ({
             {
               stats.map((stat, idx) => (
                 <div key={idx}>
-                  <h3 className="text-[12px] md:text-[16px]">{stat[0]}</h3>
-                  <p className="text-[12px] text-gray-400">{stat[1]}</p>
+                  <h3 className="text-[10px] sm:text-[16px]">{stat[0]}</h3>
+                  <p className="text-[10px] text-gray-400">{stat[1]}</p>
                   <h1 className={cn([
-                    "font-bold md:text-[22px]",
+                    "font-bold text-[12px] sm:text-[22px]",
                     stat[4] ? 'text-green-500' : 'text-red-500'
                   ])}>
                     {`${stat[2]}${stat[3]}`}
