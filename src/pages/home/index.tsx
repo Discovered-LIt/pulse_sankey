@@ -2,22 +2,29 @@ import React, { useState, useMemo } from "react";
 // components
 import SankeyChart from "../../components/charts/sankey";
 import Settings from "./settings";
-import SliderInfoSideBar from "./slidderInfoSideBar";
+import SliderInfoSideBar from "./sliderInfoSideBar";
 import Modal from "../../components/modal";
 import TextField from "../../components/textField";
 // types
-import { SlidderCategory, SankeyCategory, SlidderSettings } from "../../config/sankey";
+import {
+  SliderCategory,
+  SankeyCategory,
+  SliderSettings,
+} from "../../config/sankey";
 // data
-import { sliderDefaultData, slidderCategoryInfoMaping } from "../../config/sankey";
+import {
+  sliderDefaultData,
+  SliderCategoryInfoMaping,
+} from "../../config/sankey";
 // utils
 import cal from "../../utils/sankey";
 import { getSankeyDisplayColor } from "../../utils/global";
 // context
-import { useSliderContext } from "../../context/SlidderContext";
+import { useSliderContext } from "../../context/SliderContext";
 // actions
-import { saveSlidderValues, SliderSaveBodyProps } from "../../actions/slidder";
+import { saveSliderValues, SliderSaveBodyProps } from "../../actions/slider";
 
-export type SliderData = {[key in SlidderCategory]?: number}
+export type SliderData = { [key in SliderCategory]?: number };
 
 export type SankeyData = {
   nodes: { id: string }[];
@@ -30,94 +37,147 @@ const Home = () => {
   const [peRatio, setPeRatio] = useState<number>(70);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [userEmail, setUserEmail] = useState("");
-  const { selectedSlider, sliderCategoryData, setSelectedSlider } = useSliderContext();
+  const { selectedSlider, sliderCategoryData, setSelectedSlider } =
+    useSliderContext();
 
   const sankeyData = useMemo((): SankeyData => {
-    const netProfit = cal.calculateNetProfit(sliderData)
+    const netProfit = cal.calculateNetProfit(sliderData);
     const sankeyLinks: [any, SankeyCategory, (data: SliderData) => number][] = [
-      [SankeyCategory.AutoRevenue, SankeyCategory.TotalRevenue, cal.calculateAutoRevenue],
-      [SlidderSettings[SlidderCategory.EnergyGenerationAndStorageRevenue].label, SankeyCategory.TotalRevenue, cal.getEnergyGenerationAndStorageRevenue],
-      [SlidderSettings[SlidderCategory.ServicesAndOtherRevenue].label, SankeyCategory.TotalRevenue, cal.getServicesAndOtherRevenue],
-      [SankeyCategory.TotalRevenue, SankeyCategory.GrossProfite, cal.calculateGrossProfit],
-      [SankeyCategory.GrossProfite, SankeyCategory.OperationProfit, cal.calculateOperationProfit],
-      [SankeyCategory.GrossProfite, SankeyCategory.OperationExpenses, cal.calculateOperationExpenses],
       [
-        SankeyCategory.OperationProfit, 
-        netProfit >= 0 ? SankeyCategory.NetProfite : SankeyCategory.NetLoss, 
-        cal.calculateNetProfit
+        SankeyCategory.AutoRevenue,
+        SankeyCategory.TotalRevenue,
+        cal.calculateAutoRevenue,
+      ],
+      [
+        SliderSettings[SliderCategory.EnergyGenerationAndStorageRevenue].label,
+        SankeyCategory.TotalRevenue,
+        cal.getEnergyGenerationAndStorageRevenue,
+      ],
+      [
+        SliderSettings[SliderCategory.ServicesAndOtherRevenue].label,
+        SankeyCategory.TotalRevenue,
+        cal.getServicesAndOtherRevenue,
+      ],
+      [
+        SankeyCategory.TotalRevenue,
+        SankeyCategory.GrossProfite,
+        cal.calculateGrossProfit,
+      ],
+      [
+        SankeyCategory.GrossProfite,
+        SankeyCategory.OperationProfit,
+        cal.calculateOperationProfit,
+      ],
+      [
+        SankeyCategory.GrossProfite,
+        SankeyCategory.OperationExpenses,
+        cal.calculateOperationExpenses,
+      ],
+      [
+        SankeyCategory.OperationProfit,
+        netProfit >= 0 ? SankeyCategory.NetProfite : SankeyCategory.NetLoss,
+        cal.calculateNetProfit,
       ],
       [SankeyCategory.OperationProfit, SankeyCategory.Tax, cal.calculateTax],
       [SankeyCategory.Others, SankeyCategory.NetProfite, cal.calculateOthers],
-      [SankeyCategory.OperationExpenses, SankeyCategory["R&D"], cal.calculateRAndD],
-      [SankeyCategory.OperationExpenses, SankeyCategory["SG&A"], cal.calculateSGA],
-      [SankeyCategory.OperationExpenses, SankeyCategory.OtherOpex, cal.calculateOtherOpex],
-      [SankeyCategory.TotalRevenue, SankeyCategory.CostOfRevenue, cal.calculateCostOfRevenue],
+      [
+        SankeyCategory.OperationExpenses,
+        SankeyCategory["R&D"],
+        cal.calculateRAndD,
+      ],
+      [
+        SankeyCategory.OperationExpenses,
+        SankeyCategory["SG&A"],
+        cal.calculateSGA,
+      ],
+      [
+        SankeyCategory.OperationExpenses,
+        SankeyCategory.OtherOpex,
+        cal.calculateOtherOpex,
+      ],
+      [
+        SankeyCategory.TotalRevenue,
+        SankeyCategory.CostOfRevenue,
+        cal.calculateCostOfRevenue,
+      ],
     ];
-    
+
     // to show dynamic color for others sankey line
-    const othersLineColor = getSankeyDisplayColor(cal.calculateOthers(sliderData), SankeyCategory.Others)
+    const othersLineColor = getSankeyDisplayColor(
+      cal.calculateOthers(sliderData),
+      SankeyCategory.Others
+    );
 
     return {
-      nodes: [...new Set(sankeyLinks.map((ar) => [ar[1], ar[0]]).flat())].map(key => {
-        return { 
-          id: key,
-          heading: [SankeyCategory.AutoRevenue, SankeyCategory.NetProfite].includes(key),
-          ...(key === SankeyCategory.Others ? { color: othersLineColor } : {})
+      nodes: [...new Set(sankeyLinks.map((ar) => [ar[1], ar[0]]).flat())].map(
+        (key) => {
+          return {
+            id: key,
+            heading: [
+              SankeyCategory.AutoRevenue,
+              SankeyCategory.NetProfite,
+            ].includes(key),
+            ...(key === SankeyCategory.Others
+              ? { color: othersLineColor }
+              : {}),
+          };
         }
-      }),
+      ),
       links: sankeyLinks.map((link) => {
         const [source, target, fn] = link;
-        const value = fn?.(sliderData)
-        return { source, target, value, displayValue: fn?.(sliderData) }
-      })
-    }
-  }, [sliderData])
+        const value = fn?.(sliderData);
+        return { source, target, value, displayValue: fn?.(sliderData) };
+      }),
+    };
+  }, [sliderData]);
 
   const eps = useMemo(() => {
-    return cal.calEPS(sliderData)
-  }, [sliderData])
-  
-  const onSliderChange = (type: SlidderCategory, val: number) => {
-    setSlider((prevState) => {
-      return {...prevState, ...{[type]: val}}
-    })
-  }
+    return cal.calEPS(sliderData);
+  }, [sliderData]);
 
-  const onSliderInfoClick = (type: SlidderCategory) => {
-    setSelectedSlider(type)
-  }
+  const onSliderChange = (type: SliderCategory, val: number) => {
+    setSlider((prevState) => {
+      return { ...prevState, ...{ [type]: val } };
+    });
+  };
+
+  const onSliderInfoClick = (type: SliderCategory) => {
+    setSelectedSlider(type);
+  };
 
   const onSaveHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
     const data = {
       chartDetails: {
         userEmail,
         peRatio,
         eps,
         company: "tesla",
-        currency: "USD", 
+        currency: "USD",
         date: Date.now(),
         unit: "BN",
         type: "sankey",
         reportingYear: "2023",
         reportingQuarter: "q3",
       },
-      chartData: sliderData
+      chartData: sliderData,
     } as SliderSaveBodyProps;
 
     try {
-      await saveSlidderValues({ data })
+      await saveSliderValues({ data });
     } catch (err) {
-      alert(`Something went wrong while saving data: ${err}`)
+      alert(`Something went wrong while saving data: ${err}`);
     } finally {
-      setShowSaveModal(false)
+      setShowSaveModal(false);
     }
-  }
+  };
 
   const sideBarData = useMemo(() => {
-    if(!selectedSlider) return undefined
-    return sliderCategoryData[slidderCategoryInfoMaping[selectedSlider].category]
-  }, [selectedSlider])
+    if (!selectedSlider) return undefined;
+    return sliderCategoryData[
+      SliderCategoryInfoMaping[selectedSlider].category
+    ];
+  }, [selectedSlider]);
 
   return (
     <div className="bg-[#1d1f23] text-white h-screen w-full block overflow-y-scroll overflow-x-hidden">
@@ -139,7 +199,7 @@ const Home = () => {
         showSidebar={!!selectedSlider}
         data={sideBarData}
         closeSideBar={() => {
-          setSelectedSlider(null)
+          setSelectedSlider(null);
         }}
       />
       <Modal
@@ -167,7 +227,7 @@ const Home = () => {
         </form>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
 export default Home;

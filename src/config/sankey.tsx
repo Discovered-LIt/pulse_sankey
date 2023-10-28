@@ -18,10 +18,10 @@ export enum SankeyCategory {
   Others = "Others",
   OtherOpex = "Other Opex",
   "R&D" = "R&D",
-  "SG&A" = "SG&A"
+  "SG&A" = "SG&A",
 }
 
-export enum SlidderCategory {
+export enum SliderCategory {
   AutoSalesRevenue = "autoSalesRevenue",
   AutoRegCreditsRevenue = "autoRegCreditsRevenue",
   AutomotiveLeasingRevenue = "automotiveLeasingRevenue",
@@ -34,91 +34,167 @@ export enum SlidderCategory {
   SGA = "sga",
   OtherOperatingExpenses = "otherOperatingExpenses",
   InterestAndOther = "interestAndOtherIncome",
-  Taxes = "taxes"
+  Taxes = "taxes",
 }
 
-export enum SlidderGroupType {
+export enum SliderGroupType {
   Revenue = "Revenue",
   CostOfRevenue = "Cost of revenue",
-  OtherExpense = "Other expense"
+  OtherExpense = "Other expense",
 }
 
 export enum Prefix {
-  Percentage = '%',
-  Currency = 'BN'
+  Percentage = "%",
+  Currency = "BN",
 }
 
 export enum SliderType {
-  Negative = '#b81818',
+  Negative = "#b81818",
   Positive = "#188c1a",
-  Basic = '#545955'
+  Basic = "#545955",
 }
 
-type SlidderSettings = { [key in SlidderCategory]: {
-  min: number,
-  max: number,
-  prefix: Prefix,
-  step: number,
-  defaultValue: number,
-  description?: string,
-  type: SliderType,
-  label: string
-}}
+type SliderSettings = {
+  [key in SliderCategory]: {
+    min: number;
+    max: number;
+    prefix: Prefix;
+    step: number;
+    defaultValue: number;
+    description?: string;
+    type: SliderType;
+    label: string;
+  };
+};
 
 // colors
-export const GREY = '#545955'
-export const LIGHT_GREY = '#a6a6a6'
-export const GREEN = '#188c1a'
-export const LIGHT_GREEN = '#18b81b'
-export const RED = '#b81818'
-export const LIGHT_RED = '#e63535'
+export const GREY = "#545955";
+export const LIGHT_GREY = "#a6a6a6";
+export const GREEN = "#188c1a";
+export const LIGHT_GREEN = "#18b81b";
+export const RED = "#b81818";
+export const LIGHT_RED = "#e63535";
 
-export const sankeySettings: { [key in SankeyCategory]: { nodeFill: string, linkFill: string, showVal: boolean } } = {
-  [SankeyCategory.AutoRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },
-  [SankeyCategory.AutoSalesRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },
-  [SankeyCategory.AutoLeasingRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },
-  [SankeyCategory.AutoRegCredits]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: true },
-  [SankeyCategory.TotalRevenue]: { nodeFill: GREY, linkFill: LIGHT_GREY, showVal: false },
-  [SankeyCategory.GrossProfite]: { nodeFill: GREEN, linkFill: LIGHT_GREEN, showVal: false },
-  [SankeyCategory.OperationProfit]: { nodeFill: GREEN, linkFill: LIGHT_GREEN, showVal: false },
-  [SankeyCategory.NetProfite]: { nodeFill: GREEN, linkFill: LIGHT_GREEN, showVal: true },
-  [SankeyCategory.NetLoss]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
-  [SankeyCategory.Others]: { nodeFill: GREEN, linkFill: LIGHT_GREEN, showVal: true },
+export const sankeySettings: {
+  [key in SankeyCategory]: {
+    nodeFill: string;
+    linkFill: string;
+    showVal: boolean;
+  };
+} = {
+  [SankeyCategory.AutoRevenue]: {
+    nodeFill: GREY,
+    linkFill: LIGHT_GREY,
+    showVal: true,
+  },
+  [SankeyCategory.AutoSalesRevenue]: {
+    nodeFill: GREY,
+    linkFill: LIGHT_GREY,
+    showVal: true,
+  },
+  [SankeyCategory.AutoLeasingRevenue]: {
+    nodeFill: GREY,
+    linkFill: LIGHT_GREY,
+    showVal: true,
+  },
+  [SankeyCategory.AutoRegCredits]: {
+    nodeFill: GREY,
+    linkFill: LIGHT_GREY,
+    showVal: true,
+  },
+  [SankeyCategory.TotalRevenue]: {
+    nodeFill: GREY,
+    linkFill: LIGHT_GREY,
+    showVal: false,
+  },
+  [SankeyCategory.GrossProfite]: {
+    nodeFill: GREEN,
+    linkFill: LIGHT_GREEN,
+    showVal: false,
+  },
+  [SankeyCategory.OperationProfit]: {
+    nodeFill: GREEN,
+    linkFill: LIGHT_GREEN,
+    showVal: false,
+  },
+  [SankeyCategory.NetProfite]: {
+    nodeFill: GREEN,
+    linkFill: LIGHT_GREEN,
+    showVal: true,
+  },
+  [SankeyCategory.NetLoss]: {
+    nodeFill: RED,
+    linkFill: LIGHT_RED,
+    showVal: false,
+  },
+  [SankeyCategory.Others]: {
+    nodeFill: GREEN,
+    linkFill: LIGHT_GREEN,
+    showVal: true,
+  },
 
-  [SankeyCategory.CostOfRevenue]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
-  [SankeyCategory.OperationExpenses]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
-  [SankeyCategory.AutoCosts]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
-  [SankeyCategory.EnergyCosts]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: false },
+  [SankeyCategory.CostOfRevenue]: {
+    nodeFill: RED,
+    linkFill: LIGHT_RED,
+    showVal: false,
+  },
+  [SankeyCategory.OperationExpenses]: {
+    nodeFill: RED,
+    linkFill: LIGHT_RED,
+    showVal: false,
+  },
+  [SankeyCategory.AutoCosts]: {
+    nodeFill: RED,
+    linkFill: LIGHT_RED,
+    showVal: false,
+  },
+  [SankeyCategory.EnergyCosts]: {
+    nodeFill: RED,
+    linkFill: LIGHT_RED,
+    showVal: false,
+  },
   [SankeyCategory.Tax]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
-  [SankeyCategory.OtherOpex]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
-  [SankeyCategory["R&D"]]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
-  [SankeyCategory["SG&A"]]: { nodeFill: RED, linkFill: LIGHT_RED, showVal: true },
-}
+  [SankeyCategory.OtherOpex]: {
+    nodeFill: RED,
+    linkFill: LIGHT_RED,
+    showVal: true,
+  },
+  [SankeyCategory["R&D"]]: {
+    nodeFill: RED,
+    linkFill: LIGHT_RED,
+    showVal: true,
+  },
+  [SankeyCategory["SG&A"]]: {
+    nodeFill: RED,
+    linkFill: LIGHT_RED,
+    showVal: true,
+  },
+};
 
-export const slidderGroups: {[key in SlidderGroupType]: SlidderCategory[]} = {
-  [SlidderGroupType.Revenue]: [
-    SlidderCategory.AutoSalesRevenue,
-    SlidderCategory.AutoRegCreditsRevenue,
-    SlidderCategory.AutomotiveLeasingRevenue,
-    SlidderCategory.EnergyGenerationAndStorageRevenue,
-    SlidderCategory.ServicesAndOtherRevenue
+export const SliderGroups: { [key in SliderGroupType]: SliderCategory[] } = {
+  [SliderGroupType.Revenue]: [
+    SliderCategory.AutoSalesRevenue,
+    SliderCategory.AutoRegCreditsRevenue,
+    SliderCategory.AutomotiveLeasingRevenue,
+    SliderCategory.EnergyGenerationAndStorageRevenue,
+    SliderCategory.ServicesAndOtherRevenue,
   ],
-  [SlidderGroupType.CostOfRevenue]: [
-    SlidderCategory.AutoRevenueMargin,
-    SlidderCategory.EnergyStorageMargin,
-    SlidderCategory.ServicesAndOtherMargin,
+  [SliderGroupType.CostOfRevenue]: [
+    SliderCategory.AutoRevenueMargin,
+    SliderCategory.EnergyStorageMargin,
+    SliderCategory.ServicesAndOtherMargin,
   ],
-  [SlidderGroupType.OtherExpense]: [
-    SlidderCategory.ResearchAndDevelopment,
-    SlidderCategory.SGA,
-    SlidderCategory.OtherOperatingExpenses,
-    SlidderCategory.InterestAndOther,
-    SlidderCategory.Taxes,
+  [SliderGroupType.OtherExpense]: [
+    SliderCategory.ResearchAndDevelopment,
+    SliderCategory.SGA,
+    SliderCategory.OtherOperatingExpenses,
+    SliderCategory.InterestAndOther,
+    SliderCategory.Taxes,
   ],
-}
+};
 
-export const SlidderSettings: SlidderSettings = {
-  [SlidderCategory.AutoSalesRevenue]: {
+export const SliderSettings: SliderSettings = {
+  [SliderCategory.AutoSalesRevenue]: {
     min: 0,
     max: 55,
     prefix: Prefix.Currency,
@@ -126,9 +202,9 @@ export const SlidderSettings: SlidderSettings = {
     defaultValue: 20.4,
     description: "less than Q2 auti revenue",
     type: SliderType.Positive,
-    label: "Auto sales revenue"
+    label: "Auto sales revenue",
   },
-  [SlidderCategory.AutoRegCreditsRevenue]: {
+  [SliderCategory.AutoRegCreditsRevenue]: {
     min: 0,
     max: 3,
     prefix: Prefix.Currency,
@@ -136,9 +212,9 @@ export const SlidderSettings: SlidderSettings = {
     defaultValue: 0.2,
     description: "more than analyst avg",
     type: SliderType.Positive,
-    label: "Auto reg credits revenue"
+    label: "Auto reg credits revenue",
   },
-  [SlidderCategory.AutomotiveLeasingRevenue]: {
+  [SliderCategory.AutomotiveLeasingRevenue]: {
     min: 0,
     max: 3,
     prefix: Prefix.Currency,
@@ -146,9 +222,9 @@ export const SlidderSettings: SlidderSettings = {
     defaultValue: 0.6,
     description: "more than yst avg",
     type: SliderType.Positive,
-    label: "Automotive leasing revenue"
+    label: "Automotive leasing revenue",
   },
-  [SlidderCategory.EnergyGenerationAndStorageRevenue]: {
+  [SliderCategory.EnergyGenerationAndStorageRevenue]: {
     min: 0,
     max: 3,
     prefix: Prefix.Currency,
@@ -156,9 +232,9 @@ export const SlidderSettings: SlidderSettings = {
     defaultValue: 1.5,
     description: "less than Q2 auti revenue",
     type: SliderType.Positive,
-    label: "Energy Revenue"
+    label: "Energy Revenue",
   },
-  [SlidderCategory.ServicesAndOtherRevenue]: {
+  [SliderCategory.ServicesAndOtherRevenue]: {
     min: 0,
     max: 3,
     prefix: Prefix.Currency,
@@ -166,10 +242,10 @@ export const SlidderSettings: SlidderSettings = {
     defaultValue: 2.15,
     description: "less than Q2 auti revenue",
     type: SliderType.Positive,
-    label: "Services and other Revenue"
+    label: "Services and other Revenue",
   },
 
-  [SlidderCategory.AutoRevenueMargin]: {
+  [SliderCategory.AutoRevenueMargin]: {
     min: 0,
     max: 100,
     prefix: Prefix.Percentage,
@@ -177,9 +253,9 @@ export const SlidderSettings: SlidderSettings = {
     defaultValue: 19.2,
     description: "less than Q2 auti revenue",
     type: SliderType.Positive,
-    label: "Auto revenue margin"
+    label: "Auto revenue margin",
   },
-  [SlidderCategory.EnergyStorageMargin]: {
+  [SliderCategory.EnergyStorageMargin]: {
     min: 0,
     max: 100,
     prefix: Prefix.Percentage,
@@ -187,9 +263,9 @@ export const SlidderSettings: SlidderSettings = {
     defaultValue: 18.4,
     description: "less than Q2 auti revenue",
     type: SliderType.Positive,
-    label: "Energy Margin"
+    label: "Energy Margin",
   },
-  [SlidderCategory.ServicesAndOtherMargin]: {
+  [SliderCategory.ServicesAndOtherMargin]: {
     min: 0,
     max: 100,
     prefix: Prefix.Percentage,
@@ -197,10 +273,10 @@ export const SlidderSettings: SlidderSettings = {
     defaultValue: 7.7,
     description: "less than Q2 auti revenue",
     type: SliderType.Positive,
-    label: "Services and other Margin"
+    label: "Services and other Margin",
   },
 
-  [SlidderCategory.ResearchAndDevelopment]: {
+  [SliderCategory.ResearchAndDevelopment]: {
     min: 0,
     max: 3,
     prefix: Prefix.Currency,
@@ -208,9 +284,9 @@ export const SlidderSettings: SlidderSettings = {
     defaultValue: 0.9,
     description: "less than Q2 auti revenue",
     type: SliderType.Negative,
-    label: "R&D"
+    label: "R&D",
   },
-  [SlidderCategory.SGA]: {
+  [SliderCategory.SGA]: {
     min: 0,
     max: 3,
     prefix: Prefix.Currency,
@@ -218,9 +294,9 @@ export const SlidderSettings: SlidderSettings = {
     defaultValue: 1.2,
     description: "less than Q2 auti revenue",
     type: SliderType.Negative,
-    label: "SGA"
+    label: "SGA",
   },
-  [SlidderCategory.OtherOperatingExpenses]: {
+  [SliderCategory.OtherOperatingExpenses]: {
     min: 0,
     max: 1,
     prefix: Prefix.Currency,
@@ -228,9 +304,9 @@ export const SlidderSettings: SlidderSettings = {
     defaultValue: 0,
     description: "less than Q2 auti revenue",
     type: SliderType.Negative,
-    label: "Other Operating Expenses"
+    label: "Other Operating Expenses",
   },
-  [SlidderCategory.InterestAndOther]: {
+  [SliderCategory.InterestAndOther]: {
     min: -1,
     max: 1,
     prefix: Prefix.Currency,
@@ -238,9 +314,9 @@ export const SlidderSettings: SlidderSettings = {
     defaultValue: 0.5,
     description: "less than Q2 auti revenue",
     type: SliderType.Positive,
-    label: "Interest and other income/expenses (net)"
+    label: "Interest and other income/expenses (net)",
   },
-  [SlidderCategory.Taxes]: {
+  [SliderCategory.Taxes]: {
     min: 0,
     max: 3,
     prefix: Prefix.Currency,
@@ -248,26 +324,35 @@ export const SlidderSettings: SlidderSettings = {
     defaultValue: 0.3,
     description: "less than Q2 auti revenue",
     type: SliderType.Negative,
-    label: "Taxes (TAX)"
-  }
-}
+    label: "Taxes (TAX)",
+  },
+};
 
-export const sliderDefaultData: SliderData = Object.keys(SlidderSettings).reduce((obj, key: SlidderCategory) => {
-  return {...obj, ...{ [key]: SlidderSettings[key].defaultValue }}
-}, {})
+export const sliderDefaultData: SliderData = Object.keys(SliderSettings).reduce(
+  (obj, key: SliderCategory) => {
+    return { ...obj, ...{ [key]: SliderSettings[key].defaultValue } };
+  },
+  {}
+);
 
-export const slidderCategoryInfoMaping = {
-  [SlidderCategory.AutoSalesRevenue]: { category: "AUTO_SALES_REVENUE" },
-  [SlidderCategory.AutoRegCreditsRevenue]: { category: "AUTO_REG_CREDITS" },
-  [SlidderCategory.AutomotiveLeasingRevenue]: { category: "AUTO_LEASE_REVENUE" },
-  [SlidderCategory.EnergyGenerationAndStorageRevenue]: { category: "ENERGY_REVENUE" },
-  [SlidderCategory.AutoRevenueMargin]: { category: "AUTO_REVENUE_MARGIN" },
-  [SlidderCategory.ServicesAndOtherRevenue]: { category: "SERVICES_OTHER_MARGIN" },
-  [SlidderCategory.EnergyStorageMargin]: { category: "ENERGY_MARGIN" },
-  [SlidderCategory.ServicesAndOtherMargin]: { category: "COST_OF_REVENUE" },
-  [SlidderCategory.ResearchAndDevelopment]: { category: "RD" },
-  [SlidderCategory.SGA]: { category: "SGA" },
-  [SlidderCategory.OtherOperatingExpenses]: { category: "OTHER_OPERATING_EXPENSE" },
-  [SlidderCategory.InterestAndOther]: { category: "INTEREST_AND_OTHER_INCOME" },
-  [SlidderCategory.Taxes]: { category: "INCOME_TAX" },
-}
+export const SliderCategoryInfoMaping = {
+  [SliderCategory.AutoSalesRevenue]: { category: "AUTO_SALES_REVENUE" },
+  [SliderCategory.AutoRegCreditsRevenue]: { category: "AUTO_REG_CREDITS" },
+  [SliderCategory.AutomotiveLeasingRevenue]: { category: "AUTO_LEASE_REVENUE" },
+  [SliderCategory.EnergyGenerationAndStorageRevenue]: {
+    category: "ENERGY_REVENUE",
+  },
+  [SliderCategory.AutoRevenueMargin]: { category: "AUTO_REVENUE_MARGIN" },
+  [SliderCategory.ServicesAndOtherRevenue]: {
+    category: "SERVICES_OTHER_MARGIN",
+  },
+  [SliderCategory.EnergyStorageMargin]: { category: "ENERGY_MARGIN" },
+  [SliderCategory.ServicesAndOtherMargin]: { category: "COST_OF_REVENUE" },
+  [SliderCategory.ResearchAndDevelopment]: { category: "RD" },
+  [SliderCategory.SGA]: { category: "SGA" },
+  [SliderCategory.OtherOperatingExpenses]: {
+    category: "OTHER_OPERATING_EXPENSE",
+  },
+  [SliderCategory.InterestAndOther]: { category: "INTEREST_AND_OTHER_INCOME" },
+  [SliderCategory.Taxes]: { category: "INCOME_TAX" },
+};
