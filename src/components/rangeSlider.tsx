@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
 interface TimelineRangeSlider {
   children: React.ReactNode;
@@ -9,11 +9,15 @@ interface TimelineRangeSlider {
   onChange: (startDate: Date, endDate: Date) => void;
 }
 
-const TimelineRangeSlider = ({ children, dateRange, onChange }: TimelineRangeSlider) => {
+const TimelineRangeSlider = ({
+  children,
+  dateRange,
+  onChange,
+}: TimelineRangeSlider) => {
   const [leftPosition, setLeftPosition] = useState(0);
   const [rightPosition, setRightPosition] = useState(100);
   const sliderRef = useRef(null);
-  const [sliderHeight, setSliderHeight] = useState('auto');
+  const [sliderHeight, setSliderHeight] = useState("auto");
 
   useEffect(() => {
     if (sliderRef.current) {
@@ -24,7 +28,10 @@ const TimelineRangeSlider = ({ children, dateRange, onChange }: TimelineRangeSli
 
   const handleLeftDrag = (e: any) => {
     const sliderRect = sliderRef.current.getBoundingClientRect();
-    const newPosition = (((e?.clientX || e.touches[0].clientX) - sliderRect.left) / sliderRect.width) * 100;
+    const newPosition =
+      (((e?.clientX || e.touches[0].clientX) - sliderRect.left) /
+        sliderRect.width) *
+      100;
     if (newPosition >= 0 && newPosition < rightPosition - 10) {
       setLeftPosition(newPosition);
     }
@@ -32,33 +39,41 @@ const TimelineRangeSlider = ({ children, dateRange, onChange }: TimelineRangeSli
 
   const handleRightDrag = (e: any) => {
     const sliderRect = sliderRef.current.getBoundingClientRect();
-    const newPosition = (((e?.clientX || e.touches[0].clientX) - sliderRect.left) / sliderRect.width) * 100;
+    const newPosition =
+      (((e?.clientX || e.touches[0].clientX) - sliderRect.left) /
+        sliderRect.width) *
+      100;
     if (newPosition <= 100 && newPosition > leftPosition + 10) {
       setRightPosition(newPosition);
     }
   };
 
   useEffect(() => {
-    handleDragEnd()
-  }, [leftPosition, rightPosition])
+    handleDragEnd();
+  }, [leftPosition, rightPosition]);
 
   const mouseHandler = (e: any, fn: any) => {
     e.preventDefault();
-    document.addEventListener('mousemove', fn);
-    document.addEventListener('touchmove', fn);
-    document.addEventListener('mouseup', () => {
-      document.removeEventListener('mousemove', fn);
+    document.addEventListener("mousemove", fn);
+    document.addEventListener("touchmove", fn);
+    document.addEventListener("mouseup", () => {
+      document.removeEventListener("mousemove", fn);
     });
-    document.addEventListener('touchend', () => {
-      document.removeEventListener('touchmove', fn);
+    document.addEventListener("touchend", () => {
+      document.removeEventListener("touchmove", fn);
     });
-  }
+  };
 
   const handleDragEnd = () => {
-    if(!dateRange?.endDate || !dateRange?.startDate) return;
-    const totalMilliseconds = dateRange.endDate.getTime() - dateRange.startDate.getTime();
-    const startDate = new Date(dateRange.startDate.getTime() + (totalMilliseconds * (leftPosition / 100)));
-    const endDate = new Date(dateRange.startDate.getTime() + (totalMilliseconds * (rightPosition / 100)));
+    if (!dateRange?.endDate || !dateRange?.startDate) return;
+    const totalMilliseconds =
+      dateRange.endDate.getTime() - dateRange.startDate.getTime();
+    const startDate = new Date(
+      dateRange.startDate.getTime() + totalMilliseconds * (leftPosition / 100),
+    );
+    const endDate = new Date(
+      dateRange.startDate.getTime() + totalMilliseconds * (rightPosition / 100),
+    );
     onChange(startDate, endDate);
   };
 

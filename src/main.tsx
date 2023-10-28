@@ -1,16 +1,16 @@
 import React from "react";
 import Router from "./Router";
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // components
 // import Header from "./components/header";
 // provider
 import { Compose } from "./context/Compose";
-import SliderContextProvider from "./context/SlidderContext";
+import SliderContextProvider from "./context/SliderContext";
 
 const Main = () => {
-  const providers = [SliderContextProvider]
+  const providers = [SliderContextProvider];
   // Create a client
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient();
   return (
     <>
       <QueryClientProvider client={queryClient}>
@@ -20,7 +20,7 @@ const Main = () => {
         </Compose>
       </QueryClientProvider>
     </>
-  )
-}
+  );
+};
 
 export default Main;

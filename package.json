@@ -5,7 +5,8 @@
   "main": "./src/index.tsx",
   "scripts": {
     "start": "webpack-dev-server --open --mode development --hot",
-    "build": "webpack --mode development --config webpack.config.js"
+    "build": "webpack --mode development --config webpack.config.js",
+    "prettier": "npx prettier --write ."
   },
   "keywords": [],
   "author": "",
@@ -44,6 +45,7 @@
     "dotenv-webpack": "^8.0.1",
     "postcss": "^8.4.23",
     "postcss-loader": "^7.3.0",
+    "prettier": "3.0.3",
     "rc-slider": "^10.2.1",
     "style-loader": "^3.3.2",
     "tailwindcss": "^3.3.2"
