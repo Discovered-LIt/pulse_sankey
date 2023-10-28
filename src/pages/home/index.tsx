@@ -3,8 +3,10 @@ import React, { useState, useMemo } from "react";
 import SankeyChart from "../../components/charts/sankey";
 import Settings from "./settings";
 import SliderInfoSideBar from "./slidderInfoSideBar";
+import Modal from "../../components/modal";
+import TextField from "../../components/textField";
 // types
-import { SlidderCategory, SankeyCategory } from "../../config/sankey";
+import { SlidderCategory, SankeyCategory, SlidderSettings } from "../../config/sankey";
 // data
 import { sliderDefaultData, slidderCategoryInfoMaping } from "../../config/sankey";
 // utils
@@ -12,6 +14,8 @@ import cal from "../../utils/sankey";
 import { getSankeyDisplayColor } from "../../utils/global";
 // context
 import { useSliderContext } from "../../context/SlidderContext";
+// actions
+import { saveSlidderValues, SliderSaveBodyProps } from "../../actions/slidder";
 
 export type SliderData = {[key in SlidderCategory]?: number}
 
@@ -21,17 +25,19 @@ export type SankeyData = {
 };
 
 const Home = () => {
-  const [defaultSliderData] = useState<SliderData>(sliderDefaultData)
-  const [sliderData, setSlider] = useState<SliderData>(sliderDefaultData)
-  const [peRatio, setPeRatio] = useState<number>(70)
+  const [defaultSliderData] = useState<SliderData>(sliderDefaultData);
+  const [sliderData, setSlider] = useState<SliderData>(sliderDefaultData);
+  const [peRatio, setPeRatio] = useState<number>(70);
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
   const { selectedSlider, sliderCategoryData, setSelectedSlider } = useSliderContext();
 
   const sankeyData = useMemo((): SankeyData => {
     const netProfit = cal.calculateNetProfit(sliderData)
     const sankeyLinks: [any, SankeyCategory, (data: SliderData) => number][] = [
       [SankeyCategory.AutoRevenue, SankeyCategory.TotalRevenue, cal.calculateAutoRevenue],
-      [SlidderCategory.EnergyGenerationAndStorageRevenue, SankeyCategory.TotalRevenue, cal.getEnergyGenerationAndStorageRevenue],
-      [SlidderCategory.ServicesAndOtherRevenue, SankeyCategory.TotalRevenue, cal.getServicesAndOtherRevenue],
+      [SlidderSettings[SlidderCategory.EnergyGenerationAndStorageRevenue].label, SankeyCategory.TotalRevenue, cal.getEnergyGenerationAndStorageRevenue],
+      [SlidderSettings[SlidderCategory.ServicesAndOtherRevenue].label, SankeyCategory.TotalRevenue, cal.getServicesAndOtherRevenue],
       [SankeyCategory.TotalRevenue, SankeyCategory.GrossProfite, cal.calculateGrossProfit],
       [SankeyCategory.GrossProfite, SankeyCategory.OperationProfit, cal.calculateOperationProfit],
       [SankeyCategory.GrossProfite, SankeyCategory.OperationExpenses, cal.calculateOperationExpenses],
@@ -81,6 +87,33 @@ const Home = () => {
     setSelectedSlider(type)
   }
 
+  const onSaveHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const data = {
+      chartDetails: {
+        userEmail,
+        peRatio,
+        eps,
+        company: "tesla",
+        currency: "USD", 
+        date: Date.now(),
+        unit: "BN",
+        type: "sankey",
+        reportingYear: "2023",
+        reportingQuarter: "q3",
+      },
+      chartData: sliderData
+    } as SliderSaveBodyProps;
+
+    try {
+      await saveSlidderValues({ data })
+    } catch (err) {
+      alert(`Something went wrong while saving data: ${err}`)
+    } finally {
+      setShowSaveModal(false)
+    }
+  }
+
   const sideBarData = useMemo(() => {
     if(!selectedSlider) return undefined
     return sliderCategoryData[slidderCategoryInfoMaping[selectedSlider].category]
@@ -97,6 +130,7 @@ const Home = () => {
         peRatio={peRatio}
         setPeRatio={setPeRatio}
         onSliderInfoClick={onSliderInfoClick}
+        onSaveClick={() => setShowSaveModal(true)}
       />
       <div className="md:mt-[70px] z-0">
         <SankeyChart data={sankeyData} />
@@ -108,6 +142,30 @@ const Home = () => {
           setSelectedSlider(null)
         }}
       />
+      <Modal
+        open={showSaveModal}
+        header="Save Data"
+        onClose={() => setShowSaveModal(false)}
+      >
+        <form className="w-[300px]" onSubmit={onSaveHandler}>
+          <TextField
+            label="Enter your email to save data"
+            name="userEmail"
+            type="email"
+            value={userEmail}
+            placeholder="Email"
+            required
+            onChange={(e) => setUserEmail(e.target.value)}
+          />
+          <button
+            type="submit"
+            disabled={!userEmail}
+            className="inline-flex w-full justify-center rounded-md py-2 mt-4 text-sm font-semibold text-white shadow-sm bg-blue-600"
+          >
+            Save
+          </button>
+        </form>
+      </Modal>
     </div>
   )
 }

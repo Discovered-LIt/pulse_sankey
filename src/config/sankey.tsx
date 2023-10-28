@@ -22,19 +22,19 @@ export enum SankeyCategory {
 }
 
 export enum SlidderCategory {
-  AutoSalesRevenue = "Auto sales revenue",
-  AutoRegCreditsRevenue = "Auto reg credits revenue",
-  AutomotiveLeasingRevenue = "Automotive leasing revenue",
-  EnergyGenerationAndStorageRevenue = "Energy Revenue",
-  ServicesAndOtherRevenue = "Services and other Revenue",
-  AutoRevenueMargin = "Auto revenue margin",
-  EnergyStorageMargin = "Energy Margin",
-  ServicesAndOtherMargin = "Services and other Margin",
-  ResearchAndDevelopment = "R&D",
-  SGA = "SGA",
-  OtherOperatingExpenses = "Other Operating Expenses",
-  InterestAndOther = "Interest and other income/expenses (net)",
-  Taxes = "Taxes (TAX)"
+  AutoSalesRevenue = "autoSalesRevenue",
+  AutoRegCreditsRevenue = "autoRegCreditsRevenue",
+  AutomotiveLeasingRevenue = "automotiveLeasingRevenue",
+  EnergyGenerationAndStorageRevenue = "energyRevenue",
+  ServicesAndOtherRevenue = "servicesAndOtherRevenue",
+  AutoRevenueMargin = "autoRevenueMargin",
+  EnergyStorageMargin = "energyMargin",
+  ServicesAndOtherMargin = "servicesAndOtherMargin",
+  ResearchAndDevelopment = "r&d",
+  SGA = "sga",
+  OtherOperatingExpenses = "otherOperatingExpenses",
+  InterestAndOther = "interestAndOtherIncome",
+  Taxes = "taxes"
 }
 
 export enum SlidderGroupType {
@@ -61,7 +61,8 @@ type SlidderSettings = { [key in SlidderCategory]: {
   step: number,
   defaultValue: number,
   description?: string,
-  type: SliderType
+  type: SliderType,
+  label: string
 }}
 
 // colors
@@ -124,7 +125,8 @@ export const SlidderSettings: SlidderSettings = {
     step: 0.1,
     defaultValue: 20.4,
     description: "less than Q2 auti revenue",
-    type: SliderType.Positive
+    type: SliderType.Positive,
+    label: "Auto sales revenue"
   },
   [SlidderCategory.AutoRegCreditsRevenue]: {
     min: 0,
@@ -133,7 +135,8 @@ export const SlidderSettings: SlidderSettings = {
     step: 0.1,
     defaultValue: 0.2,
     description: "more than analyst avg",
-    type: SliderType.Positive
+    type: SliderType.Positive,
+    label: "Auto reg credits revenue"
   },
   [SlidderCategory.AutomotiveLeasingRevenue]: {
     min: 0,
@@ -142,7 +145,8 @@ export const SlidderSettings: SlidderSettings = {
     step: 0.1,
     defaultValue: 0.6,
     description: "more than yst avg",
-    type: SliderType.Positive
+    type: SliderType.Positive,
+    label: "Automotive leasing revenue"
   },
   [SlidderCategory.EnergyGenerationAndStorageRevenue]: {
     min: 0,
@@ -151,7 +155,8 @@ export const SlidderSettings: SlidderSettings = {
     step: 0.1,
     defaultValue: 1.5,
     description: "less than Q2 auti revenue",
-    type: SliderType.Positive
+    type: SliderType.Positive,
+    label: "Energy Revenue"
   },
   [SlidderCategory.ServicesAndOtherRevenue]: {
     min: 0,
@@ -160,7 +165,8 @@ export const SlidderSettings: SlidderSettings = {
     step: 0.1,
     defaultValue: 2.15,
     description: "less than Q2 auti revenue",
-    type: SliderType.Positive
+    type: SliderType.Positive,
+    label: "Services and other Revenue"
   },
 
   [SlidderCategory.AutoRevenueMargin]: {
@@ -170,7 +176,8 @@ export const SlidderSettings: SlidderSettings = {
     step: 1,
     defaultValue: 19.2,
     description: "less than Q2 auti revenue",
-    type: SliderType.Positive
+    type: SliderType.Positive,
+    label: "Auto revenue margin"
   },
   [SlidderCategory.EnergyStorageMargin]: {
     min: 0,
@@ -179,7 +186,8 @@ export const SlidderSettings: SlidderSettings = {
     step: 1,
     defaultValue: 18.4,
     description: "less than Q2 auti revenue",
-    type: SliderType.Positive
+    type: SliderType.Positive,
+    label: "Energy Margin"
   },
   [SlidderCategory.ServicesAndOtherMargin]: {
     min: 0,
@@ -188,7 +196,8 @@ export const SlidderSettings: SlidderSettings = {
     step: 1,
     defaultValue: 7.7,
     description: "less than Q2 auti revenue",
-    type: SliderType.Positive
+    type: SliderType.Positive,
+    label: "Services and other Margin"
   },
 
   [SlidderCategory.ResearchAndDevelopment]: {
@@ -198,7 +207,8 @@ export const SlidderSettings: SlidderSettings = {
     step: 0.1,
     defaultValue: 0.9,
     description: "less than Q2 auti revenue",
-    type: SliderType.Negative
+    type: SliderType.Negative,
+    label: "R&D"
   },
   [SlidderCategory.SGA]: {
     min: 0,
@@ -207,7 +217,8 @@ export const SlidderSettings: SlidderSettings = {
     step: 0.1,
     defaultValue: 1.2,
     description: "less than Q2 auti revenue",
-    type: SliderType.Negative
+    type: SliderType.Negative,
+    label: "SGA"
   },
   [SlidderCategory.OtherOperatingExpenses]: {
     min: 0,
@@ -216,7 +227,8 @@ export const SlidderSettings: SlidderSettings = {
     step: 0.1,
     defaultValue: 0,
     description: "less than Q2 auti revenue",
-    type: SliderType.Negative
+    type: SliderType.Negative,
+    label: "Other Operating Expenses"
   },
   [SlidderCategory.InterestAndOther]: {
     min: -1,
@@ -225,7 +237,8 @@ export const SlidderSettings: SlidderSettings = {
     step: 0.1,
     defaultValue: 0.5,
     description: "less than Q2 auti revenue",
-    type: SliderType.Positive
+    type: SliderType.Positive,
+    label: "Interest and other income/expenses (net)"
   },
   [SlidderCategory.Taxes]: {
     min: 0,
@@ -234,7 +247,8 @@ export const SlidderSettings: SlidderSettings = {
     step: 0.1,
     defaultValue: 0.3,
     description: "less than Q2 auti revenue",
-    type: SliderType.Negative
+    type: SliderType.Negative,
+    label: "Taxes (TAX)"
   }
 }
 
