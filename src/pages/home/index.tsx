@@ -105,7 +105,7 @@ const Home = () => {
     // to show dynamic color for others sankey line
     const othersLineColor = getSankeyDisplayColor(
       cal.calculateOthers(sliderData),
-      SankeyCategory.Others
+      SankeyCategory.Others,
     );
 
     return {
@@ -121,7 +121,7 @@ const Home = () => {
               ? { color: othersLineColor }
               : {}),
           };
-        }
+        },
       ),
       links: sankeyLinks.map((link) => {
         const [source, target, fn] = link;

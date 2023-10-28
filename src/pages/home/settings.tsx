@@ -144,7 +144,7 @@ const Settings = ({
   const calculateChangePercentage = (
     currVal: number,
     prevVal: number,
-    prefix: string
+    prefix: string,
   ): number => {
     if (prevVal + currVal === 0) return 0;
     if (prevVal === 0) return 100;
@@ -158,7 +158,7 @@ const Settings = ({
     const percentage = calculateChangePercentage(
       sliderData[type],
       defaultSliderData[type],
-      SliderSettings[type].prefix
+      SliderSettings[type].prefix,
     );
     const base = percentage === 0;
     const isPositive = SliderSettings[type].type === SliderType.Positive;
@@ -196,7 +196,7 @@ const Settings = ({
         obj[type] = getSliderViewSettings(type);
         return obj;
       },
-      {}
+      {},
     );
   }, [sliderData]);
 

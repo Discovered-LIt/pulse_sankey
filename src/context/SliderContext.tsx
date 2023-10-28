@@ -50,7 +50,7 @@ const SliderContextProvider = ({ children }: PropsWithChildren<{}>) => {
       sliderCategoryData,
       setSelectedSlider,
     }),
-    [selectedSlider, sliderCategoryData, setSelectedSlider]
+    [selectedSlider, sliderCategoryData, setSelectedSlider],
   );
 
   return (

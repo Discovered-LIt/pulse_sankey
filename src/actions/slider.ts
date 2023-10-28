@@ -34,6 +34,6 @@ export const saveSliderValues = async ({
   return axios.post(
     "https://y8twn5kxlf.execute-api.us-east-1.amazonaws.com/default/Pulse_Demo",
     data,
-    { withCredentials: false }
+    { withCredentials: false },
   );
 };

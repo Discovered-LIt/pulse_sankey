@@ -332,7 +332,7 @@ export const sliderDefaultData: SliderData = Object.keys(SliderSettings).reduce(
   (obj, key: SliderCategory) => {
     return { ...obj, ...{ [key]: SliderSettings[key].defaultValue } };
   },
-  {}
+  {},
 );
 
 export const SliderCategoryInfoMaping = {

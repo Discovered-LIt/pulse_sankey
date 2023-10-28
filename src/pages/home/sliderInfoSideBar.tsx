@@ -84,7 +84,7 @@ const SliderInfoSideBar = ({
     return filteredChartData.filter(
       ({ date }) =>
         new Date(date) >= timelineFilter?.startDate &&
-        new Date(date) <= timelineFilter?.endDate
+        new Date(date) <= timelineFilter?.endDate,
     );
   }, [filteredChartData, timelineFilter]);
 
