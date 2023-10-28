@@ -22,6 +22,7 @@ interface Setting {
   setPeRatio: (peRatio: number) => void;
   onChange: (type: SlidderCategory, val: number) => void;
   onSliderInfoClick: (string: SlidderCategory) => void;
+  onSaveClick: () => void;
 }
 
 type InfoDivProps = { 
@@ -31,17 +32,19 @@ type InfoDivProps = {
   peRatio: number;
   setPeRatio: (peRatio: number) => void;
   onExpandClick: () => void;
+  onSaveClick: () => void;
 }
 
 const SaveBtn = ({
   isExpanded,
   onExpandClick,
+  onSaveClick,
   className
 }: any) => (
-  <div className={cn('flex', className)}>
+  <div className={cn('flex z-10', className)}>
     <button
       className="bg-transparent text-white py-1 px-2 text-xs border border-gray-500 rounded"
-      onClick={() => alert("Coming soon!")}
+      onClick={onSaveClick}
     >
       SAVE
     </button>
@@ -61,7 +64,8 @@ const InfoDiv = ({
   priceTarget,
   peRatio,
   setPeRatio,
-  onExpandClick
+  onExpandClick,
+  onSaveClick
 }: InfoDivProps) => (
   <div
     className="
@@ -101,12 +105,18 @@ const InfoDiv = ({
             />
           </div>
         </div>
-        <SaveBtn isExpanded={isExpanded} onExpandClick={onExpandClick} className="md:hidden gap-6" />
+        <SaveBtn
+          isExpanded={isExpanded}
+          onExpandClick={onExpandClick}
+          onSaveClick={onSaveClick}
+          className="md:hidden gap-6"
+        />
       </div>
     </div>
     <SaveBtn
       isExpanded={isExpanded}
       onExpandClick={onExpandClick}
+      onSaveClick={onSaveClick}
       className="md:flex gap-10 hidden cursor-pointer items-center"
     />
   </div>
@@ -120,7 +130,8 @@ const Settings = ({
   peRatio,
   setPeRatio,
   onChange,
-  onSliderInfoClick
+  onSliderInfoClick,
+  onSaveClick
 }: Setting) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const [height, setHeight] = useState(0);
@@ -244,6 +255,7 @@ const Settings = ({
         setPeRatio={setPeRatio}
         peRatio={peRatio}
         onExpandClick={onExpandClick}
+        onSaveClick={onSaveClick}
       />
       <div
         id="slider-container"
@@ -269,7 +281,7 @@ const Settings = ({
                   >
                     <Slider
                       id={type}
-                      label={type}
+                      label={SlidderSettings[type].label}
                       description={getDescription(type)}
                       min={SlidderSettings[type].min}
                       max={SlidderSettings[type].max}
