@@ -21,6 +21,7 @@ import cal from "../../utils/sankey";
 import { getSankeyDisplayColor } from "../../utils/global";
 // context
 import { useSliderContext } from "../../context/SliderContext";
+import { useAlertContext } from "../../context/AlertContext";
 // actions
 import { saveSliderValues, SliderSaveBodyProps } from "../../actions/slider";
 
@@ -39,6 +40,7 @@ const Home = () => {
   const [userEmail, setUserEmail] = useState("");
   const { selectedSlider, sliderCategoryData, setSelectedSlider } =
     useSliderContext();
+  const { setErrorAlert, setSuccessAlert } = useAlertContext()
 
   const sankeyData = useMemo((): SankeyData => {
     const netProfit = cal.calculateNetProfit(sliderData);
@@ -165,8 +167,9 @@ const Home = () => {
 
     try {
       await saveSliderValues({ data });
+      setSuccessAlert("Data saved successfully.")
     } catch (err) {
-      alert(`Something went wrong while saving data: ${err}`);
+      setErrorAlert(`Something went wrong while saving data: ${err}.`);
     } finally {
       setShowSaveModal(false);
     }
