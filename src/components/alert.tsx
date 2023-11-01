@@ -14,7 +14,7 @@ const Alert = () => {
         alerts.map((alert) => (
           <div 
             className={cn([
-              "p-4 mb-4 text-sm rounded-lg min-w-[400px] absolute top-4 right-4 z-50",
+              "p-4 mb-4 text-sm rounded-lg w-[250px] md:w-[400px] absolute top-4 right-4 z-50",
               {
                 'text-green-600 bg-green-100': alert.type === AlertType.Success,
                 'text-red-600 bg-red-100': alert.type === AlertType.Error,
