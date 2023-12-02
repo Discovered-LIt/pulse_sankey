@@ -1,13 +1,16 @@
 import React, { RefObject } from "react";
 import cn from "classnames";
+// icon
+import XMarkIcon from "@heroicons/react/24/outline/XMarkIcon";
 
 interface SideBar {
   children?: JSX.Element;
   open: boolean;
   ref?: RefObject<HTMLDivElement>;
+  onClose?: () => void;
 }
 
-const SideBar = ({ children, open, ref }: SideBar) => {
+const SideBar = ({ children, open, ref, onClose }: SideBar) => {
   return (
     <div
       ref={ref}
@@ -18,6 +21,10 @@ const SideBar = ({ children, open, ref }: SideBar) => {
           : "w-0",
       ])}
     >
+      {onClose && open && <XMarkIcon
+        className="h-5 w-5 absolute top-[10px] right-[12px] cursor-pointer z-20"
+        onClick={onClose}
+      />}
       {children}
     </div>
   );

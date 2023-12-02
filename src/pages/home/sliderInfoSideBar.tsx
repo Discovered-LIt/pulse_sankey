@@ -15,8 +15,6 @@ import useOnOutsideClick from "../../hooks/useOnClickOutside";
 import { useSliderContext } from "../../context/SliderContext";
 // types
 import { SliderMappingDataProps } from "../../context/SliderContext";
-// icons
-import XMarkIcon from "@heroicons/react/24/outline/XMarkIcon";
 // Date
 import { SliderSettings, SliderType } from "../../config/sankey";
 
@@ -170,14 +168,8 @@ const SliderInfoSideBar = ({
   };
 
   return (
-    <SideBar open={showSidebar}>
+    <SideBar open={showSidebar} onClose={closeSideBar}>
       <div className="bg-[#232323] h-full overflow-auto" ref={sideBarRef}>
-        {showSidebar && (
-          <XMarkIcon
-            className="h-5 w-5 absolute top-[10px] right-[12px] pointer"
-            onClick={closeSideBar}
-          />
-        )}
         <div className="p-6 mt-2">
           <LineChart
             data={timeLineFilteredData}

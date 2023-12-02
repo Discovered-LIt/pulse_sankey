@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState, RefObject, useMemo } from "react";
 import * as d3 from "d3";
 import cn from "classnames";
 import { format } from "date-fns";
-import isEqual from "lodash-es/isEqual";
 // utils
 import { LIGHT_GREEN } from "../../config/sankey";
 // components
@@ -21,8 +20,9 @@ interface Props {
   isLoading?: boolean;
   parentRef?: RefObject<HTMLDivElement>;
   prefix?: string;
-  timelineFilter: { startDate: Date; endDate: Date };
-  onTimelineFilterChange: (startDate: Date, endDate: Date) => void;
+  timelineFilter?: { startDate: Date; endDate: Date };
+  chartOverview?: boolean;
+  onTimelineFilterChange?: (startDate: Date, endDate: Date) => void;
   onZoomChange?: (type: ZoomType) => void;
 }
 
@@ -67,6 +67,7 @@ const LineChart = ({
   prefix = "",
   isLoading = false,
   timelineFilter,
+  chartOverview = false,
   onTimelineFilterChange,
   onZoomChange,
 }: Props) => {
@@ -81,7 +82,7 @@ const LineChart = ({
   const createGraph = ({
     width = 500,
     height = 300,
-    margin = { top: 20, right: 20, bottom: 30, left: 50 },
+    margin = { top: 20, right: 20, bottom: 30, left: chartOverview ? 20 : 50 },
     ref,
     pathOnly = false,
     data,
@@ -95,13 +96,11 @@ const LineChart = ({
 
     const tickValues = Array.from({ length: numTicks }, (_, i) => {
       const index = Math.min(i * tickStep, dataLength - 1); // Ensure not to go beyond the last data point
-      return data[index].date;
+      return data?.[index]?.date;
     });
 
     const x = d3
       .scaleBand()
-      // .scaleTime()
-      // .domain(d3.extent(data, (d) => d.date) as [Date, Date])
       .domain(data.map((d) => d.date))
       .range([margin.left, width - margin.right])
       .padding(0.1);
@@ -130,33 +129,35 @@ const LineChart = ({
       .attr("d", line);
 
     // Add x-axis
-    svg
-      .append("g")
-      .attr("transform", `translate(0,${height - margin.bottom})`)
-      .call(
-        d3
-          .axisBottom(x)
-          .tickValues(tickValues)
-          .tickFormat((d) =>
-            format(new Date(d), !pathOnly ? "'Q'Q yy" : "yyyy"),
-          ),
-      );
+    if(!chartOverview) {
+      svg
+        .append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(
+          d3
+            .axisBottom(x)
+            .tickValues(tickValues)
+            .tickFormat((d) =>
+              format(new Date(d), !pathOnly ? "'Q'Q yy" : "yyyy"),
+            ),
+        );
 
-    svg.selectAll(".domain").remove();
-    svg.selectAll(".tick line").remove();
+      svg.selectAll(".domain").remove();
+      svg.selectAll(".tick line").remove();
+    }
 
     if (pathOnly) return;
 
     const handleMouseOver = (e: MouseEvent, d: LineChartData) => {
-      let x = e.pageX;
-      let y = e.pageY;
+      let x = e.pageX - 40;
+      let y = e.pageY - 40;
       // calculate within the parent container
-      if (parentRef.current) {
-        x -= parentRef.current.getBoundingClientRect().left + 40;
+      if (parentRef?.current) {
+        x -= parentRef.current.getBoundingClientRect().left;
         const maxX = parentRef.current.offsetWidth;
         x = Math.min(x, maxX);
-        y -= parentRef.current.getBoundingClientRect().top + 40;
-      }
+        y -= parentRef.current.getBoundingClientRect().top;
+      } 
       setTooltip({ x, y, d: d || data[data.length - 1] });
     };
 
@@ -202,13 +203,15 @@ const LineChart = ({
       .on("mouseout", handleMouseOut);
 
     // Add y-axis
-    svg
-      .append("g")
-      .attr("transform", `translate(${margin.left},0)`)
-      .call(d3.axisLeft(y).tickFormat((d) => `${d}${prefix}`));
+    if(!chartOverview) {
+      svg
+        .append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y).tickFormat((d) => `${d}${prefix}`));
 
-    svg.selectAll(".domain").remove();
-    svg.selectAll(".tick line").remove();
+      svg.selectAll(".domain").remove();
+      svg.selectAll(".tick line").remove();
+    }
 
     svg
       .attr("width", "100%")
@@ -236,7 +239,7 @@ const LineChart = ({
 
   return (
     <>
-      <div className="flex justify-end items-center text-[10px]">
+      {!chartOverview && <div className="flex justify-end items-center text-[10px]">
         <div className="mr-2 text-gray-400">Zooms</div>
         {zoomsConfig.map(({ label }) => (
           <button
@@ -250,20 +253,20 @@ const LineChart = ({
             {label}
           </button>
         ))}
-      </div>
+      </div>}
       {!data?.length ? (
         <h2 className="text-center mt-10">No data found.</h2>
       ) : (
         <>
           <svg ref={lineChartRef} width={500} height={300} />
-          <TimelineRangeSlider
+          {timelineFilter && !chartOverview && <TimelineRangeSlider
             onChange={onTimelineFilterChange}
             dateRange={timelineFilter}
           >
             <div className="h-[80px]">
               <svg ref={sublinePathChartRef} width={500} height={80} />
             </div>
-          </TimelineRangeSlider>
+          </TimelineRangeSlider>}
           {tooltip && (
             <div
               className="bg-zinc-200 text-black px-4 py-2 rounded absolute text-[12px]"

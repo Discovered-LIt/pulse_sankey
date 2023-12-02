@@ -1,0 +1,149 @@
+import React, { useRef, useState, useEffect } from "react";
+import * as d3 from "d3";
+import { format } from "date-fns";
+
+export type BarChartData = {
+  date: string;
+  value: number;
+};
+
+interface Props {
+  chartOverview?: boolean;
+  data: BarChartData[];
+  chartColour?: string;
+}
+
+const BarChart = ({
+  data,
+  chartOverview = false,
+  chartColour
+}: Props) => {
+  const barChartRef = useRef(null);
+  const [tooltip, setTooltip] = useState<{
+    x: number;
+    y: number;
+    d: BarChartData;
+  }>();
+  
+  const createGraph = () => {
+    const width = 500,
+      height = 300,
+      margin = { top: 20, right: 20, bottom: 30, left: chartOverview ? 20 : 50 };
+  
+    const svg = d3.select(barChartRef.current);
+    svg.selectAll("*").remove();
+  
+    const numTicks = 7;
+    const dataLength = data.length;
+    const tickStep = Math.ceil(dataLength / (numTicks - 1));
+  
+    const tickValues = Array.from({ length: numTicks }, (_, i) => {
+      const index = Math.min(i * tickStep, dataLength - 1);
+      return data?.[index]?.date;
+    });
+  
+    const x = d3
+      .scaleBand()
+      .range([0, width - margin.left - margin.right])
+      .domain(data.map((d) => d.date))
+      .padding(0.2);
+
+    const y = d3
+      .scaleLinear()
+      .domain([
+        d3.min(data, (d) => d.value),
+        d3.max(data, (d) => d.value),
+      ])
+      .nice()
+      .range([height - margin.bottom, margin.top]);
+  
+    if (!chartOverview) {
+      // x axis
+      svg
+        .append("g")
+        .attr("transform", `translate(${margin.left}, ${height - margin.bottom})`)
+        .call(
+          d3
+            .axisBottom(x)
+            .tickValues(tickValues)
+            .tickFormat((d) => format(new Date(d), "'Q'Q yy"))
+        );
+  
+      // y axis
+      svg
+        .append("g")
+        .attr("transform", `translate(${margin.left}, 0)`)
+        .call(d3.axisLeft(y));
+  
+      svg.selectAll(".domain").remove();
+      svg.selectAll(".tick line").remove();
+    }
+
+    const handleMouseOver = (e: MouseEvent, d: BarChartData) => {
+      let x = e.pageX - 40;
+      let y = e.pageY - 40;
+      setTooltip({ x, y, d: d || data[data.length - 1] });
+    };
+  
+    // Bars
+    svg
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`)
+      .selectAll(".bar")
+      .data(data)
+      .enter()
+      .append("rect")
+      .attr("class", "bar")
+      .attr("x", (d) => x(d.date))
+      .attr("width", x.bandwidth())
+      .attr("y", (d) => {
+        if (d.value >= 0) {
+          return y(d.value);
+        } else {
+          return y(0);
+        }
+      })
+      // .attr("height", (d) => {
+      //   if (d.value >= 0) {
+      //     return height - margin.top - margin.bottom - y(d.value);
+      //   } else {
+      //     return y(d.value) - y(0);
+      //   }
+      // })
+      .attr("height", (d) => Math.abs(y(d.value) - y(0)))
+      .style("fill", (chartColour || "steelblue"))
+      .on("mouseover", handleMouseOver)
+      .on("mouseout", () => setTooltip(undefined));
+  
+    svg
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("preserveAspectRatio", "xMinYMin meet")
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+  };
+  
+  useEffect(() => {
+    createGraph()
+  }, [])
+
+  return(
+    <>
+      <svg ref={barChartRef} width={500} height={300} />
+      {tooltip && (
+        <div
+          className="bg-zinc-200 text-black px-4 py-2 rounded absolute text-[12px]"
+          style={{ left: `${tooltip?.x}px`, top: `${tooltip?.y}px` }}
+        >
+          <b className="mr-2">
+            {format(new Date(tooltip.d.date), "'Q'Q yyyy")}:
+          </b>
+          {tooltip?.d?.value}
+        </div>
+      )}
+    </>
+  )
+}
+
+export default BarChart;
