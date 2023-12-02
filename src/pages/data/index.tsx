@@ -128,6 +128,9 @@ const DataPage = () => {
                 category={data?.category}
                 isLoading={isLoading}
                 chartOverview
+                chartColour={
+                  chartSettings[data.category].isChangePositive ? GREEN : RED
+                }
               />}
               {data.type === 'BAR' &&
                 <BarChart

@@ -22,6 +22,7 @@ interface Props {
   prefix?: string;
   timelineFilter?: { startDate: Date; endDate: Date };
   chartOverview?: boolean;
+  chartColour?: string;
   onTimelineFilterChange?: (startDate: Date, endDate: Date) => void;
   onZoomChange?: (type: ZoomType) => void;
 }
@@ -68,6 +69,7 @@ const LineChart = ({
   isLoading = false,
   timelineFilter,
   chartOverview = false,
+  chartColour,
   onTimelineFilterChange,
   onZoomChange,
 }: Props) => {
@@ -124,7 +126,7 @@ const LineChart = ({
       .append("path")
       .datum(data)
       .attr("fill", "none")
-      .attr("stroke", LIGHT_GREEN)
+      .attr("stroke", (chartColour || LIGHT_GREEN))
       .attr("stroke-width", 2)
       .attr("d", line);
 
@@ -176,7 +178,7 @@ const LineChart = ({
       .attr("cx", (d) => x(d.date) || 0)
       .attr("cy", (d) => y(d.value))
       .attr("r", 3)
-      .attr("fill", LIGHT_GREEN)
+      .attr("fill", (chartColour || LIGHT_GREEN))
       .attr("cursor", "pointer")
       .on("mouseover", handleMouseOver)
       .on("mouseout", handleMouseOut);
@@ -187,7 +189,7 @@ const LineChart = ({
       .attr("cx", x(data[data.length - 1].date) || 0)
       .attr("cy", y(data[data.length - 1].value))
       .attr("r", 7)
-      .attr("fill", LIGHT_GREEN)
+      .attr("fill", (chartColour || LIGHT_GREEN))
       .attr("opacity", 0.4)
       .on("mouseover", handleMouseOver)
       .on("mouseout", handleMouseOut);
@@ -198,7 +200,7 @@ const LineChart = ({
       .attr("cx", x(data[data.length - 1].date) || 0)
       .attr("cy", y(data[data.length - 1].value))
       .attr("r", 4)
-      .attr("fill", LIGHT_GREEN)
+      .attr("fill", (chartColour || LIGHT_GREEN))
       .on("mouseover", handleMouseOver)
       .on("mouseout", handleMouseOut);
 
