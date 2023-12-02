@@ -65,7 +65,6 @@ const DataPage = () => {
     if(!mappingData.length) return {};
     return mappingData.reduce((newObj, obj) => {
       const data = obj.chartData;
-      const positiveChart = obj.increase === 'GREEN';
       const firstVal = first(data).value;
       const latestVal = last(data).value;
       const subLabel = last(data).date ? format(new Date(last(data).date), "'Q'Q yyyy") : "";
@@ -76,15 +75,18 @@ const DataPage = () => {
       if(obj.prefix !== "PERCENTAGE") {
         changeValue = ((latestVal - priorDataValue) / priorDataValue) * 100;
       }
-  
-      let isChangePositive = true;
-      if (positiveChart) {
-        isChangePositive = changeValue >= 0;
+
+      const greenSet = { light: LIGHT_GREEN, dark: GREEN };
+      const redSet = { light: LIGHT_RED, dark: RED };
+      let chartcolour: { light: string, dark: string } = { light: LIGHT_GREEN, dark: GREEN }
+      if(obj.increase === "GREEN") {
+        chartcolour = changeValue >= 0 ? greenSet : redSet;
       } else {
-        isChangePositive = changeValue < 0;
+        chartcolour = changeValue >= 0 ? redSet : greenSet;
       }
+
       newObj[obj.category] = { 
-        isChangePositive,
+        chartcolour,
         changeValue: parseFloat(changeValue.toFixed(2)),
         leadingPrefix,
         endingPrefix,
@@ -115,7 +117,7 @@ const DataPage = () => {
               {chartSettings[data.category].leadingPrefix}{last(data?.chartData).value} {chartSettings[data.category].endingPrefix}
               <p
                 className="text-[12px] ml-2"
-                style={{ color: chartSettings?.[data.category]?.isChangePositive ? LIGHT_GREEN : LIGHT_RED }}
+                style={{ color: chartSettings?.[data.category]?.chartcolour?.light }}
               >
                 {chartSettings[data.category].changeValue}%
               </p>
@@ -128,16 +130,12 @@ const DataPage = () => {
                 category={data?.category}
                 isLoading={isLoading}
                 chartOverview
-                chartColour={
-                  chartSettings[data.category].isChangePositive ? GREEN : RED
-                }
+                chartColour={chartSettings[data.category]?.chartcolour?.dark}
               />}
               {data.type === 'BAR' &&
                 <BarChart
                   data={data?.chartData?.slice(0, data.showvalues)}
-                  chartColour={
-                    chartSettings[data.category].isChangePositive ? GREEN : RED
-                  }
+                  chartColour={chartSettings[data.category]?.chartcolour?.dark}
                   chartOverview
                 />
               }
