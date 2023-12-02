@@ -3,6 +3,7 @@ import axiosInstance from '../../config/axios';
 import { useQuery } from "@tanstack/react-query";
 import last from 'lodash-es/last';
 import first from 'lodash-es/first';
+import { format } from "date-fns";
 // components
 import LineChart from "../../components/charts/line";
 import BarChart from "../../components/charts/Bar";
@@ -67,6 +68,7 @@ const DataPage = () => {
       const positiveChart = obj.increase === 'GREEN';
       const firstVal = first(data).value;
       const latestVal = last(data).value;
+      const subLabel = last(data).date ? format(new Date(last(data).date), "'Q'Q yyyy") : "";
       const priorDataValue = data.length > 1 ? data[data.length - 2].value : latestVal;
       let changeValue = latestVal - firstVal;
       const leadingPrefix = obj.prefix === "CURRENCY" ? "$" : "";
@@ -85,7 +87,8 @@ const DataPage = () => {
         isChangePositive,
         changeValue: parseFloat(changeValue.toFixed(2)),
         leadingPrefix,
-        endingPrefix
+        endingPrefix,
+        subLabel
       }
       return newObj;
     }, {} as {[key: string]: any})
@@ -117,6 +120,7 @@ const DataPage = () => {
                 {chartSettings[data.category].changeValue}%
               </p>
             </div>
+            <p className="text-[12px]">{chartSettings[data.category].subLabel}</p>
             <div className="max-w-[300px]">
               {data.type === 'LINE' && <LineChart
                 data={data?.chartData?.slice(0, data.showvalues)}
