@@ -45,18 +45,19 @@ const DataPage = () => {
     queryKey: ['datamapping'],
     queryFn: async () => {
       const { data }: { data: MappingData[] } = await axiosInstance.get('/datamapping.json');
-      let newData: MappingData[] = [];
-      for(var i=0; i < data.length; i++) {
+      const promises = data.map(async (item) => {
         try {
-          const chartData = await axiosInstance.get(data[i].link); 
-          newData.push({
-            ...data[i],
+          const chartData = await axiosInstance.get(item.link); 
+          return {
+            ...item,
             chartData: chartData.data.data || chartData.data.observations || chartData.data
-          })
+          }
         } catch (err) {
-          console.log(data[i].category, err)
+          console.log(item.category, err)
+          return null;
         }
-      }
+      })
+      const newData: MappingData[] = await Promise.all(promises).then((res) => res.filter((d) => d !== null))
       return newData;
     },
     retry: false,
