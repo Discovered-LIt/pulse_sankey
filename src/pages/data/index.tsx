@@ -5,7 +5,7 @@ import last from 'lodash-es/last';
 import first from 'lodash-es/first';
 import { format } from "date-fns";
 // components
-import LineChart from "../../components/charts/line";
+import LineChart, { ZoomType } from "../../components/charts/line";
 import BarChart from "../../components/charts/Bar";
 import SideBar from "../../components/sideBar";
 import Spinner from "../../components/Spinner";
@@ -24,6 +24,7 @@ type MappingData = {
   decrease: string;
   showvalues: number;
   frequency: string;
+  symbol: string;
   prefix: 'CURRENCY' | 'PERCENTAGE' | 'NUMBER';
   chartData?: { date: string, value: number, positive?: boolean, changeValue: number }[];
 }
@@ -32,6 +33,7 @@ const DataPage = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [selectedChart, setSelectedChart] = useState<MappingData>(undefined)
   const sideBarRef = useRef<HTMLDivElement>();
+  const [activeZoom, setActiveZoom] = useState(ZoomType.ALL);
 
   useOnOutsideClick(sideBarRef.current, () => {
     if (!showSidebar) return;
@@ -70,8 +72,8 @@ const DataPage = () => {
       const subLabel = last(data).date ? format(new Date(last(data).date), "'Q'Q yyyy") : "";
       const priorDataValue = data.length > 1 ? data[data.length - 2].value : latestVal;
       let changeValue = latestVal - firstVal;
-      const leadingPrefix = obj.prefix === "CURRENCY" ? "$" : "";
-      const endingPrefix = ["CURRENCY", "NUMBER"].includes(obj.prefix) ? "B" : obj.prefix === "PERCENTAGE" ? "%" : ""
+      // const leadingPrefix = obj.prefix === "CURRENCY" ? "$" : "";
+      // const endingPrefix = ["CURRENCY", "NUMBER"].includes(obj.prefix) ? "B" : obj.prefix === "PERCENTAGE" ? "%" : ""
       if(obj.prefix !== "PERCENTAGE") {
         changeValue = ((latestVal - priorDataValue) / priorDataValue) * 100;
       }
@@ -88,8 +90,6 @@ const DataPage = () => {
       newObj[obj.category] = { 
         chartcolour,
         changeValue: parseFloat(changeValue.toFixed(2)),
-        leadingPrefix,
-        endingPrefix,
         subLabel
       }
       return newObj;
@@ -109,12 +109,12 @@ const DataPage = () => {
         mappingData?.map((data) => (
           <div
             key={data.category}
-            className="py-4 h-auto overflow-x-clip cursor-pointer"
+            className="p-4 h-auto overflow-x-clip cursor-pointer rounded hover:bg-zinc-900"
             onClick={() => onChartSelect(data)}
           >
             <div className="uppercase font-extralight text-[14px]"> {data.title} </div>
             <div className="font-normal flex my-2">
-              {chartSettings[data.category].leadingPrefix}{last(data?.chartData).value} {chartSettings[data.category].endingPrefix}
+              {`${last(data?.chartData).value} ${data.symbol}`}
               <p
                 className="text-[12px] ml-2"
                 style={{ color: chartSettings?.[data.category]?.chartcolour?.light }}
@@ -145,8 +145,23 @@ const DataPage = () => {
       }
       <SideBar open={showSidebar} onClose={() => setShowSidebar(false)}>
         <div className="bg-[#232323] h-full overflow-auto" ref={sideBarRef}>
-          <div className="p-6 mt-2 h-[300px] flex justify-center items-center">
-            Chart will be available soon! In-progress
+          <div className="p-6 mt-2">
+            {selectedChart?.type === 'LINE' && <LineChart
+              data={selectedChart?.chartData}
+              timeLineData={[]}
+              category={selectedChart?.category}
+              isLoading={isLoading}
+              parentRef={sideBarRef}
+              prefix={selectedChart.symbol}
+              chartColour={chartSettings[selectedChart.category]?.chartcolour?.dark}
+            />}
+            {selectedChart?.type === 'BAR' &&
+              <BarChart
+                data={selectedChart?.chartData}
+                chartColour={chartSettings[selectedChart.category]?.chartcolour?.dark}
+                parentRef={sideBarRef}
+              />
+            }
           </div>
           <h1 className="py-4 text-center bg-black">
             {selectedChart?.title}

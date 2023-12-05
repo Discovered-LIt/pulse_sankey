@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, RefObject } from "react";
 import * as d3 from "d3";
 import { format } from "date-fns";
 
@@ -11,12 +11,14 @@ interface Props {
   chartOverview?: boolean;
   data: BarChartData[];
   chartColour?: string;
+  parentRef?: RefObject<HTMLDivElement>;
 }
 
 const BarChart = ({
   data,
   chartOverview = false,
-  chartColour
+  chartColour,
+  parentRef
 }: Props) => {
   const barChartRef = useRef(null);
   const [tooltip, setTooltip] = useState<{
@@ -82,13 +84,20 @@ const BarChart = ({
     const handleMouseOver = (e: MouseEvent, d: BarChartData) => {
       let x = e.pageX - 40;
       let y = e.pageY - 40;
+      // calculate within the parent container
+      if (parentRef?.current) {
+        x -= parentRef.current.getBoundingClientRect().left;
+        const maxX = parentRef.current.offsetWidth;
+        x = Math.min(x, maxX);
+        y -= parentRef.current.getBoundingClientRect().top;
+      } 
       setTooltip({ x, y, d: d || data[data.length - 1] });
     };
   
     // Bars
     svg
       .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`)
+      .attr("transform", `translate(${margin.left},5)`)
       .selectAll(".bar")
       .data(data)
       .enter()
@@ -97,19 +106,8 @@ const BarChart = ({
       .attr("x", (d) => x(d.date))
       .attr("width", x.bandwidth())
       .attr("y", (d) => {
-        if (d.value >= 0) {
-          return y(d.value);
-        } else {
-          return y(0);
-        }
+        return y(d.value >= 0 ? d.value : 0)
       })
-      // .attr("height", (d) => {
-      //   if (d.value >= 0) {
-      //     return height - margin.top - margin.bottom - y(d.value);
-      //   } else {
-      //     return y(d.value) - y(0);
-      //   }
-      // })
       .attr("height", (d) => Math.abs(y(d.value) - y(0)))
       .style("fill", (chartColour || "steelblue"))
       .on("mouseover", handleMouseOver)
