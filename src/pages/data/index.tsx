@@ -25,7 +25,7 @@ type MappingData = {
   showvalues: number;
   frequency: string;
   symbol: string;
-  prefix: 'CURRENCY' | 'PERCENTAGE' | 'NUMBER';
+  prefix: string;
   chartData?: { date: string, value: number, positive?: boolean, changeValue: number }[];
 }
 
@@ -70,17 +70,13 @@ const DataPage = () => {
       const data = obj.chartData;
       const firstVal = first(data).value;
       const latestVal = last(data).value;
-      const subLabel = last(data).date ? format(new Date(last(data).date), "'Q'Q yyyy") : "";
+      const subLabel = last(data).date ? format(new Date(last(data).date), "MMMM dd, yyyy") : "";
       const priorDataValue = data.length > 1 ? data[data.length - 2].value : latestVal;
       let changeValue = latestVal - firstVal;
-      // const leadingPrefix = obj.prefix === "CURRENCY" ? "$" : "";
-      // const endingPrefix = ["CURRENCY", "NUMBER"].includes(obj.prefix) ? "B" : obj.prefix === "PERCENTAGE" ? "%" : ""
-      if(obj.prefix !== "PERCENTAGE") {
-        changeValue = ((latestVal - priorDataValue) / priorDataValue) * 100;
-      }
+      changeValue = ((latestVal - priorDataValue) / priorDataValue) * 100;
 
-      const greenSet = { light: LIGHT_GREEN, dark: GREEN };
-      const redSet = { light: LIGHT_RED, dark: RED };
+      const greenSet = { light: LIGHT_GREEN, dark: '#04E382' };
+      const redSet = { light: LIGHT_RED, dark: '#ff0000' };
       let chartcolour: { light: string, dark: string } = { light: LIGHT_GREEN, dark: GREEN }
       if(obj.increase === "GREEN") {
         chartcolour = changeValue >= 0 ? greenSet : redSet;
@@ -105,7 +101,7 @@ const DataPage = () => {
   if(isLoading) return <Spinner show={isLoading} classNames="mt-16"/>
 
   return(
-    <div className="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 h-[87vh] overflow-scroll gap-4">
+    <div className="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 h-[87vh] overflow-scroll gap-4">
       {
         mappingData?.map((data) => (
           <div
@@ -115,7 +111,7 @@ const DataPage = () => {
           >
             <div className="uppercase font-extralight text-[14px]"> {data.title} </div>
             <div className="font-normal flex my-2">
-              {`${last(data?.chartData).value} ${data.symbol}`}
+              {`${data.prefix}${last(data?.chartData).value.toLocaleString()} ${data.symbol}`}
               <p
                 className="text-[12px] ml-2"
                 style={{ color: chartSettings?.[data.category]?.chartcolour?.light }}
@@ -123,8 +119,8 @@ const DataPage = () => {
                 {chartSettings[data.category].changeValue}%
               </p>
             </div>
-            <p className="text-[12px]">{chartSettings[data.category].subLabel}</p>
-            <div className="max-w-[300px]">
+            <p className="text-[14px]">{chartSettings[data.category].subLabel}</p>
+            <div className="max-w-[300px] m-auto">
               {data.type === 'LINE' && <LineChart
                 data={data?.chartData?.slice(0, data.showvalues)}
                 timeLineData={[]}
