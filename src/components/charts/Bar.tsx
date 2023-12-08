@@ -12,13 +12,15 @@ interface Props {
   data: BarChartData[];
   chartColour?: string;
   parentRef?: RefObject<HTMLDivElement>;
+  dateFormat?: string;
 }
 
 const BarChart = ({
   data,
   chartOverview = false,
   chartColour,
-  parentRef
+  parentRef,
+  dateFormat
 }: Props) => {
   const barChartRef = useRef(null);
   const [tooltip, setTooltip] = useState<{
@@ -135,7 +137,7 @@ const BarChart = ({
           style={{ left: `${tooltip?.x}px`, top: `${tooltip?.y}px` }}
         >
           <b className="mr-2">
-            {format(new Date(tooltip.d.date), "'Q'Q yyyy")}:
+            {format(new Date(tooltip.d.date), (dateFormat || "'Q'Q yyyy"))}:
           </b>
           {tooltip?.d?.value}
         </div>

@@ -70,7 +70,8 @@ const DataPage = () => {
       const data = obj.chartData;
       const firstVal = first(data).value;
       const latestVal = last(data).value;
-      const subLabel = last(data).date ? format(new Date(last(data).date), "MMMM dd, yyyy") : "";
+      const dateFormat = obj.frequency === 'QUARTERLY' ? "'Q'Q yyyy" : "MMMM dd, yyyy"
+      const subLabel = last(data).date ? format(new Date(last(data).date), dateFormat) : "";
       const priorDataValue = data.length > 1 ? data[data.length - 2].value : latestVal;
       let changeValue = latestVal - firstVal;
       changeValue = ((latestVal - priorDataValue) / priorDataValue) * 100;
@@ -87,7 +88,8 @@ const DataPage = () => {
       newObj[obj.category] = { 
         chartcolour,
         changeValue: parseFloat(changeValue.toFixed(2)),
-        subLabel
+        subLabel,
+        dateFormat
       }
       return newObj;
     }, {} as {[key: string]: any})
@@ -128,12 +130,14 @@ const DataPage = () => {
                 isLoading={isLoading}
                 chartOverview
                 chartColour={chartSettings[data.category]?.chartcolour?.dark}
+                dateFormat={chartSettings[data.category]?.dateFormat}
               />}
               {data.type === 'BAR' &&
                 <BarChart
                   data={data?.chartData?.slice(0, data.showvalues)}
                   chartColour={chartSettings[data.category]?.chartcolour?.dark}
                   chartOverview
+                  dateFormat={chartSettings[data.category]?.dateFormat}
                 />
               }
             </div>
@@ -151,12 +155,14 @@ const DataPage = () => {
               parentRef={sideBarRef}
               prefix={selectedChart.symbol}
               chartColour={chartSettings[selectedChart.category]?.chartcolour?.dark}
+              dateFormat={chartSettings[selectedChart.category]?.dateFormat}
             />}
             {selectedChart?.type === 'BAR' &&
               <BarChart
                 data={selectedChart?.chartData}
                 chartColour={chartSettings[selectedChart.category]?.chartcolour?.dark}
                 parentRef={sideBarRef}
+                dateFormat={chartSettings[selectedChart.category]?.dateFormat}
               />
             }
           </div>

@@ -23,6 +23,7 @@ interface Props {
   timelineFilter?: { startDate: Date; endDate: Date };
   chartOverview?: boolean;
   chartColour?: string;
+  dateFormat?: string;
   onTimelineFilterChange?: (startDate: Date, endDate: Date) => void;
   onZoomChange?: (type: ZoomType) => void;
 }
@@ -70,6 +71,7 @@ const LineChart = ({
   timelineFilter,
   chartOverview = false,
   chartColour,
+  dateFormat,
   onTimelineFilterChange,
   onZoomChange,
 }: Props) => {
@@ -275,7 +277,7 @@ const LineChart = ({
               style={{ left: `${tooltip?.x}px`, top: `${tooltip?.y}px` }}
             >
               <b className="mr-2">
-                {format(new Date(tooltip.d.date), "'Q'Q yyyy")}:
+                {format(new Date(tooltip.d.date), (dateFormat || "'Q'Q yyyy"))}:
               </b>
               {tooltip?.d?.value}
               {prefix}
