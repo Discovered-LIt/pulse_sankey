@@ -3,16 +3,18 @@ import axiosInstance from '../../config/axios';
 import { useQuery } from "@tanstack/react-query";
 import last from 'lodash-es/last';
 import first from 'lodash-es/first';
-import { format } from "date-fns";
+import { format, subMonths } from "date-fns";
 // components
-import LineChart, { ZoomType } from "../../components/charts/line";
+import LineChart from "../../components/charts/line";
 import BarChart from "../../components/charts/Bar";
 import SideBar from "../../components/sideBar";
 import Spinner from "../../components/Spinner";
 // utils
-import { GREEN, RED, LIGHT_GREEN, LIGHT_RED } from "../../config/sankey";
+import { GREEN, LIGHT_GREEN, LIGHT_RED } from "../../config/sankey";
 // hooks
 import useOnOutsideClick from "../../hooks/useOnClickOutside";
+// types
+import { ZoomType, zoomsConfig } from "../../components/charts/Filters";
 
 type MappingData = {
   category: string;
@@ -38,7 +40,8 @@ const DataPage = () => {
   useOnOutsideClick(sideBarRef.current, () => {
     if (!showSidebar) return;
     setShowSidebar(false);
-    setSelectedChart(undefined)
+    setSelectedChart(undefined);
+    setActiveZoom(ZoomType.ALL);
   });
 
   const { data: mappingData = [], isLoading } = useQuery<MappingData[]>({
@@ -100,6 +103,25 @@ const DataPage = () => {
     setShowSidebar(true)
   }
 
+  const onZoomChange = (zoom: ZoomType) => {
+    setActiveZoom(zoom)
+  }
+
+  const filteredChartData = useMemo(() => {
+    if (!selectedChart) return [];
+    const { chartData } = selectedChart;
+    if (activeZoom !== ZoomType.ALL) {
+      const months = zoomsConfig.find(({ label }) => label === activeZoom)?.val;
+      return chartData.filter(({ date }) => new Date(date) >= subMonths(new Date(), months))
+        .sort((a, b) => {
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+          return dateA.getTime() - dateB.getTime();
+        });
+    }
+    return chartData;
+  }, [activeZoom, selectedChart]);
+
   if(isLoading) return <Spinner show={isLoading} classNames="mt-16"/>
 
   return(
@@ -148,7 +170,7 @@ const DataPage = () => {
         <div className="bg-[#232323] h-full overflow-auto" ref={sideBarRef}>
           <div className="p-6 mt-2">
             {selectedChart?.type === 'LINE' && <LineChart
-              data={selectedChart?.chartData}
+              data={filteredChartData}
               timeLineData={[]}
               category={selectedChart?.category}
               isLoading={isLoading}
@@ -156,13 +178,17 @@ const DataPage = () => {
               prefix={selectedChart.symbol}
               chartColour={chartSettings[selectedChart.category]?.chartcolour?.dark}
               dateFormat={chartSettings[selectedChart.category]?.dateFormat}
+              activeZoom={activeZoom}
+              onZoomChange={onZoomChange}
             />}
             {selectedChart?.type === 'BAR' &&
               <BarChart
-                data={selectedChart?.chartData}
+                data={filteredChartData}
                 chartColour={chartSettings[selectedChart.category]?.chartcolour?.dark}
                 parentRef={sideBarRef}
                 dateFormat={chartSettings[selectedChart.category]?.dateFormat}
+                activeZoom={activeZoom}
+                onZoomChange={onZoomChange}
               />
             }
           </div>

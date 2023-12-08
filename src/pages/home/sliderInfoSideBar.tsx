@@ -5,11 +5,8 @@ import cn from "classnames";
 import { useQuery } from "@tanstack/react-query";
 // component
 import SideBar from "../../components/sideBar";
-import LineChart, {
-  LineChartData,
-  ZoomType,
-  zoomsConfig,
-} from "../../components/charts/line";
+import LineChart, { LineChartData } from "../../components/charts/line";
+import { ZoomType, zoomsConfig } from "../../components/charts/Filters";
 // hooks
 import useOnOutsideClick from "../../hooks/useOnClickOutside";
 import { useSliderContext } from "../../context/SliderContext";

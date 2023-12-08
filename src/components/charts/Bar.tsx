@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect, RefObject } from "react";
 import * as d3 from "d3";
 import { format } from "date-fns";
+// components
+import Filters, { ZoomType } from "./Filters";
 
 export type BarChartData = {
   date: string;
@@ -13,6 +15,8 @@ interface Props {
   chartColour?: string;
   parentRef?: RefObject<HTMLDivElement>;
   dateFormat?: string;
+  activeZoom?: ZoomType;
+  onZoomChange?: (activeZoom: ZoomType) => void;
 }
 
 const BarChart = ({
@@ -20,7 +24,9 @@ const BarChart = ({
   chartOverview = false,
   chartColour,
   parentRef,
-  dateFormat
+  dateFormat,
+  activeZoom,
+  onZoomChange
 }: Props) => {
   const barChartRef = useRef(null);
   const [tooltip, setTooltip] = useState<{
@@ -55,33 +61,11 @@ const BarChart = ({
     const y = d3
       .scaleLinear()
       .domain([
-        d3.min(data, (d) => d.value),
+        data.length < 2 ? 0 : d3.min(data, (d) => d.value),
         d3.max(data, (d) => d.value),
       ])
       .nice()
       .range([height - margin.bottom, margin.top]);
-  
-    if (!chartOverview) {
-      // x axis
-      svg
-        .append("g")
-        .attr("transform", `translate(${margin.left}, ${height - margin.bottom})`)
-        .call(
-          d3
-            .axisBottom(x)
-            .tickValues(tickValues)
-            .tickFormat((d) => format(new Date(d), "'Q'Q yy"))
-        );
-  
-      // y axis
-      svg
-        .append("g")
-        .attr("transform", `translate(${margin.left}, 0)`)
-        .call(d3.axisLeft(y));
-  
-      svg.selectAll(".domain").remove();
-      svg.selectAll(".tick line").remove();
-    }
 
     const handleMouseOver = (e: MouseEvent, d: BarChartData) => {
       let x = e.pageX - 40;
@@ -99,7 +83,7 @@ const BarChart = ({
     // Bars
     svg
       .append("g")
-      .attr("transform", `translate(${margin.left},5)`)
+      .attr("transform", `translate(${margin.left},0)`)
       .selectAll(".bar")
       .data(data)
       .enter()
@@ -108,12 +92,35 @@ const BarChart = ({
       .attr("x", (d) => x(d.date))
       .attr("width", x.bandwidth())
       .attr("y", (d) => {
-        return y(d.value >= 0 ? d.value : 0)
+        return d.value >= 0 ? y(d.value) : y(0);
       })
       .attr("height", (d) => Math.abs(y(d.value) - y(0)))
       .style("fill", (chartColour || "steelblue"))
       .on("mouseover", handleMouseOver)
       .on("mouseout", () => setTooltip(undefined));
+
+    if (!chartOverview) {
+      // x axis
+      svg
+        .append("g")
+        .attr("transform", `translate(${margin.left}, ${height - margin.bottom})`)
+        .attr("fill", "red")
+        .call(
+          d3
+            .axisBottom(x)
+            .tickValues(tickValues)
+            .tickFormat((d) => format(new Date(d), "'Q'Q yy"))
+        );
+  
+      // y axis
+      svg
+        .append("g")
+        .attr("transform", `translate(${margin.left}, 0)`)
+        .call(d3.axisLeft(y));
+  
+      svg.selectAll(".domain").remove();
+      svg.selectAll(".tick line").remove();
+    }
   
     svg
       .attr("width", "100%")
@@ -125,12 +132,18 @@ const BarChart = ({
   };
   
   useEffect(() => {
+    if (!data?.length) return;
     createGraph()
-  }, [])
+  }, [data])
 
   return(
     <>
-      <svg ref={barChartRef} width={500} height={300} />
+      {!chartOverview && <Filters activeZoom={activeZoom} onZoomChange={onZoomChange}/>}
+      {!data?.length ? (
+        <h2 className="text-center mt-10">No data found.</h2>
+      ) : (
+        <svg ref={barChartRef} width={500} height={300} />
+      )}
       {tooltip && (
         <div
           className="bg-zinc-200 text-black px-4 py-2 rounded absolute text-[12px]"

@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { LIGHT_GREEN } from "../../config/sankey";
 // components
 import TimelineRangeSlider from "../../components/rangeSlider";
+import Filters, { ZoomType } from "./Filters";
 
 export type LineChartData = {
   date: string;
@@ -16,7 +17,7 @@ interface Props {
   data: LineChartData[];
   timeLineData: LineChartData[];
   category: string;
-  activeZoom?: string;
+  activeZoom?: ZoomType;
   isLoading?: boolean;
   parentRef?: RefObject<HTMLDivElement>;
   prefix?: string;
@@ -27,24 +28,6 @@ interface Props {
   onTimelineFilterChange?: (startDate: Date, endDate: Date) => void;
   onZoomChange?: (type: ZoomType) => void;
 }
-
-export enum ZoomType {
-  OneM = "1m",
-  ThreeM = "3m",
-  SixM = "6m",
-  YTD = "YTD",
-  OneYear = "1y",
-  ALL = "ALL",
-}
-
-export const zoomsConfig: { label: ZoomType; val?: number }[] = [
-  { label: ZoomType.OneM, val: 1 },
-  { label: ZoomType.ThreeM, val: 3 },
-  { label: ZoomType.SixM, val: 6 },
-  { label: ZoomType.YTD, val: new Date().getMonth() },
-  { label: ZoomType.OneYear, val: 12 },
-  { label: ZoomType.ALL },
-];
 
 type CreateGraphProps = {
   width?: number;
@@ -243,21 +226,7 @@ const LineChart = ({
 
   return (
     <>
-      {!chartOverview && <div className="flex justify-end items-center text-[10px]">
-        <div className="mr-2 text-gray-400">Zooms</div>
-        {zoomsConfig.map(({ label }) => (
-          <button
-            key={label}
-            className={cn([
-              "px-2 py-1 mr-2 rounded-sm",
-              activeZoom === label ? "bg-green-600" : "bg-[#2d2d2e]",
-            ])}
-            onClick={() => onZoomChange?.(label)}
-          >
-            {label}
-          </button>
-        ))}
-      </div>}
+      {!chartOverview && <Filters activeZoom={activeZoom} onZoomChange={onZoomChange}/>}
       {!data?.length ? (
         <h2 className="text-center mt-10">No data found.</h2>
       ) : (
