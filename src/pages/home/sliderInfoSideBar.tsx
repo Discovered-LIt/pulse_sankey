@@ -114,7 +114,7 @@ const SliderInfoSideBar = ({
       [
         "change",
         `Since ${format(new Date(min.date), "'Q'Q yyyy")}`,
-        parseFloat(changeValue.toFixed(1)),
+        parseFloat(changeValue.toFixed(3)),
         "%",
         isChangePositive,
       ],

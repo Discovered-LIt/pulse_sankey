@@ -90,7 +90,7 @@ const DataPage = () => {
 
       newObj[obj.category] = { 
         chartcolour,
-        changeValue: parseFloat(changeValue.toFixed(2)),
+        changeValue: parseFloat(changeValue.toFixed(3)),
         subLabel,
         dateFormat
       }

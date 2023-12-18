@@ -31,8 +31,8 @@ export const saveSliderValues = async ({
 }: {
   data: SliderSaveBodyProps;
 }): Promise<any> => {
-  return axios.post(
-    "https://y8twn5kxlf.execute-api.us-east-1.amazonaws.com/default/Pulse_Demo",
+  return axios.put(
+    "https://zaeja29yne.execute-api.us-east-1.amazonaws.com/Live/pulse/sankey",
     data,
     { withCredentials: false },
   );

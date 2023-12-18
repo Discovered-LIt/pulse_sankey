@@ -121,7 +121,7 @@ const Sankey = ({ data }: Sankey) => {
               >
                 {node.id}
                 <br />
-                {`$${value.toFixed(1)} BN`}
+                {`$${value.toFixed(3)} BN`}
               </div>
             </foreignObject>
           </g>

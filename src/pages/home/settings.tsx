@@ -88,7 +88,7 @@ const InfoDiv = ({
       </div>
       <div>
         EPS
-        <b className="ml-2"> ${eps.toFixed(2)} </b>
+        <b className="ml-2"> ${eps.toFixed(3)} </b>
       </div>
       <div className="flex pt-4 md:pt-0 justify-between w-full md:w-auto">
         <div className="flex gap-2 items-center">
