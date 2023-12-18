@@ -3,6 +3,7 @@ import cn from "classnames";
 // components
 import Slider from "../../components/slider";
 import { SliderType, Prefix } from "../../config/sankey";
+import Dropdown from "../../components/Dropdown";
 // icons
 import ChevronDoubleUpIcon from "@heroicons/react/24/solid/ChevronDoubleUpIcon";
 import ChevronDownIcon from "@heroicons/react/24/solid/ChevronDoubleDownIcon";
@@ -24,10 +25,12 @@ interface Setting {
   eps: number;
   priceTarget: number;
   peRatio: number;
+  selectedQuarter: string;
   setPeRatio: (peRatio: number) => void;
   onChange: (type: SliderCategory, val: number) => void;
   onSliderInfoClick: (string: SliderCategory) => void;
   onSaveClick: () => void;
+  onQuarterChange: (val: string) => void;
 }
 
 type InfoDivProps = {
@@ -35,9 +38,11 @@ type InfoDivProps = {
   eps: number;
   priceTarget: number;
   peRatio: number;
+  selectedQuarter: string;
   setPeRatio: (peRatio: number) => void;
   onExpandClick: () => void;
   onSaveClick: () => void;
+  onQuarterChange: (val: string) => void;
 };
 
 const SaveBtn = ({
@@ -62,14 +67,23 @@ const SaveBtn = ({
   </div>
 );
 
+export const calendarDropdownOptions = [
+  { label: "Q4 2023", value: "Q4 2023"},
+  { label: "Q1 2024", value: "Q1 2024"},
+  { label: "Q2 2024", value: "Q2 2024"},
+  { label: "Q3 2024", value: "Q3 2024"},
+]
+
 const InfoDiv = ({
   isExpanded,
   eps,
   priceTarget,
   peRatio,
+  selectedQuarter,
   setPeRatio,
   onExpandClick,
   onSaveClick,
+  onQuarterChange,
 }: InfoDivProps) => (
   <div
     className="
@@ -79,8 +93,12 @@ const InfoDiv = ({
   >
     <div className="flex justify-between gap-x-2 sm:gap-x-12 sm:justify-normal items-center flex-wrap cursor-pointer">
       <div className="flex ">
-        <CalendarIcon className="h-4 w-4 mr-1" />
-        Q3 2023
+        <Dropdown
+          value={selectedQuarter}
+          options={calendarDropdownOptions}
+          icon={<CalendarIcon className="h-4 w-4 mr-1" />}
+          onChange={(opt) => onQuarterChange(opt.value)}
+        />
       </div>
       <div>
         PRICE TARGET
@@ -132,10 +150,12 @@ const Settings = ({
   eps,
   priceTarget,
   peRatio,
+  selectedQuarter,
   setPeRatio,
   onChange,
   onSliderInfoClick,
   onSaveClick,
+  onQuarterChange,
 }: Setting) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [height, setHeight] = useState(0);
@@ -274,6 +294,8 @@ const Settings = ({
         peRatio={peRatio}
         onExpandClick={onExpandClick}
         onSaveClick={onSaveClick}
+        selectedQuarter={selectedQuarter}
+        onQuarterChange={onQuarterChange}
       />
       <div
         id="slider-container"

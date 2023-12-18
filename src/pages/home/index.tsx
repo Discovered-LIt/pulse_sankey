@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 // components
 import SankeyChart from "../../components/charts/sankey";
-import Settings from "./settings";
+import Settings, { calendarDropdownOptions } from "./settings";
 import SliderInfoSideBar from "./sliderInfoSideBar";
 import Modal from "../../components/modal";
 import TextField from "../../components/textField";
@@ -40,7 +40,8 @@ const Home = () => {
   const [userEmail, setUserEmail] = useState("");
   const { selectedSlider, sliderCategoryData, setSelectedSlider } =
     useSliderContext();
-  const { setErrorAlert, setSuccessAlert } = useAlertContext()
+  const { setErrorAlert, setSuccessAlert } = useAlertContext();
+  const [selectedQuarter, setSelectedQuarter] = useState(calendarDropdownOptions[0].value);
 
   const sankeyData = useMemo((): SankeyData => {
     const netProfit = cal.calculateNetProfit(sliderData);
@@ -149,6 +150,7 @@ const Home = () => {
 
   const onSaveHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const [reportingQuarter, reportingYear] = selectedQuarter.split(" ")
     const data = {
       chartDetails: {
         userEmail,
@@ -159,8 +161,8 @@ const Home = () => {
         date: Date.now(),
         unit: "BN",
         type: "sankey",
-        reportingYear: "2023",
-        reportingQuarter: "q3",
+        reportingYear,
+        reportingQuarter,
       },
       chartData: sliderData,
     } as SliderSaveBodyProps;
@@ -194,6 +196,8 @@ const Home = () => {
         setPeRatio={setPeRatio}
         onSliderInfoClick={onSliderInfoClick}
         onSaveClick={() => setShowSaveModal(true)}
+        selectedQuarter={selectedQuarter}
+        onQuarterChange={(val) => setSelectedQuarter(val)}
       />
       <div className="md:mt-[70px] z-0">
         <SankeyChart data={sankeyData} />
