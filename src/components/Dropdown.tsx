@@ -40,14 +40,14 @@ const Dropdown = ({
         })}/>
       </div>
       <div className={cn([
-        "z-50 bg-black border-[1px] border-white divide-y divide-gray-100 rounded-lg shadow w-44 fixed mt-2",
+        "z-50 bg-black border-[1px] border-white divide-y divide-gray-100 rounded-lg shadow w-44 fixed mt-2 overflow-hidden",
         showDropdown ? "block" : "hidden"
       ])}>
-        <ul className="py-1 text-sm ">
+        <ul className="text-sm">
           {options.map((opt) => (
             <li onClick={() => _onChange(opt)}>
               <div className={cn([
-                "block px-4 py-2 ",
+                "block px-4 py-2",
                 opt.value === value ? "text-black bg-white" : "text-white hover:text-black hover:bg-white"
               ])}>{opt.label}</div>
             </li>
