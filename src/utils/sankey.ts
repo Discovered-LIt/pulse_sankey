@@ -41,7 +41,7 @@ const calculateOperationProfit = (data: SliderData): number =>
 const calculateTax = (data: SliderData): number => data[SliderCategory.Taxes];
 
 const calculateNetProfit = (data: SliderData): number =>
-  calculateOperationProfit(data) - calculateTax(data);
+  calculateOperationProfit(data) - calculateTax(data) + calculateOthers(data);
 
 const calculateOthers = (data: SliderData): number =>
   data[SliderCategory.InterestAndOther];
