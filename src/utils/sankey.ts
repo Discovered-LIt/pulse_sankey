@@ -41,7 +41,7 @@ const calculateOperationProfit = (data: SliderData): number =>
 const calculateTax = (data: SliderData): number => data[SliderCategory.Taxes];
 
 const calculateNetProfit = (data: SliderData): number =>
-  calculateOperationProfit(data) - calculateTax(data) + calculateOthers(data);
+  calculateOperationProfit(data) - calculateTax(data);
 
 const calculateOthers = (data: SliderData): number =>
   data[SliderCategory.InterestAndOther];
@@ -74,7 +74,7 @@ const getEnergyGenerationAndStorageRevenue = (data: SliderData): number =>
 const getServicesAndOtherRevenue = (data: SliderData): number =>
   data[SliderCategory.ServicesAndOtherRevenue];
 
-const calEPS = (data: SliderData): number => calculateNetProfit(data) / 3.493;
+const calEPS = (data: SliderData): number => (calculateNetProfit(data) + calculateOthers(data)) / 3.493;
 
 const calculations = {
   calculateAutoRevenue,
