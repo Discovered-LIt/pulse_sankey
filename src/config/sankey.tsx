@@ -311,7 +311,7 @@ export const SliderSettings: SliderSettings = {
     max: 1,
     prefix: Prefix.Currency,
     step: 0.1,
-    defaultValue: 0.281,
+    defaultValue: 0.256,
     description: "less than Q2 auti revenue",
     type: SliderType.Positive,
     label: "Interest and other income/expenses (net)",
