@@ -219,7 +219,7 @@ export const SliderSettings: SliderSettings = {
     max: 3,
     prefix: Prefix.Currency,
     step: 0.1,
-    defaultValue: 0.6489,
+    defaultValue: 0.489,
     description: "more than yst avg",
     type: SliderType.Positive,
     label: "Automotive leasing revenue",
