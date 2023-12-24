@@ -10,6 +10,7 @@ import ChevronDownIcon from "@heroicons/react/24/solid/ChevronDoubleDownIcon";
 import MinusIcon from "@heroicons/react/24/solid/MinusIcon";
 import ChevronUpIcon from "@heroicons/react/24/solid/ChevronUpIcon";
 import CalendarIcon from "@heroicons/react/24/solid/CalendarIcon";
+import GetStartedModal from "./getStartedModal";
 // types
 import {
   SliderSettings,
@@ -58,6 +59,7 @@ const SaveBtn = ({
     >
       SAVE
     </button>
+    <GetStartedModal />
     <ChevronUpIcon
       className={cn(["h-6 w-6 transition-transform duration-500 z-20"], {
         "rotate-180": !isExpanded,
@@ -131,7 +133,7 @@ const InfoDiv = ({
           isExpanded={isExpanded}
           onExpandClick={onExpandClick}
           onSaveClick={onSaveClick}
-          className="md:hidden gap-6"
+          className="md:hidden gap-2"
         />
       </div>
     </div>
@@ -139,7 +141,7 @@ const InfoDiv = ({
       isExpanded={isExpanded}
       onExpandClick={onExpandClick}
       onSaveClick={onSaveClick}
-      className="md:flex gap-10 hidden cursor-pointer items-center"
+      className="md:flex gap-4 hidden cursor-pointer items-center"
     />
   </div>
 );
@@ -309,7 +311,7 @@ const Settings = ({
       >
         {Object.keys(SliderGroups).map((group: SliderGroupType, idx) => (
           <div key={`${group}-${idx}`}>
-            <div className="bg-[#1d1f23] py-2 px-8 sticky top-0 z-20 w-full uppercase text-[12px]">
+            <div className="bg-[#1d1f23] py-2 px-8 sticky top-0 w-full uppercase text-[12px]">
               {group}
             </div>
             <div className="grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-6">
@@ -340,7 +342,7 @@ const Settings = ({
           </div>
         ))}
         <div
-          className="hidden sm:flex bg-white text-black rounded-lg w-6 h-2 sticky bottom-0 justify-center items-center m-auto cursor-ns-resize z-20"
+          className="hidden sm:flex bg-white text-black rounded-lg w-6 h-2 sticky bottom-0 justify-center items-center m-auto cursor-ns-resize"
           onMouseDown={handleMouseDown}
           onTouchStart={handleMouseDown}
         >

@@ -4,7 +4,7 @@ import XCircleIcon from "@heroicons/react/24/outline/XCircleIcon";
 
 interface Modal {
   open: boolean;
-  header: string;
+  header?: string;
   children?: any;
   primaryButton?: {
     label: string;
@@ -25,15 +25,15 @@ const Modal = ({
 
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
-      <div className="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-40"></div>
-      <div className="z-50 bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 rounded text-black relative">
+      <div className="fixed top-0 left-0 w-full h-full bg-black opacity-60 z-40"></div>
+      <div className="z-50 bg-[#1d1f23] px-4 pb-4 pt-5 sm:p-6 sm:pb-4 rounded-lg text-white relative border-[1px]">
         <XCircleIcon
           className="h-6 w-6 absolute right-[10px] top-2 cursor-pointer"
           onClick={onClose}
         />
-        <h3 className="text-base font-semibold leading-6 text-gray-900">
+        {header && <h3 className="text-base font-semibold leading-6">
           {header}
-        </h3>
+        </h3>}
         <div className="my-2">{children}</div>
         {primaryButton && (
           <div className="flex justify-end gap-2 pt-4">
