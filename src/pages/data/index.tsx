@@ -146,7 +146,7 @@ const DataPage = () => {
             <p className="text-[14px]">{chartSettings[data.category].subLabel}</p>
             <div className="max-w-[300px] m-auto">
               {data.type === 'LINE' && <LineChart
-                data={data?.chartData?.slice(0, data.showvalues)}
+                data={data?.chartData?.slice(-data.showvalues)}
                 timeLineData={[]}
                 category={data?.category}
                 isLoading={isLoading}
@@ -156,7 +156,7 @@ const DataPage = () => {
               />}
               {data.type === 'BAR' &&
                 <BarChart
-                  data={data?.chartData?.slice(0, data.showvalues)}
+                  data={data?.chartData?.slice(-data.showvalues)}
                   chartColour={chartSettings[data.category]?.chartcolour?.dark}
                   chartOverview
                   dateFormat={chartSettings[data.category]?.dateFormat}
