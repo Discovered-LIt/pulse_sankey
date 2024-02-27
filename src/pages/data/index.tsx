@@ -11,6 +11,7 @@ import SideBar from "../../components/sideBar";
 import Spinner from "../../components/Spinner";
 // utils
 import { GREEN, LIGHT_GREEN, LIGHT_RED } from "../../config/sankey";
+import { getUTCDate } from "../../utils/global";
 // hooks
 import useOnOutsideClick from "../../hooks/useOnClickOutside";
 // types
@@ -74,7 +75,7 @@ const DataPage = () => {
       const firstVal = first(data).value;
       const latestVal = last(data).value;
       const dateFormat = obj.frequency === 'QUARTERLY' ? "'Q'Q yyyy" : "MMMM dd, yyyy"
-      const subLabel = last(data).date ? format(new Date(last(data).date), dateFormat) : "";
+      const subLabel = getUTCDate(last(data).date, dateFormat);
       const priorDataValue = data.length > 1 ? data[data.length - 2].value : latestVal;
       let changeValue = latestVal - firstVal;
       changeValue = ((latestVal - priorDataValue) / priorDataValue) * 100;

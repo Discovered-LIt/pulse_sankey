@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import {
   SankeyCategory,
   sankeySettings,
@@ -25,3 +26,14 @@ export const getSankeyDisplayColor = (
     return { lite: LIGHT_GREY, dark: GREY };
   }
 };
+
+export const getUTCDate = (date: string, dateFormat: string) => {
+  if(!date) return "";
+  const parsedDate = new Date(date);
+  const utcDate = new Date(
+    parsedDate.getUTCFullYear(), 
+    parsedDate.getUTCMonth(), 
+    parsedDate.getUTCDate()
+  );
+  return format(utcDate, dateFormat);
+}
