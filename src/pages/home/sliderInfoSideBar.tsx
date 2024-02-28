@@ -1,6 +1,6 @@
 import React, { useRef, useState, useMemo, useEffect } from "react";
 import axios from "axios";
-import { format, subMonths } from "date-fns";
+import { subMonths } from "date-fns";
 import cn from "classnames";
 import { useQuery } from "@tanstack/react-query";
 // component
@@ -12,8 +12,9 @@ import useOnOutsideClick from "../../hooks/useOnClickOutside";
 import { useSliderContext } from "../../context/SliderContext";
 // types
 import { SliderMappingDataProps } from "../../context/SliderContext";
-// Date
 import { SliderSettings, SliderType } from "../../config/sankey";
+// Date
+import { getUTCDate } from "../../utils/global";
 
 interface SliderInfoSideBar {
   showSidebar: boolean;
@@ -106,28 +107,28 @@ const SliderInfoSideBar = ({
     return [
       [
         "latest",
-        format(new Date(latest.date), "'Q'Q yyyy"),
+        getUTCDate(latest.date, "'Q'Q yyyy"),
         latest.value,
         prefix,
         true,
       ],
       [
         "change",
-        `Since ${format(new Date(min.date), "'Q'Q yyyy")}`,
+        `Since ${getUTCDate(min.date, "'Q'Q yyyy")}`,
         parseFloat(changeValue.toFixed(3)),
         "%",
         isChangePositive,
       ],
       [
         "maximum",
-        format(new Date(max.date), "'Q'Q yyyy"),
+        getUTCDate(max.date, "'Q'Q yyyy"),
         max.value,
         prefix,
         true,
       ],
       [
         "minimum",
-        format(new Date(min.date), "'Q'Q yyyy"),
+        getUTCDate(min.date, "'Q'Q yyyy"),
         min.value,
         prefix,
         true,

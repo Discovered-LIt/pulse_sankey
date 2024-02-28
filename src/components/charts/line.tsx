@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState, RefObject, useMemo } from "react";
 import * as d3 from "d3";
-import cn from "classnames";
-import { format } from "date-fns";
 // utils
 import { LIGHT_GREEN } from "../../config/sankey";
+import { getUTCDate } from "../../utils/global";
 // components
 import TimelineRangeSlider from "../../components/rangeSlider";
 import Filters, { ZoomType } from "./Filters";
@@ -125,7 +124,7 @@ const LineChart = ({
             .axisBottom(x)
             .tickValues(tickValues)
             .tickFormat((d) =>
-              format(new Date(d), !pathOnly ? "'Q'Q yy" : "yyyy"),
+              getUTCDate(d, !pathOnly ? "'Q'Q yy" : "yyyy"),
             ),
         );
 
@@ -246,7 +245,7 @@ const LineChart = ({
               style={{ left: `${tooltip?.x}px`, top: `${tooltip?.y}px` }}
             >
               <b className="mr-2">
-                {format(new Date(tooltip.d.date), (dateFormat || "'Q'Q yyyy"))}:
+                {getUTCDate(tooltip.d.date, (dateFormat || "'Q'Q yyyy"))}:
               </b>
               {tooltip?.d?.value}
               {prefix}

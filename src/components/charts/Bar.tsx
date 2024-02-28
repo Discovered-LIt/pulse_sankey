@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect, RefObject } from "react";
 import * as d3 from "d3";
-import { format } from "date-fns";
 // components
 import Filters, { ZoomType } from "./Filters";
+// utils
+import { getUTCDate } from "../../utils/global";
 
 export type BarChartData = {
   date: string;
@@ -109,7 +110,7 @@ const BarChart = ({
           d3
             .axisBottom(x)
             .tickValues(tickValues)
-            .tickFormat((d) => format(new Date(d), "'Q'Q yy"))
+            .tickFormat((d) => getUTCDate(d, "'Q'Q yy"))
         );
   
       // y axis
@@ -150,7 +151,7 @@ const BarChart = ({
           style={{ left: `${tooltip?.x}px`, top: `${tooltip?.y}px` }}
         >
           <b className="mr-2">
-            {format(new Date(tooltip.d.date), (dateFormat || "'Q'Q yyyy"))}:
+            {getUTCDate(tooltip.d.date, (dateFormat || "'Q'Q yyyy"))}:
           </b>
           {tooltip?.d?.value}
         </div>
