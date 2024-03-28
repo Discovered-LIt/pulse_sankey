@@ -31,6 +31,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "6",
+    "react-twitter-embed": "^4.0.4",
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.4",
     "url-loader": "^4.1.1",

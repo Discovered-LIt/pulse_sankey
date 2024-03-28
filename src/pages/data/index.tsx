@@ -3,12 +3,14 @@ import axiosInstance from '../../config/axios';
 import { useQuery } from "@tanstack/react-query";
 import last from 'lodash-es/last';
 import first from 'lodash-es/first';
-import { format, subMonths } from "date-fns";
+import { subMonths } from "date-fns";
+import { TwitterTweetEmbed } from 'react-twitter-embed'
 // components
 import LineChart from "../../components/charts/line";
 import BarChart from "../../components/charts/Bar";
 import SideBar from "../../components/sideBar";
 import Spinner from "../../components/Spinner";
+import LoadingSkeleton from "../../components/loadingSkeleton";
 // utils
 import { GREEN, LIGHT_GREEN, LIGHT_RED } from "../../config/sankey";
 import { getUTCDate } from "../../utils/global";
@@ -30,6 +32,7 @@ type MappingData = {
   symbol: string;
   prefix: string;
   chartData?: { date: string, value: number, positive?: boolean, changeValue: number }[];
+  tweets?: string[];
 }
 
 const DataPage = () => {
@@ -48,7 +51,8 @@ const DataPage = () => {
   const { data: mappingData = [], isLoading } = useQuery<MappingData[]>({
     queryKey: ['datamapping'],
     queryFn: async () => {
-      const { data }: { data: MappingData[] } = await axiosInstance.get('/datamapping.json');
+      const resp = await axiosInstance.get('/datamapping.json')
+      const data: MappingData[] = resp.data;
       const promises = data.map(async (item) => {
         try {
           const chartData = await axiosInstance.get(item.link); 
@@ -57,7 +61,6 @@ const DataPage = () => {
             chartData: chartData.data.data || chartData.data.observations || chartData.data
           }
         } catch (err) {
-          console.log(item.category, err)
           return null;
         }
       })
@@ -197,6 +200,24 @@ const DataPage = () => {
             {selectedChart?.title}
           </h1>
           <div className="p-6 mt-2" dangerouslySetInnerHTML={{ __html: selectedChart?.summary }} />
+          {selectedChart?.tweets?.length > 0 && <div className="p-6">
+            <p className="uppercase italic -mt-8 mb-4">latest</p>
+            <ol className="relative border-s border-gray-200 dark:border-gray-700">   
+              {
+                selectedChart?.tweets?.map((tweetId, idx) => (
+                  <li className="mb-10 ms-4" key={idx}>
+                    <div
+                      className="absolute w-4 h-4 bg-[#232323] rounded-full mt-4 -start-[8px] border border-white dark:border-gray-900 dark:bg-gray-700"
+                    />
+                    <TwitterTweetEmbed
+                      tweetId={tweetId}
+                      placeholder={<LoadingSkeleton />}
+                    />
+                  </li>
+                ))
+              }
+            </ol>
+          </div>}
         </div>
       </SideBar>
     </div>
