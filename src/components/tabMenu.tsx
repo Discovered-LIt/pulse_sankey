@@ -2,7 +2,7 @@ import React from "react";
 import cn from "classnames";
 import { useLocation, useNavigate } from "react-router-dom";
 // logo
-import teslaLogo from '../assets/tesla-logo.png';
+import teslaLogo from '../assets/tesla-logo.svg';
 
 const TabMenu = () => {
   const { pathname } = useLocation()
@@ -19,8 +19,8 @@ const TabMenu = () => {
   }
 
   return (
-    <div className="bg-black flex items-stretch sm:items-start">
-      <img src={teslaLogo} className="w-[100px] sm:w-[200px]" />
+    <div className="bg-black flex">
+      <img src={teslaLogo} className="w-[100px] sm:w-[150px] px-4" />
       <div className="border-b border-gray-200 w-full">
         <nav className="-mb-px flex space-x-8" aria-label="Tabs">
           {tabs.map(({ name, link }) => (
