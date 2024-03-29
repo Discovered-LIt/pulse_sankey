@@ -20,7 +20,7 @@ const TabMenu = () => {
 
   return (
     <div className="bg-black flex">
-      <img src={teslaLogo} className="w-[100px] sm:w-[150px] px-4" />
+      <img src={teslaLogo} className="w-[100px] sm:w-[150px] mx-4 sm:mx-8" />
       <div className="border-b border-gray-200 w-full">
         <nav className="-mb-px flex space-x-8" aria-label="Tabs">
           {tabs.map(({ name, link }) => (
