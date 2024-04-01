@@ -11,6 +11,7 @@ import BarChart from "../../components/charts/Bar";
 import SideBar from "../../components/sideBar";
 import Spinner from "../../components/Spinner";
 import LoadingSkeleton from "../../components/loadingSkeleton";
+import Filters from "./filters";
 // utils
 import { GREEN, LIGHT_GREEN, LIGHT_RED } from "../../config/sankey";
 import { getUTCDate } from "../../utils/global";
@@ -33,6 +34,11 @@ type MappingData = {
   prefix: string;
   chartData?: { date: string, value: number, positive?: boolean, changeValue: number }[];
   tweets?: string[];
+  filters: string[];
+}
+
+export type Filter = {
+  types: string[]
 }
 
 const DataPage = () => {
@@ -40,6 +46,7 @@ const DataPage = () => {
   const [selectedChart, setSelectedChart] = useState<MappingData>(undefined)
   const sideBarRef = useRef<HTMLDivElement>();
   const [activeZoom, setActiveZoom] = useState(ZoomType.ALL);
+  const [filters, setFilters] = useState<Filter>({ types: [] })
 
   useOnOutsideClick(sideBarRef.current, () => {
     if (!showSidebar) return;
@@ -126,100 +133,119 @@ const DataPage = () => {
     return chartData;
   }, [activeZoom, selectedChart]);
 
+  const filteredCharts = useMemo(() => {
+    if(!filters.types.length) return mappingData;
+    return mappingData.filter((chart) => (
+      !!chart.filters.find((type) => filters.types.includes(type))
+    ))
+  }, [mappingData, filters.types])
+
+  const chartTypeOptions = useMemo(() => {
+    return [...new Set(mappingData.map((chart) => chart.filters).flat())].map(
+      (type) => { return { label: type.toUpperCase(), value: type } })
+  }, [mappingData])
+
   if(isLoading) return <Spinner show={isLoading} classNames="mt-16"/>
 
   return(
-    <div className="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 h-[87vh] overflow-scroll gap-4">
-      {
-        mappingData?.map((data) => (
-          <div
-            key={data.category}
-            className="p-4 h-auto overflow-x-clip cursor-pointer rounded hover:bg-zinc-900"
-            onClick={() => onChartSelect(data)}
-          >
-            <div className="uppercase font-extralight text-[14px]"> {data.title} </div>
-            <div className="font-normal flex my-2">
-              {`${data.prefix}${last(data?.chartData).value.toLocaleString()} ${data.symbol}`}
-              <p
-                className="text-[12px] ml-2"
-                style={{ color: chartSettings?.[data.category]?.chartcolour?.light }}
-              >
-                {chartSettings[data.category].changeValue}%
-              </p>
-            </div>
-            <p className="text-[14px]">{chartSettings[data.category].subLabel}</p>
-            <div className="max-w-[300px] m-auto">
-              {data.type === 'LINE' && <LineChart
-                data={data?.chartData?.slice(-data.showvalues)}
-                timeLineData={[]}
-                category={data?.category}
-                isLoading={isLoading}
-                chartOverview
-                chartColour={chartSettings[data.category]?.chartcolour?.dark}
-                dateFormat={chartSettings[data.category]?.dateFormat}
-              />}
-              {data.type === 'BAR' &&
-                <BarChart
+    <div className="p-8">
+      <Filters
+        filters={filters}
+        setFilters={setFilters}
+        chartTypeOptions={chartTypeOptions}
+      />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 max-h-[87vh] overflow-scroll gap-4">
+        {
+          filteredCharts?.map((data) => (
+            <div
+              key={data.category}
+              className="p-4 h-auto overflow-x-clip cursor-pointer rounded hover:bg-zinc-900"
+              onClick={() => onChartSelect(data)}
+            >
+              <div className="uppercase font-extralight text-[14px]"> {data.title} </div>
+              <div className="font-normal flex my-2">
+                {`${data.prefix}${last(data?.chartData).value.toLocaleString()} ${data.symbol}`}
+                <p
+                  className="text-[12px] ml-2"
+                  style={{ color: chartSettings?.[data.category]?.chartcolour?.light }}
+                >
+                  {chartSettings[data.category].changeValue}%
+                </p>
+              </div>
+              <p className="text-[14px]">{chartSettings[data.category].subLabel}</p>
+              <div className="max-w-[300px] m-auto">
+                {data.type === 'LINE' && <LineChart
                   data={data?.chartData?.slice(-data.showvalues)}
-                  chartColour={chartSettings[data.category]?.chartcolour?.dark}
+                  timeLineData={[]}
+                  category={data?.category}
+                  isLoading={isLoading}
                   chartOverview
+                  chartColour={chartSettings[data.category]?.chartcolour?.dark}
                   dateFormat={chartSettings[data.category]?.dateFormat}
-                />
-              }
+                />}
+                {data.type === 'BAR' &&
+                  <BarChart
+                    data={data?.chartData?.slice(-data.showvalues)}
+                    chartColour={chartSettings[data.category]?.chartcolour?.dark}
+                    chartOverview
+                    dateFormat={chartSettings[data.category]?.dateFormat}
+                  />
+                }
+              </div>
             </div>
-          </div>
-        ))
-      }
-      <SideBar open={showSidebar} onClose={() => setShowSidebar(false)}>
-        <div className="bg-[#232323] h-full overflow-auto" ref={sideBarRef}>
-          <div className="p-6 mt-2">
-            {selectedChart?.type === 'LINE' && <LineChart
-              data={filteredChartData}
-              timeLineData={[]}
-              category={selectedChart?.category}
-              isLoading={isLoading}
-              parentRef={sideBarRef}
-              prefix={selectedChart.symbol}
-              chartColour={chartSettings[selectedChart.category]?.chartcolour?.dark}
-              dateFormat={chartSettings[selectedChart.category]?.dateFormat}
-              activeZoom={activeZoom}
-              onZoomChange={onZoomChange}
-            />}
-            {selectedChart?.type === 'BAR' &&
-              <BarChart
+          ))
+        }
+        <SideBar open={showSidebar} onClose={() => setShowSidebar(false)}>
+          <div className="bg-[#232323] h-full overflow-auto" ref={sideBarRef}>
+            <div className="p-6 mt-2">
+              {selectedChart?.type === 'LINE' && <LineChart
                 data={filteredChartData}
-                chartColour={chartSettings[selectedChart.category]?.chartcolour?.dark}
+                timeLineData={[]}
+                category={selectedChart?.category}
+                isLoading={isLoading}
                 parentRef={sideBarRef}
+                prefix={selectedChart.symbol}
+                chartColour={chartSettings[selectedChart.category]?.chartcolour?.dark}
                 dateFormat={chartSettings[selectedChart.category]?.dateFormat}
                 activeZoom={activeZoom}
                 onZoomChange={onZoomChange}
-              />
-            }
-          </div>
-          <h1 className="py-4 text-center bg-black">
-            {selectedChart?.title}
-          </h1>
-          <div className="p-6 mt-2" dangerouslySetInnerHTML={{ __html: selectedChart?.summary }} />
-          {selectedChart?.tweets?.length > 0 && <div className="p-6">
-            <p className="uppercase italic -mt-8 mb-4">latest</p>
-            <ol className="relative border-s border-gray-200 dark:border-gray-700">   
-              {
-                selectedChart?.tweets?.map((tweetId, idx) => (
-                  <li className="mb-10 ms-4" key={idx}>
-                    <div
-                      className="absolute w-4 h-4 bg-[#232323] rounded-full mt-4 -start-[8px] border border-white dark:border-gray-900 dark:bg-gray-700"
-                    />
-                    <TwitterTweetEmbed
-                      tweetId={tweetId}
-                      placeholder={<LoadingSkeleton />}
-                    />
-                  </li>
-                ))
+              />}
+              {selectedChart?.type === 'BAR' &&
+                <BarChart
+                  data={filteredChartData}
+                  chartColour={chartSettings[selectedChart.category]?.chartcolour?.dark}
+                  parentRef={sideBarRef}
+                  dateFormat={chartSettings[selectedChart.category]?.dateFormat}
+                  activeZoom={activeZoom}
+                  onZoomChange={onZoomChange}
+                />
               }
-            </ol>
-          </div>}
-        </div>
-      </SideBar>
+            </div>
+            <h1 className="py-4 text-center bg-black">
+              {selectedChart?.title}
+            </h1>
+            <div className="p-6 mt-2" dangerouslySetInnerHTML={{ __html: selectedChart?.summary }} />
+            {selectedChart?.tweets?.length > 0 && <div className="p-6">
+              <p className="uppercase italic -mt-8 mb-4">latest</p>
+              <ol className="relative border-s border-gray-200 dark:border-gray-700">   
+                {
+                  selectedChart?.tweets?.map((tweetId, idx) => (
+                    <li className="mb-10 ms-4" key={idx}>
+                      <div
+                        className="absolute w-4 h-4 bg-[#232323] rounded-full mt-4 -start-[8px] border border-white dark:border-gray-900 dark:bg-gray-700"
+                      />
+                      <TwitterTweetEmbed
+                        tweetId={tweetId}
+                        placeholder={<LoadingSkeleton />}
+                      />
+                    </li>
+                  ))
+                }
+              </ol>
+            </div>}
+          </div>
+        </SideBar>
+      </div>
     </div>
   )
 }
