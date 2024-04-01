@@ -29,7 +29,7 @@ export const Filters = ({
 
   return(
     <div className="p-2">
-      <div className="flex items-baseline">
+      <div className="flex items-baseline -mt-[12px] mb-6">
         <div className="w-fit mr-6 mt-2">
           <Dropdown
             placeholder='FILTER'
