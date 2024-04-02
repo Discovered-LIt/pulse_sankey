@@ -29,8 +29,8 @@ export const Filters = ({
 
   return(
     <div className="p-2">
-      <div className="flex items-baseline -mt-[12px] mb-6">
-        <div className="w-fit mr-6 mt-2">
+      <div className="flex items-center -mt-[12px] mb-6">
+        <div className="w-fit mr-6">
           <Dropdown
             placeholder='FILTER'
             selectedValues={filters.types}
@@ -40,7 +40,7 @@ export const Filters = ({
             onChange={(opt) => onTypeSelect(opt.value)}
           />
         </div>
-        <div className="flex items-center flex-wrap">
+        <div className="flex items-center flex-wrap gap">
           {filters.types.map((type) =>
             <Tag
               text={type.toUpperCase()}

@@ -15,7 +15,7 @@ export const Tag = ({
 }: Props) => {
   return(
     <div
-      className="p-[2px] border-[1px] border-yellow-600 rounded-lg mr-2 mb-2 w-fit flex justify-between items-center"
+      className="p-[2px] border-[1px] border-[#ffde64] rounded-lg mr-2 w-fit flex justify-between items-center"
     >
       <div className="px-4 text-[12px]">{text}</div>
       {onClose && <XCircleIcon className="h-4 w-4 mr-2 cursor-pointer" onClick={() => onClose(value)}/>}

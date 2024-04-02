@@ -3,6 +3,7 @@ import axiosInstance from '../../config/axios';
 import { useQuery } from "@tanstack/react-query";
 import last from 'lodash-es/last';
 import first from 'lodash-es/first';
+import sortBy from 'lodash-es/sortBy';
 import { subMonths } from "date-fns";
 import { TwitterTweetEmbed } from 'react-twitter-embed'
 // components
@@ -141,8 +142,8 @@ const DataPage = () => {
   }, [mappingData, filters.types])
 
   const chartTypeOptions = useMemo(() => {
-    return [...new Set(mappingData.map((chart) => chart.filters).flat())].map(
-      (type) => { return { label: type.toUpperCase(), value: type } })
+    return sortBy([...new Set(mappingData.map((chart) => chart.filters).flat())].map(
+      (type) => { return { label: type.toUpperCase(), value: type }}), 'label')
   }, [mappingData])
 
   if(isLoading) return <Spinner show={isLoading} classNames="mt-16"/>

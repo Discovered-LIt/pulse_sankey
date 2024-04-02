@@ -54,7 +54,7 @@ const Dropdown = ({
             <li onClick={() => _onChange(opt)}>
               <div className={cn([
                 "block px-4 py-2 cursor-pointer",
-                [...selectedValues, value].includes(opt.value) ? "text-black bg-white" : "text-white hover:text-black hover:bg-yellow-600"
+                [...selectedValues, value].includes(opt.value) ? "text-black bg-white" : "text-white hover:text-black hover:bg-[#ffde64]"
               ])}>{opt.label}</div>
             </li>
           ))}
