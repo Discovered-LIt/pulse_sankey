@@ -149,13 +149,13 @@ const DataPage = () => {
   if(isLoading) return <Spinner show={isLoading} classNames="mt-16"/>
 
   return(
-    <div className="p-8">
+    <div className="px-8 pt-8">
       <Filters
         filters={filters}
         setFilters={setFilters}
         chartTypeOptions={chartTypeOptions}
       />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 max-h-[70vh] overflow-scroll gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 max-h-[80vh] overflow-scroll gap-4">
         {
           filteredCharts?.map((data) => (
             <div
