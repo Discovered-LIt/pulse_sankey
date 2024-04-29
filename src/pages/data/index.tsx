@@ -160,21 +160,23 @@ const DataPage = () => {
           filteredCharts?.map((data) => (
             <div
               key={data.category}
-              className="p-4 h-auto overflow-x-clip cursor-pointer rounded hover:bg-zinc-900"
+              className="p-4 h-auto overflow-x-clip cursor-pointer rounded hover:bg-zinc-900 sm:border-0 border border-white flex flex-row sm:flex-col min-h-[105px] sm:max-h-max"
               onClick={() => onChartSelect(data)}
             >
-              <div className="uppercase font-extralight text-[14px]"> {data.title} </div>
-              <div className="font-normal flex my-2">
-                {`${data.prefix}${last(data?.chartData).value.toLocaleString()} ${data.symbol}`}
-                <p
-                  className="text-[12px] ml-2"
-                  style={{ color: chartSettings?.[data.category]?.chartcolour?.light }}
-                >
-                  {chartSettings[data.category].changeValue}%
-                </p>
+              <div className="flex-2 w-[145px] sm:w-auto">
+                <div className="uppercase font-extralight text-[12px] sm:text-[14px]"> {data.title} </div>
+                <div className="font-normal flex my-2 text-xs sm:text-[16px]">
+                  {`${data.prefix}${last(data?.chartData).value.toLocaleString()} ${data.symbol}`}
+                  <p
+                    className="text-[12px] ml-2"
+                    style={{ color: chartSettings?.[data.category]?.chartcolour?.light }}
+                  >
+                    {chartSettings[data.category].changeValue}%
+                  </p>
+                </div>
+                <p className="text-[14px]">{chartSettings[data.category].subLabel}</p>
               </div>
-              <p className="text-[14px]">{chartSettings[data.category].subLabel}</p>
-              <div className="max-w-[300px] m-auto">
+              <div className="w-auto flex-1">
                 {data.type === 'LINE' && <LineChart
                   data={data?.chartData?.slice(-data.showvalues)}
                   timeLineData={[]}
