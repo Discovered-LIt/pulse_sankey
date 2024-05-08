@@ -1,4 +1,4 @@
-import { SliderData } from "../pages/home";
+import { SliderData } from "../pages/sankey";
 
 export enum SankeyCategory {
   AutoRevenue = "Auto Revenue",

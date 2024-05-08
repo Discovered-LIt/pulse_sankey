@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { sankey, sankeyCenter, sankeyLinkHorizontal } from "d3-sankey";
 // types
 import { sankeySettings, SankeyCategory } from "../../config/sankey";
-import { SankeyData } from "../../pages/home";
+import { SankeyData } from "../../pages/sankey";
 // constant
 import { GREY } from "../../config/sankey";
 

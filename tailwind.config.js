@@ -2,7 +2,13 @@
 module.exports = {
   content: ["./src/**/*.{tsx,html}"],
   theme: {
-    extend: {},
+    extend: {
+      transitionProperty: {
+        'height': 'height',
+        'display': 'display',
+        'spacing': 'margin, padding',
+      }
+    },
   },
   plugins: [],
 };

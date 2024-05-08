@@ -1,7 +1,13 @@
 import React from "react";
+import cn from 'classnames';
+// context
+import { useTopicSettingsContext } from "../context/TopicSettingsContext";
 
 const Header = () => {
-  return <div className="w-full h-12 bg-black" />;
+  const { settings } = useTopicSettingsContext();
+  const bgClr = settings.theme.primary || 'black';
+
+  return <div className={cn(`w-full h-12 bg-[${bgClr}]`)} />;
 };
 
 export default Header;

@@ -2,7 +2,7 @@ import axios from "axios";
 import axiosInstance from "../config/axios";
 // types
 import { SliderMappingDataProps } from "../context/SliderContext";
-import { SliderData } from "../pages/home";
+import { SliderData } from "../pages/sankey";
 
 export type SliderSaveBodyProps = {
   chartDetails: {

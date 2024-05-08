@@ -6,6 +6,7 @@ import first from 'lodash-es/first';
 import sortBy from 'lodash-es/sortBy';
 import { subMonths } from "date-fns";
 import { TwitterTweetEmbed } from 'react-twitter-embed'
+import cn from 'classnames';
 // components
 import LineChart from "../../components/charts/line";
 import BarChart from "../../components/charts/Bar";
@@ -20,6 +21,8 @@ import { getUTCDate } from "../../utils/global";
 import useOnOutsideClick from "../../hooks/useOnClickOutside";
 // types
 import { ZoomType, zoomsConfig } from "../../components/charts/Filters";
+// context
+import { useTopicSettingsContext, Topic } from "../../context/TopicSettingsContext";
 
 type MappingData = {
   category: string;
@@ -48,6 +51,7 @@ const DataPage = () => {
   const sideBarRef = useRef<HTMLDivElement>();
   const [activeZoom, setActiveZoom] = useState(ZoomType.ALL);
   const [filters, setFilters] = useState<Filter>({ types: [] })
+  const { settings, activeTopic, datamappingUrl } = useTopicSettingsContext();
 
   useOnOutsideClick(sideBarRef.current, () => {
     if (!showSidebar) return;
@@ -59,7 +63,7 @@ const DataPage = () => {
   const { data: mappingData = [], isLoading } = useQuery<MappingData[]>({
     queryKey: ['datamapping'],
     queryFn: async () => {
-      const resp = await axiosInstance.get('/datamapping.json')
+      const resp = await axiosInstance.get(datamappingUrl)
       const data: MappingData[] = resp.data;
       const promises = data.map(async (item) => {
         try {
@@ -92,7 +96,7 @@ const DataPage = () => {
       changeValue = ((latestVal - priorDataValue) / priorDataValue) * 100;
 
       const greenSet = { light: LIGHT_GREEN, dark: '#04E382' };
-      const redSet = { light: LIGHT_RED, dark: '#ff0000' };
+      const redSet = { light: LIGHT_RED, dark: '#FF7575' };
       let chartcolour: { light: string, dark: string } = { light: LIGHT_GREEN, dark: GREEN }
       if(obj.increase === "GREEN") {
         chartcolour = changeValue >= 0 ? greenSet : redSet;
@@ -148,24 +152,30 @@ const DataPage = () => {
 
   if(isLoading) return <Spinner show={isLoading} classNames="mt-16"/>
 
+  const bgPrimaryClr = settings.theme.primary || 'black';
+  const bgSecondaryClr = settings.theme.secondary || 'black';
+
   return(
-    <div className="px-8 pt-8">
-      <Filters
+    <div className={cn(`px-8 pt-8 bg-[${bgPrimaryClr}]`)}>
+      {activeTopic === Topic.Default && <Filters
         filters={filters}
         setFilters={setFilters}
         chartTypeOptions={chartTypeOptions}
-      />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 max-h-[80vh] overflow-scroll gap-4">
+      />}
+      <div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 max-h-[80vh] overflow-scroll gap-4"
+      >
         {
           filteredCharts?.map((data) => (
             <div
               key={data.category}
-              className="p-4 h-auto overflow-x-clip cursor-pointer rounded hover:bg-zinc-900 sm:border-0 border border-white flex flex-row sm:flex-col min-h-[105px] sm:max-h-max"
+              className="p-4 h-auto overflow-x-clip cursor-pointer rounded-[10px] hover:bg-zinc-900 sm:border-0 border border-white flex flex-row sm:flex-col min-h-[105px] sm:max-h-max mb-4"
+              style={{ background: bgSecondaryClr }}
               onClick={() => onChartSelect(data)}
             >
               <div className="flex-2 w-[145px] sm:w-auto">
                 <div className="uppercase font-extralight text-[12px] sm:text-[14px]"> {data.title} </div>
-                <div className="font-normal flex my-2 text-xs sm:text-[16px]">
+                <div className="font-normal flex my-2 text-[14px] sm:text-[16px]">
                   {`${data.prefix}${last(data?.chartData).value.toLocaleString()} ${data.symbol}`}
                   <p
                     className="text-[12px] ml-2"
@@ -174,7 +184,7 @@ const DataPage = () => {
                     {chartSettings[data.category].changeValue}%
                   </p>
                 </div>
-                <p className="text-[14px]">{chartSettings[data.category].subLabel}</p>
+                <p className="text-[12px] sm:text-[14px]">{chartSettings[data.category].subLabel}</p>
               </div>
               <div className="w-auto flex-1">
                 {data.type === 'LINE' && <LineChart
@@ -198,8 +208,16 @@ const DataPage = () => {
             </div>
           ))
         }
-        <SideBar open={showSidebar} onClose={() => setShowSidebar(false)}>
-          <div className="bg-[#232323] h-full overflow-auto" ref={sideBarRef}>
+        <SideBar
+          open={showSidebar}
+          bgColor={settings.theme.primary}
+          onClose={() => setShowSidebar(false)}
+        >
+          <div
+            className="h-full overflow-auto"
+            ref={sideBarRef}
+            style={{ background: settings.theme.secondary || '#232323' }}
+          >
             <div className="p-6 mt-2">
               {selectedChart?.type === 'LINE' && <LineChart
                 data={filteredChartData}
@@ -224,7 +242,13 @@ const DataPage = () => {
                 />
               }
             </div>
-            <h1 className="py-4 text-center bg-black">
+            <h1
+              className="py-4 text-center bg-black"
+              style={{
+                background: bgPrimaryClr,
+                color: settings.theme.secondary || 'white'
+              }}
+            >
               {selectedChart?.title}
             </h1>
             <div className="p-6 mt-2" dangerouslySetInnerHTML={{ __html: selectedChart?.summary }} />

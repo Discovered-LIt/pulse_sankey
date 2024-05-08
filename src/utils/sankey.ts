@@ -1,4 +1,4 @@
-import { SliderData } from "../pages/home";
+import { SliderData } from "../pages/sankey";
 import { SankeyCategory, SliderCategory } from "../config/sankey";
 
 export type CalculationProps = { [key in SankeyCategory]?: number };
