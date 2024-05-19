@@ -59,7 +59,7 @@ const TabMenu = () => {
                   `border-transparent text-gray-400 hover:border-[${secondaryClr}] hover:text-[${secondaryClr}] font-medium`,
                   'whitespace-nowrap py-4 px-1 text-sm'
                 )}
-                style={{ borderColor: secondaryClr }}
+                style={{ borderColor: secondaryClr, , textTransform: 'uppercase' }}
                 aria-current={true ? 'page' : undefined}
               >
                 {name}
