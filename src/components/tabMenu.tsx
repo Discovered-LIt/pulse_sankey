@@ -24,7 +24,7 @@ const TabMenu = () => {
     if(!activeTopic) return;
     const items = [
       { name: 'data', link: '/data'},
-      { name: 'forecast', link: '/sankey'},
+      { name: 'forecast', link: '/forecast'},
     ]
     return items.filter(({ name }) => menuTabsToShow.includes(name.toLowerCase()));
   }, [activeTopic])
