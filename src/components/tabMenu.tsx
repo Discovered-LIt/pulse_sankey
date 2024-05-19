@@ -23,8 +23,8 @@ const TabMenu = () => {
   const tabs = useMemo((): { name: string, link: string }[] => {
     if(!activeTopic) return;
     const items = [
-      { name: 'ALL THE DATA', link: '/data'},
-      { name: 'FORECAST', link: '/sankey'},
+      { name: 'sankey', link: '/sankey'},
+      { name: 'data', link: '/data'},
     ]
     return items.filter(({ name }) => menuTabsToShow.includes(name.toLowerCase()));
   }, [activeTopic])
