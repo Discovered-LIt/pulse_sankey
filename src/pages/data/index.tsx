@@ -210,7 +210,7 @@ const DataPage = () => {
         }
         <SideBar
           open={showSidebar}
-          bgColor={settings.theme.primary}
+          bgColor={settings.theme.secondary}
           onClose={() => setShowSidebar(false)}
         >
           <div
