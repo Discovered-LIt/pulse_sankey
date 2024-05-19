@@ -74,5 +74,3 @@ const TabMenu = () => {
 
 export default TabMenu;
 }
-
-export default TabMenu;
