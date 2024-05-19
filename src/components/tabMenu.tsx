@@ -9,30 +9,30 @@ import { useTopicSettingsContext, Topic } from "../context/TopicSettingsContext"
 import teslaLogo from '../assets/tesla-logo.svg';
 
 const TabMenu = () => {
-  const { pathname } = useLocation()
-  const navigate = useNavigate()
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { activeTopic, menuTabsToShow, settings, setActiveTopic } = useTopicSettingsContext();
 
   useEffect(() => {
     let topic = searchParams.get('topic');
     topic = Object.values(Topic).includes(topic as Topic) ? topic : Topic.Default;
-    setActiveTopic(topic as Topic)
-  }, []);
+    setActiveTopic(topic as Topic);
+  }, [searchParams, setActiveTopic]);
 
   const tabs = useMemo((): { name: string, link: string }[] => {
-    if(!activeTopic) return;
+    if (!activeTopic) return [];
     const items = [
-      { name: 'data', link: '/data'},
-      { name: 'FORECAST', link: '/sankey'},
-    ]
+      { name: 'ALL THE DATA', link: '/data' },
+      { name: 'FORECAST', link: '/sankey' },
+    ];
     return items.filter(({ name }) => menuTabsToShow.includes(name.toLowerCase()));
-  }, [activeTopic])
-  
+  }, [activeTopic, menuTabsToShow]);
+
   const linkClickHandler = (e: any, route: string) => {
-    e.preventDefault()
-    navigate(route)
-  }
+    e.preventDefault();
+    navigate(route);
+  };
 
   const secondaryClr = settings.theme.secondary || '#9BA3AF';
 
@@ -60,7 +60,7 @@ const TabMenu = () => {
                   'whitespace-nowrap py-4 px-1 text-sm'
                 )}
                 style={{ borderColor: secondaryClr }}
-                aria-current={true ? 'page' : undefined}
+                aria-current={pathname === link ? 'page' : undefined}
               >
                 {name}
               </a>
@@ -69,7 +69,8 @@ const TabMenu = () => {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default TabMenu;
+
