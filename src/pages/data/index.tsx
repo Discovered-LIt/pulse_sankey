@@ -169,7 +169,7 @@ const DataPage = () => {
           filteredCharts?.map((data) => (
             <div
               key={data.category}
-              className="p-4 h-auto overflow-x-clip cursor-pointer rounded-[10px] hover:bg-zinc-900 sm:border-0 border border-white flex flex-row sm:flex-col min-h-[105px] sm:max-h-max mb-4"
+              className="p-4 h-auto overflow-x-clip cursor-pointer rounded-[10px] hover:bg-zinc-900 sm:border-0 border border-white flex flex-row sm:flex-col min-h-[105px] sm:max-h-max mb-4 z-10"
               style={{ background: bgSecondaryClr }}
               onClick={() => onChartSelect(data)}
             >

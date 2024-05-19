@@ -31,7 +31,7 @@ const StephenCurryLoading = () => {
           onLoadCapture={onGifLoad}
           onCompositionEnd={()=> alert("ended?")}
         />
-        {gifEnded && <img src={stephcurryTitlePng} className={"fixed max-w-[450px]"}/>}
+        {gifEnded && <img src={stephcurryTitlePng} className={"absolute max-w-[450px] z-2"}/>}
       </div>
     </div>
   )
