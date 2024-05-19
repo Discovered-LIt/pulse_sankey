@@ -24,7 +24,7 @@ const TabMenu = () => {
     if(!activeTopic) return;
     const items = [
       { name: 'data', link: '/data'},
-      { name: 'forecast', link: '/sankey'},
+      { name: 'sankey', link: '/sankey'},
     ]
     return items.filter(({ name }) => menuTabsToShow.includes(name.toLowerCase()));
   }, [activeTopic])
@@ -70,6 +70,9 @@ const TabMenu = () => {
       </div>
     </div>
   )
+}
+
+export default TabMenu;
 }
 
 export default TabMenu;
