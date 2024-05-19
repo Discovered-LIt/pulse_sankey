@@ -13,14 +13,14 @@ enum Types {
 
 const items: {[key in Types]: Item[]} = {
   [Types.COMPANIES]: [
-    { label: 'Tesla', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/Tesla_logo.svg', url: '/data' },
-    { label: 'Meta', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/meta_logo.svg' },
-    { label: 'Nvidia', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/nvidia_logo.svg' },
+    { label: 'TESLA', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/Tesla_logo.svg', url: '/data' },
+    { label: 'META', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/meta_logo.svg' },
+    { label: 'NVIDIA', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/nvidia_logo.svg' },
   ],
   [Types.PEOPLE]: [
-    { label: 'Stephen Curry', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/stephcurry_logo.svg', url: '/data', param: 'curry' },
-    { label: 'Taylor Swift', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/taylorswift_logo.svg' },
-    { label: 'Elon Musk', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/elon_logo.svg' },
+    { label: 'STEPHEN CURRY', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/stephcurry_logo.svg', url: '/data', param: 'curry' },
+    { label: 'TAYLOR SWIFT', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/taylorswift_logo.svg' },
+    { label: 'ELON MUSK', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/elon_logo.svg' },
   ]
 };
 
