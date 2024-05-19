@@ -13,7 +13,7 @@ enum Types {
 
 const items: {[key in Types]: Item[]} = {
   [Types.COMPANIES]: [
-    { label: 'Tesla', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/Tesla_logo.svg', url: '/sankey' },
+    { label: 'Tesla', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/Tesla_logo.svg', url: '/data' },
     { label: 'Meta', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/meta_logo.svg' },
     { label: 'Nvidia', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/nvidia_logo.svg' },
   ],
