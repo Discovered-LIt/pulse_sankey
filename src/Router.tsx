@@ -13,7 +13,7 @@ const Router = () => (
   <Suspense fallback={<Spinner show classNames="mt-16"/>}>
     <Routes>
       <Route path="/" element={<Dashboard />} />
-      <Route path="/forecast" element={
+      <Route path="/sankey" element={
         <SliderContextProvider>
           <Sankey />
         </SliderContextProvider>
