@@ -7,6 +7,7 @@ import React, {
 } from "react";
 
 export enum Topic {
+  Nvidia = 'nvidia', // keep it camel case and this will show in the url as well
   Curry = 'curry',
   Default = 'default'
 }
@@ -28,6 +29,12 @@ type Setting = {
 }
 
 const settings: {[key in Topic]: Setting } = {
+  nvidia: { // this should match what you added above
+    datamappingUrl: '/steph/datamapping_nvidia.json', // the url of datamapping
+    tabMenu: ['data'], // what tabs should be available for this topic. Like curry only has data page
+    theme: { primary: '#FFC214', secondary: '#1C428A' }, // primary and secondary color of the theme you can set it as same as default values if not available
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/steph_pagelogo.svg" // This is the logo that will show near the navigation
+  },
   curry: {
     datamappingUrl: '/steph/datamapping_steph.json',
     tabMenu: ['data'],

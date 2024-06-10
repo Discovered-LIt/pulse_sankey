@@ -14,8 +14,8 @@ enum Types {
 const items: {[key in Types]: Item[]} = {
   [Types.COMPANIES]: [
     { label: 'Tesla', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/Tesla_logo.svg', url: '/sankey' },
+    { label: 'Nvidia', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/nvidia_logo.svg', url: '/data', param: 'nvidia' }, // Add param as what you set in export enum Topic e.g. nvidia. This will show in url and change theme and data fetching and url field will decide which page to go.
     { label: 'Meta', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/meta_logo.svg' },
-    { label: 'Nvidia', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/nvidia_logo.svg' },
   ],
   [Types.PEOPLE]: [
     { label: 'Stephen Curry', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/stephcurry_logo.svg', url: '/data', param: 'curry' },
