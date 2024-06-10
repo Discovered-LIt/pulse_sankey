@@ -30,9 +30,9 @@ type Setting = {
 
 const settings: {[key in Topic]: Setting } = {
     nvidia: {
-    datamappingUrl: '/nvidia/nvidiamapping.json',
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/NVIDIA/nvidiamapping.json',
     tabMenu: ['data'],
-    theme: { primary: 'black', secondary: '#76B900' },
+    theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/nvidia_logo.svg"
   },
   curry: {
