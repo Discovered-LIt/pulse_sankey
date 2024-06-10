@@ -33,7 +33,7 @@ const settings: {[key in Topic]: Setting } = {
     datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/NVIDIA/nvidiamapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
-    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/nvidia_logo.svg"
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/nvidia_mini.svg"
   },
   curry: {
     datamappingUrl: '/steph/datamapping_steph.json',
