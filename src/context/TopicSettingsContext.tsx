@@ -7,6 +7,7 @@ import React, {
 } from "react";
 
 export enum Topic {
+  Nvidia = 'nvidia',
   Curry = 'curry',
   Default = 'default'
 }
@@ -28,6 +29,12 @@ type Setting = {
 }
 
 const settings: {[key in Topic]: Setting } = {
+    nvidia: {
+    datamappingUrl: '/nvidia/nvidiamapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '#76B900' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/nvidia_logo.svg"
+  },
   curry: {
     datamappingUrl: '/steph/datamapping_steph.json',
     tabMenu: ['data'],
