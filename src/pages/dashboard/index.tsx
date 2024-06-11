@@ -41,7 +41,7 @@ const Dashboard = () => {
 
   return(
     <div>
-      <div className="max-w-[600px] m-auto my-20 text-center">
+      <div className="my-20 text-center">
         {
           Object.keys(items).map((key) => (
             <button
@@ -53,20 +53,21 @@ const Dashboard = () => {
             >{key}</button>
           ))
         }
-        <div className="grid grid-cols-2 w-[300px] m-auto mt-14">
+        <div className="grid grid-cols-2 sm:grid-cols-4 m-auto mt-14">
           {items[activeType].map((item) => (
             <div
               className={cn([
-                'p-2 mb-4',
+                'p-2 mb-4 w-[200px] m-auto relative',
                 item.url ? 'hover:bg-white cursor-pointer hover:text-black' : 'cursor-not-allowed'
               ])}
               onClick={() => onClick(item.url, item.param)}
             >
+              {!item?.url && <div className="bg-black bg-opacity-40 absolute top-0 w-full h-full"></div>}
               <img
                 src={item.logo}
                 className='w-[80px] h-[100px] mb-4 m-auto'
               />
-              <div className="mx-2 text-center">{item.label}</div>
+              <div className={cn(["mx-2 text-center", !item?.url ? 'text-gray-500' : 'text-white'])}>{item.label}</div>
             </div>
           ))}
         </div>

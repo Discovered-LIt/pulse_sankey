@@ -23,10 +23,10 @@ const TabMenu = () => {
   const tabs = useMemo((): { name: string, link: string }[] => {
     if(!activeTopic) return;
     const items = [
-      { name: 'data', link: '/data'},
-      { name: 'sankey', link: '/sankey'},
+      { id: 'data', name: 'ALL DATA', link: '/data'},
+      { id: 'sankey', name: 'SIMULATE', link: '/sankey'},
     ]
-    return items.filter(({ name }) => menuTabsToShow.includes(name.toLowerCase()));
+    return items.filter(({ id }) => menuTabsToShow.includes(id.toLowerCase()));
   }, [activeTopic])
   
   const linkClickHandler = (e: any, route: string) => {
