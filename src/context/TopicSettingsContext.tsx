@@ -9,6 +9,7 @@ import React, {
 export enum Topic {
   Nvidia = 'nvidia',
   Curry = 'curry',
+  Meta = 'meta',
   Default = 'default'
 }
 
@@ -34,6 +35,12 @@ const settings: {[key in Topic]: Setting } = {
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/nvidia_mini.svg"
+  },
+    meta: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/META.US/META.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/metalogo.svg"
   },
   curry: {
     datamappingUrl: '/steph/datamapping_steph.json',
