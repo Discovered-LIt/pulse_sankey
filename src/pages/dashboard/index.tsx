@@ -15,8 +15,8 @@ const items: {[key in Types]: Item[]} = {
   [Types.COMPANIES]: [
     { label: 'TESLA', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/Tesla_logo.svg', url: '/data' },
     { label: 'NVIDIA', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/nvidia_logo.svg', url: '/data', param:'nvidia' },
+    { label: 'META', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/meta_logo.svg', url: '/data', param:'meta' },
     { label: 'MICROSOFT', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/microsoftdash.svg' },
-    { label: 'META', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/meta_logo.svg' },
     { label: 'APPLE', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/appledash.svg' },
     { label: 'NETFLIX', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/netflixdash.svg' },
     { label: 'ALPHABET', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/alphabet.svg' },
