@@ -46,7 +46,7 @@ const Dashboard = () => {
           Object.keys(items).map((key) => (
             <button
               className={cn([
-                "border-2 rounded-xl px-4 py-[4px] text-sm first:mr-14",
+                "px-4 py-[4px] text-sm first:mr-14",
                 activeType === key ? 'border-gray-700' : 'border-transparent'
               ])}
               onClick={() => setActiveType(key as Types)}
