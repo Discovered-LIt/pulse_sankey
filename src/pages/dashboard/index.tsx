@@ -57,12 +57,12 @@ const Dashboard = () => {
           {items[activeType].map((item) => (
             <div
               className={cn([
-                'p-2 mb-4 w-[200px] m-auto relative border-1 border-white',
+                'p-2 mb-4 w-[200px] m-auto relative border-1 border-white rounded-xl',
                 item.url ? 'hover:bg-opacity-40 hover:bg-black hover:border-white cursor-pointer hover:text-black' : 'cursor-not-allowed'
               ])}
               onClick={() => onClick(item.url, item.param)}
             >
-              {!item?.url && <div className="bg-black bg-opacity-40 absolute top-0 w-full h-full rounded-xl"></div>}
+              {!item?.url && <div className="bg-black bg-opacity-40 absolute top-0 w-full h-full"></div>}
               <img
                 src={item.logo}
                 className='w-[80px] h-[100px] mb-4 m-auto'
