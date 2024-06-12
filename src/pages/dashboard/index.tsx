@@ -58,7 +58,7 @@ const Dashboard = () => {
             <div
               className={cn([
                 'p-2 mb-4 w-[200px] m-auto relative',
-                item.url ? 'hover:bg-white cursor-pointer hover:text-black' : 'cursor-not-allowed'
+                item.url ? 'hover:bg-opacity-50 hover:bg-white cursor-pointer hover:text-black' : 'cursor-not-allowed'
               ])}
               onClick={() => onClick(item.url, item.param)}
             >
