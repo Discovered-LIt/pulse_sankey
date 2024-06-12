@@ -57,7 +57,7 @@ const Dashboard = () => {
           {items[activeType].map((item) => (
             <div
               className={cn([
-                'p-2 mb-4 w-[200px] m-auto relative',
+                'p-2 mb-4 w-[200px] m-auto relative border-2 border-transparent',
                 item.url ? 'hover:bg-transparent hover:border-white cursor-pointer hover:text-black' : 'cursor-not-allowed'
               ])}
               onClick={() => onClick(item.url, item.param)}
