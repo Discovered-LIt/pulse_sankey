@@ -45,7 +45,7 @@ const settings: {[key in Topic]: Setting } = {
   curry: {
     datamappingUrl: '/steph/datamapping_steph.json',
     tabMenu: ['data'],
-    theme: { primary: '#FFC214', secondary: '#1C428A' },
+    theme: { primary: '#FFC214', secondary: '#0000FF' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/steph_pagelogo.svg"
   },
   default: {
