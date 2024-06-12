@@ -58,11 +58,11 @@ const Dashboard = () => {
             <div
               className={cn([
                 'p-2 mb-4 w-[200px] m-auto relative',
-                item.url ? 'hover:border-1 hover:border-white rounded-xl hover:bg-opacity-40 hover:bg-black cursor-pointer hover:text-black' : 'cursor-not-allowed'
+                item.url ? 'hover:bg-white cursor-pointer hover:text-black' : 'cursor-not-allowed'
               ])}
               onClick={() => onClick(item.url, item.param)}
             >
-              {!item?.url && <div className="bg-black bg-opacity-40 absolute top-0 w-full h-full"></div>}
+              {!item?.url && <div className="bg-black bg-opacity-10 absolute top-0 w-full h-full"></div>}
               <img
                 src={item.logo}
                 className='w-[80px] h-[100px] mb-4 m-auto'
