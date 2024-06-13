@@ -20,10 +20,14 @@ const items: {[key in Types]: Item[]} = {
     { label: 'APPLE', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/appledash.svg' },
     { label: 'NETFLIX', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/netflixdash.svg' },
     { label: 'ALPHABET', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/alphabet.svg' },
+    { label: 'AMAZON', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/amazon.svg' },
+    { label: 'MCDONALDS', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/mcdonalds.svg' },
+    { label: 'FERRARI', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/ferrari.svg' },
   ],
   [Types.PEOPLE]: [
     { label: 'STEPHEN CURRY', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/stephcurry_logo.svg', url: '/data', param: 'curry' },
     { label: 'TAYLOR SWIFT', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/taylorswift_logo.svg' },
+    { label: 'MICHAEL JORDAN', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/jordan.svg' },
   ]
 };
 
