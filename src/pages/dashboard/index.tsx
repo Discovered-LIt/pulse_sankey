@@ -21,6 +21,8 @@ const items: {[key in Types]: Item[]} = {
     { label: 'NETFLIX', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/netflixdash.svg', url: '/data', param:'netflix' },
     { label: 'ALPHABET', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/alphabet.svg', url: '/data', param:'alphabet' },
     { label: 'AMAZON', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/amazon.svg', url: '/data', param:'amazon' },
+    { label: 'SNOWFLAKE', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/snowflakedash.svg', url: '/data', param:'snowflake' },
+    { label: 'CELSIUS', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/celsiuslogo.svg', url: '/data', param:'celsius' },
     { label: 'MCDONALDS', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/mcdonalds.svg' },
     { label: 'FERRARI', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/ferrari.svg' },
   ],
