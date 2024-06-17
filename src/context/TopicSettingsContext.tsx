@@ -83,7 +83,7 @@ const settings: {[key in Topic]: Setting } = {
     datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/AMZN.US/AMZN.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
-    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/logo-amazon.svg"
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/amazonlong.svg"
   },
     snowflake: {
     datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/SNOW.US/SNOW.US_metrics_mapping.json',
