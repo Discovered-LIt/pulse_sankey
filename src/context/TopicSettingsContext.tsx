@@ -87,7 +87,7 @@ const settings: {[key in Topic]: Setting } = {
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/amazonlong.svg"
   },
     spotify: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/AMZN.US/AMZN.US_metrics_mapping.json',
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/SPOT.US/SPOT.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/spotifylong.svg"
