@@ -19,7 +19,7 @@ export enum Topic {
   TSMC = 'tsmc',
   Spotify = 'spotify',
   Celsius = 'celsius',
-  WWE = 'wwe'
+  WWE = 'wwe',
   Default = 'default'
 }
 
