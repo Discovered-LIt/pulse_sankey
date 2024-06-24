@@ -16,6 +16,7 @@ export enum Topic {
   Netflix = 'netflix',
   Amazon = 'amazon',
   Snowflake = 'snowflake',
+  Spotify = 'spotify',
   Celsius = 'celsius',
   Default = 'default'
 }
@@ -84,6 +85,12 @@ const settings: {[key in Topic]: Setting } = {
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/amazonlong.svg"
+  },
+    spotify: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/AMZN.US/AMZN.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/spotifylong.svg"
   },
     snowflake: {
     datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/SNOW.US/SNOW.US_metrics_mapping.json',
