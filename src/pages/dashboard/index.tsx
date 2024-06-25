@@ -22,7 +22,7 @@ const items: {[key in Types]: Item[]} = {
     { label: 'ALPHABET', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/alphabet.svg', url: '/data', param:'alphabet' },
     { label: 'AMAZON', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/amazon.svg', url: '/data', param:'amazon' },
     { label: 'SPOTIFY', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/spotifylogo.svg', url: '/data', param:'spotify' },
-    { label: 'WWE', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/wwelogo.svg', url: '/data', param:'wwe' },
+    { label: 'TKO', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/tkologo.svg', url: '/data', param:'tko' },
     { label: 'SNOWFLAKE', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/snowflakedash.svg', url: '/data', param:'snowflake' },
     { label: 'TSMC', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/tsmclogo.svg', url: '/data', param:'tsmc' },
     { label: 'CELSIUS', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/celsiuslogo.svg', url: '/data', param:'celsius' },
