@@ -19,7 +19,7 @@ export enum Topic {
   TSMC = 'tsmc',
   Spotify = 'spotify',
   Celsius = 'celsius',
-  WWE = 'wwe',
+  TKO = 'tko',
   Default = 'default'
 }
 
@@ -106,11 +106,11 @@ const settings: {[key in Topic]: Setting } = {
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/snowflakelong.svg"
   },
-    wwe: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/WWE.US/WWE.US_metrics_mapping.json',
+    tko: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/TKO.US/TKO.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
-    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/wwelogo.svg"
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/tkologo.svg"
   },
     celsius: {
     datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/CELH.US/CELH.US_metrics_mapping.json',
