@@ -26,8 +26,11 @@ const items: {[key in Types]: Item[]} = {
     { label: 'SNOWFLAKE', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/snowflakedash.svg', url: '/data', param:'snowflake' },
     { label: 'TSMC', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/tsmclogo.svg', url: '/data', param:'tsmc' },
     { label: 'CELSIUS', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/celsiuslogo.svg', url: '/data', param:'celsius' },
-    { label: 'MCDONALDS', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/mcdonalds.svg' },
-    { label: 'FERRARI', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/ferrari.svg' },
+    { label: 'MCDONALDS', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/mcdonalds.svg', url: '/data', param:'mcdonlads' },
+    { label: 'FERRARI', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/ferrari.svg', url: '/data', param:'ferrari' },
+    { label: 'UBER', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/ferrari.svg', url: '/data', param:'uber' },
+    { label: 'DISNEY', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/ferrari.svg', url: '/data', param:'disney' },
+
   ],
   [Types.PEOPLE]: [
     { label: 'STEPHEN CURRY', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/stephcurry_logo.svg', url: '/data', param: 'curry' },
