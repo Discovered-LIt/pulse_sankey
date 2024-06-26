@@ -21,6 +21,9 @@ export enum Topic {
   Celsius = 'celsius',
   TKO = 'tko',
   McDonalds = 'mcdonalds',
+  Disney = 'disney',
+  Uber = 'uber',
+  Ferrari = 'ferrari',
   Default = 'default'
 }
 
@@ -133,6 +136,12 @@ const settings: {[key in Topic]: Setting } = {
   },
     ferrari: {
     datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/RACE.US/RACE.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/celsiuslong.svg"
+  },
+    disney: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/DIS.US/DIS.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/celsiuslong.svg"
