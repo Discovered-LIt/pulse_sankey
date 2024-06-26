@@ -28,6 +28,8 @@ export enum Topic {
   AMD = 'amd',
   Novonordisk ='novonordisk',
   LVMH = 'lvmh',
+  Costco ='costco',
+  Intuitivesurgical = 'intuitivesurgical',
   Default = 'default'
 }
 
@@ -173,6 +175,18 @@ const settings: {[key in Topic]: Setting } = {
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/novonordisklogo.svg"
+  },
+    costco: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/COSTCO.US/COSTCO.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/costcologo.svg"
+  },
+    intuitivesurgical: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/ISRG.US/ISRG.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/intuitivesurgicallogo.svg"
   },
     default: {
     datamappingUrl: 'datamapping.json',
