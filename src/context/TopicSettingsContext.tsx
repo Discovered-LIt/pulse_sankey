@@ -126,7 +126,7 @@ const settings: {[key in Topic]: Setting } = {
     datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/UBER.US/UBER.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
-    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/celsiuslong.svg"
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/uberlong.svg"
   },
     mcdonalds: {
     datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/MCD.US/MCD.US_metrics_mapping.json',
@@ -144,7 +144,7 @@ const settings: {[key in Topic]: Setting } = {
     datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/DIS.US/DIS.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
-    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/celsiuslong.svg"
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/disneylong.svg"
   },
     default: {
     datamappingUrl: 'datamapping.json',
