@@ -24,6 +24,10 @@ export enum Topic {
   Disney = 'disney',
   Uber = 'uber',
   Ferrari = 'ferrari',
+  EliLilly = 'elililly',
+  AMD = 'amd',
+  Novonordisk ='novonordisk',
+  LVMH = 'lvmh',
   Default = 'default'
 }
 
@@ -145,6 +149,30 @@ const settings: {[key in Topic]: Setting } = {
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/disneylong.svg"
+  },
+    amd: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/AMD.US/AMD.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/amdlogo.svg"
+  },
+    lvmh: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/LVMHF.US/LVMHF.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/lvmhlogo.svg"
+  },
+    elililly: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/LLY.US/LLY.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/elilillylogo.svg"
+  },
+    novonordisk: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/NVO.US/NVO.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/novonordisklogo.svg"
   },
     default: {
     datamappingUrl: 'datamapping.json',
