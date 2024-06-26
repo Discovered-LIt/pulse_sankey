@@ -34,6 +34,8 @@ const items: {[key in Types]: Item[]} = {
     { label: 'LVMH', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/lvmhlogo.svg', url: '/data', param:'lvmh' },
     { label: 'ELI LILLY', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/elilillylogo.svg', url: '/data', param:'elililly' },
     { label: 'NOVO NORDISK', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/novonordisklogo.svg', url: '/data', param:'novonordisk' },
+    { label: 'COSTCO', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/costcologo.svg', url: '/data', param:'costco' },
+    { label: 'INTUITIVE SURGICAL', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/intuitivesurgicallogo.svg', url: '/data', param:'intuitivesurgical' },
   ],
   [Types.PEOPLE]: [
     { label: 'STEPHEN CURRY', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/stephcurry_logo.svg', url: '/data', param: 'curry' },
