@@ -20,6 +20,7 @@ export enum Topic {
   Spotify = 'spotify',
   Celsius = 'celsius',
   TKO = 'tko',
+  McDonalds = 'mcdonalds',
   Default = 'default'
 }
 
@@ -114,6 +115,24 @@ const settings: {[key in Topic]: Setting } = {
   },
     celsius: {
     datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/CELH.US/CELH.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/celsiuslong.svg"
+  },
+    uber: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/UBER.US/UBER.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/celsiuslong.svg"
+  },
+    mcdonalds: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/MCD.US/MCD.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/celsiuslong.svg"
+  },
+    ferrari: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/RACE.US/RACE.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/celsiuslong.svg"
