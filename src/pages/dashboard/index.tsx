@@ -8,7 +8,8 @@ type Item = { label: string, logo: string, url?: string, param?: string; };
 
 enum Types {
   COMPANIES = 'COMPANIES',
-  PEOPLE = 'PEOPLE'
+  PEOPLE = 'PEOPLE',
+  THEME = 'THEME',
 }
 
 const items: {[key in Types]: Item[]} = {
@@ -41,6 +42,9 @@ const items: {[key in Types]: Item[]} = {
     { label: 'STEPHEN CURRY', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/stephcurry_logo.svg', url: '/data', param: 'curry' },
     { label: 'MICHAEL JORDAN', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/jordan.svg' },
     { label: 'TAYLOR SWIFT', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/taylorswift_logo.svg' },
+  ],
+  [Types.THEME]: [
+
   ]
 };
 
@@ -58,18 +62,20 @@ const Dashboard = () => {
 
   return(
     <div>
-      <div className="my-20 text-center">
-        {
-          Object.keys(items).map((key) => (
-            <button
-              className={cn([
-                "border-2 rounded-xl px-4 py-[4px] text-sm first:mr-14",
-                activeType === key ? 'border-gray-700' : 'border-transparent'
-              ])}
-              onClick={() => setActiveType(key as Types)}
-            >{key}</button>
-          ))
-        }
+      <div className="my-20 text-center relative">
+        <div className="sticky top-0 bg-black w-full z-50 py-4">
+          {
+            Object.keys(items).map((key) => (
+              <button
+                className={cn([
+                  "border-2 rounded-xl px-4 py-[4px] text-sm sm:mr-14",
+                  activeType === key ? 'border-gray-700' : 'border-transparent'
+                ])}
+                onClick={() => setActiveType(key as Types)}
+              >{key}</button>
+            ))
+          }
+        </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 m-auto mt-14">
           {items[activeType].map((item) => (
             <div
@@ -88,6 +94,7 @@ const Dashboard = () => {
             </div>
           ))}
         </div>
+        {!items[activeType].length && <p className="align-center uppercase">No Topics available</p>}
       </div>
     </div>
   )
