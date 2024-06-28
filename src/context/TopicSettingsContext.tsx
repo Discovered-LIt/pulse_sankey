@@ -29,7 +29,16 @@ export enum Topic {
   Novonordisk ='novonordisk',
   LVMH = 'lvmh',
   Costco ='costco',
-  Intuitivesurgical = 'intuitivesurgical',
+  Unitedhealth = 'unitedhealth',
+  Tencent = 'tencent',
+  Berkshire = 'berkshire',
+  Mastercard = 'mastercard',
+  Walmart = 'walmart',
+  Visa = 'visa',
+  Jpmorgan = 'jpmorgan',
+  Broadcom = 'broadcom',
+  Exxon = 'exxon',
+  Palantir = 'palantir',
   Default = 'default'
 }
 
@@ -187,6 +196,66 @@ const settings: {[key in Topic]: Setting } = {
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/intuitivesurgicallogo.svg"
+  },
+    berkshire: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/BRK-B.US.US/BRK-B.US.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/berkshirelogo.svg"
+  },
+    tencent: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/TCEHY.US.US/TCEHY.US.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/tencentlogo.svg"
+  },
+    unitedhealth: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/UNH.US/UNH.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/unhlogo.svg"
+  },
+    mastercard: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/MA.US/MA.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/mastercardlong.svg"
+  },
+    visa: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/V.US/V.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/visalogo.svg"
+  },
+    jpmorgan: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/JPM.US/JPM.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/jpmorganlogo.svg"
+  },
+    broadcom: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/AVGO.US/AVGO.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/broadcomlong.svg"
+  },
+    exxon: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/XOM.US/XOM.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/exxonlogo.svg"
+  },
+    walmart: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/WMT.US/WMT.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/walmartlong.svg"
+  },
+    palantir: {
+    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/PLTR.US/PLTR.US_metrics_mapping.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/palantirlong.svg"
   },
     default: {
     datamappingUrl: 'datamapping.json',
