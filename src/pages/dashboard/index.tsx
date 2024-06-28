@@ -44,7 +44,7 @@ const items: {[key in Types]: Item[]} = {
     { label: 'TAYLOR SWIFT', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/taylorswift_logo.svg' },
   ],
   [Types.THEME]: [
-
+    { label: 'ARTIFICAL INTELLIGENCE', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/ailogo.svg', url: '/data', param: 'curry' },
   ]
 };
 
