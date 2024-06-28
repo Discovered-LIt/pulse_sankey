@@ -141,7 +141,9 @@ const DataPage = () => {
   const filteredCharts = useMemo(() => {
     if(!filters.types.length) return mappingData;
     return mappingData.filter((chart) => (
-      !!chart.filters.find((type) => filters.types.includes(type))
+      typeof chart?.filters === 'string' ? 
+        !!filters.types.includes(chart.filters) : 
+        !!chart?.filters?.find((type) => filters.types.includes(type))
     ))
   }, [mappingData, filters.types])
 
@@ -157,11 +159,11 @@ const DataPage = () => {
 
   return(
     <div className={cn(`px-8 pt-8 bg-[${bgPrimaryClr}]`)}>
-      {activeTopic === Topic.Default && <Filters
+      <Filters
         filters={filters}
         setFilters={setFilters}
         chartTypeOptions={chartTypeOptions}
-      />}
+      />
       <div
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 max-h-[80vh] overflow-scroll gap-4"
       >
