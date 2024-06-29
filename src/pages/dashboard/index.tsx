@@ -9,7 +9,7 @@ type Item = { label: string, logo: string, url?: string, param?: string; };
 enum Types {
   COMPANIES = 'COMPANIES',
   PEOPLE = 'PEOPLE',
-  THEME = 'THEME',
+  THEMES = 'THEMES',
 }
 
 const items: {[key in Types]: Item[]} = {
@@ -52,7 +52,7 @@ const items: {[key in Types]: Item[]} = {
     { label: 'MICHAEL JORDAN', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/jordan.svg' },
     { label: 'TAYLOR SWIFT', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/taylorswift_logo.svg' },
   ],
-  [Types.THEME]: [
+  [Types.THEMES]: [
     { label: 'ARTIFICAL INTELLIGENCE', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/ailogo.svg', url: '/data', param: 'curry' },
   ]
 };
