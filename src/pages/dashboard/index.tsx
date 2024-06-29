@@ -38,7 +38,7 @@ const items: {[key in Types]: Item[]} = {
     { label: 'COSTCO', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/costcologo.svg', url: '/data', param:'costco' },
     { label: 'BERKSHIRE HATHAWAY', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/intuitivesurgicallogo.svg', url: '/data', param:'berkshirehathaway' },
     { label: 'TENCENT', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/tencentlogo.svg', url: '/data', param:'tencent' },
-    { label: 'UNITEDHEALTH', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/unitedhealthlogo.svg', url: '/data', param:'unitedhealth' },
+    { label: 'UNITEDHEALTH', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/unhlogo.svg', url: '/data', param:'unitedhealth' },
     { label: 'MASTERCARD', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/mastercardlogo.svg', url: '/data', param:'mastercard' },
     { label: 'VISA', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/visalogo.svg', url: '/data', param:'visa' },
     { label: 'JPMORGAN', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/jpmorganlogo.svg', url: '/data', param:'jpmorgan' },
