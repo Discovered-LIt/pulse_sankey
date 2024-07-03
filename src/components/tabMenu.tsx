@@ -48,7 +48,7 @@ const TabMenu = () => {
           className="w-[100px] sm:w-[150px] mx-4 sm:mx-8 cursor-pointer"
           onClick={() => navigate('/')}
         />
-        <div className="border-b w-full" style={{ borderColor: secondaryClr }}>
+        <div className="border-b w-full h-[55px]" style={{ borderColor: secondaryClr }}>
           <nav className="-mb-px flex space-x-8" aria-label="Tabs">
             {tabs.map(({ name, link }) => (
               <a
