@@ -14,8 +14,8 @@ enum Types {
 
 const items: {[key in Types]: Item[]} = {
   [Types.COMPANIES]: [
-    { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/Tesla_logo.svg', url: '/data' },
-    { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/nvidia_logo.svg', url: '/data', param:'nvidia' },
+    { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/teslalong.svg', url: '/data' },
+    { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/nvidialong.svg', url: '/data', param:'nvidia' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/metalogo.svg', url: '/data', param:'meta' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/microsoftlong.svg', url: '/data', param:'microsoft' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/applelong.svg', url: '/data', param:'apple' },
@@ -30,7 +30,7 @@ const items: {[key in Types]: Item[]} = {
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/novonordisklogo.svg', url: '/data', param:'novonordisk' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/costcologo.svg', url: '/data', param:'costco' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/berkshirelogo.svg', url: '/data', param:'berkshirehathaway' },
-    { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/intuitivesurgicallogo.svg', url: '/data', param:'intuitivesurgical' },
+    { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/intuitivelong.svg', url: '/data', param:'intuitivesurgical' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/tencentlong.svg', url: '/data', param:'tencent' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/jpmorganlogo.svg', url: '/data', param:'jpmorgan' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/exxonlogo.svg', url: '/data', param:'exxon' },
