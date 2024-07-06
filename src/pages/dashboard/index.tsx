@@ -37,7 +37,7 @@ const items: {[key in Types]: Item[]} = {
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/visalogo.svg', url: '/data', param:'visa' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/snowflakelong.svg', url: '/data', param:'snowflake' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/celsiuslong.svg', url: '/data', param:'celsius' },
-    { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/mcdonalds.svg', url: '/data', param:'mcdonalds' },
+    { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/mcdonaldslong.svg', url: '/data', param:'mcdonalds' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/ferrarilong.svg', url: '/data', param:'ferrari' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/uberlong.svg', url: '/data', param:'uber' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/lvmhlong.svg', url: '/data', param:'lvmh' },
@@ -45,7 +45,7 @@ const items: {[key in Types]: Item[]} = {
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/unhlong.svg', url: '/data', param:'unitedhealth' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/broadcomlong.svg', url: '/data', param:'broadcom' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/walmartlong.svg', url: '/data', param:'walmart' },
-    { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/mastercardlogo.svg', url: '/data', param:'mastercard' },
+    { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/mastercardlong.svg', url: '/data', param:'mastercard' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/palantirlong.svg', url: '/data', param:'palantir' },    
   ],
   [Types.PEOPLE]: [
