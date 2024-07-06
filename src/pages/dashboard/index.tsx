@@ -42,7 +42,7 @@ const items: {[key in Types]: Item[]} = {
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/uberlong.svg', url: '/data', param:'uber' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/lvmhlong.svg', url: '/data', param:'lvmh' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/elilillylogo.svg', url: '/data', param:'elililly' },
-    { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/unhlong.svg', url: '/data', param:'unitedhealth' },
+    { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/unitedhealthcarelong.svg', url: '/data', param:'unitedhealth' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/broadcomlong.svg', url: '/data', param:'broadcom' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/walmartlong.svg', url: '/data', param:'walmart' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/mastercardlong.svg', url: '/data', param:'mastercard' },
