@@ -63,14 +63,14 @@ type Setting = {
 const settings: {[key in Topic]: Setting } = {
     nvidia: {
     datamappingUrl: '/NVDA.US/NVDA.US_metrics_mapping.json',
-    tabMenu: ['data'],
+    tabMenu: ['sankey', 'data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/nvidia_mini.svg",
     sankeyDatamappingUrl: "/TSLA.US/sankeytesla.json"
   },
     meta: {
     datamappingUrl: '/META.US/META.US_metrics_mapping.json',
-    tabMenu: ['data'],
+    tabMenu: ['sankey', 'data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/metalogo.svg",
     sankeyDatamappingUrl: "/TSLA.US/sankeytesla.json"
