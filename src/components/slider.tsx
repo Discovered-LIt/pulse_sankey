@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 import cn from "classnames";
 // icon
 import Squares2X2Icon from "@heroicons/react/24/outline/Squares2X2Icon";
@@ -47,6 +47,10 @@ const Slider = ({
   onChange,
 }: Slider) => {
   const [tempVal, setTempVal] = useState<any>(value);
+
+  useEffect(() => {
+    setTempVal(value);
+  }, [value])
 
   return (
     <div className="text-white w-full">

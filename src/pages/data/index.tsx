@@ -51,7 +51,7 @@ const DataPage = () => {
   const sideBarRef = useRef<HTMLDivElement>();
   const [activeZoom, setActiveZoom] = useState(ZoomType.ALL);
   const [filters, setFilters] = useState<Filter>({ types: [] })
-  const { settings, activeTopic, datamappingUrl } = useTopicSettingsContext();
+  const { settings, datamappingUrl } = useTopicSettingsContext();
 
   useOnOutsideClick(sideBarRef.current, () => {
     if (!showSidebar) return;

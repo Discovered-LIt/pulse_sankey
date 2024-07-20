@@ -57,17 +57,18 @@ type Setting = {
   tabMenu: string[];
   theme: { primary: string, secondary: string };
   logo?: string;
+  sankeyDatamappingUrl?: string;
 }
 
 const settings: {[key in Topic]: Setting } = {
     nvidia: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/NVDA.US/NVDA.US_metrics_mapping.json',
+    datamappingUrl: '/NVDA.US/NVDA.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/nvidia_mini.svg"
   },
     meta: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/META.US/META.US_metrics_mapping.json',
+    datamappingUrl: '/META.US/META.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/metalogo.svg"
@@ -79,181 +80,181 @@ const settings: {[key in Topic]: Setting } = {
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/steph_pagelogo.svg"
   },
     apple: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/AAPL.US/AAPL.US_metrics_mapping.json',
+    datamappingUrl: '/AAPL.US/AAPL.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/applelong.svg"
   },
     microsoft: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/MSFT.US/MSFT.US_metrics_mapping.json',
+    datamappingUrl: '/MSFT.US/MSFT.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/microsoftlong.svg"
   },
     alphabet: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/GOOG.US/GOOG.US_metrics_mapping.json',
+    datamappingUrl: '/GOOG.US/GOOG.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/alphabetlong.svg"
   },
     netflix: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/NFLX.US/NFLX.US_metrics_mapping.json',
+    datamappingUrl: '/NFLX.US/NFLX.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/netflixlong.svg"
   },
     amazon: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/AMZN.US/AMZN.US_metrics_mapping.json',
+    datamappingUrl: '/AMZN.US/AMZN.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/amazonlong.svg"
   },
     spotify: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/SPOT.US/SPOT.US_metrics_mapping.json',
+    datamappingUrl: '/SPOT.US/SPOT.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/spotifylong.svg"
   },
     tsmc: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/TSM.US/TSM.US_metrics_mapping.json',
+    datamappingUrl: '/TSM.US/TSM.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/tsmclong.svg"
   },
     snowflake: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/SNOW.US/SNOW.US_metrics_mapping.json',
+    datamappingUrl: '/SNOW.US/SNOW.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/snowflakelong.svg"
   },
     tko: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/TKO.US/TKO.US_metrics_mapping.json',
+    datamappingUrl: '/TKO.US/TKO.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/tkologo.svg"
   },
     celsius: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/CELH.US/CELH.US_metrics_mapping.json',
+    datamappingUrl: '/CELH.US/CELH.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/celsiuslong.svg"
   },
     uber: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/UBER.US/UBER.US_metrics_mapping.json',
+    datamappingUrl: '/UBER.US/UBER.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/uberlong.svg"
   },
     mcdonalds: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/MCD.US/MCD.US_metrics_mapping.json',
+    datamappingUrl: '/MCD.US/MCD.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/celsiuslong.svg"
   },
     ferrari: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/RACE.US/RACE.US_metrics_mapping.json',
+    datamappingUrl: '/RACE.US/RACE.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/celsiuslong.svg"
   },
     disney: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/DIS.US/DIS.US_metrics_mapping.json',
+    datamappingUrl: '/DIS.US/DIS.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/disneylong.svg"
   },
     amd: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/AMD.US/AMD.US_metrics_mapping.json',
+    datamappingUrl: '/AMD.US/AMD.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/amdlogo.svg"
   },
     lvmh: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/LVMHF.US/LVMHF.US_metrics_mapping.json',
+    datamappingUrl: '/LVMHF.US/LVMHF.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/lvmhlogo.svg"
   },
     elililly: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/LLY.US/LLY.US_metrics_mapping.json',
+    datamappingUrl: '/LLY.US/LLY.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/elilillylogo.svg"
   },
     novonordisk: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/NVO.US/NVO.US_metrics_mapping.json',
+    datamappingUrl: '/NVO.US/NVO.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/novonordisklogo.svg"
   },
     costco: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/COSTCO.US/COSTCO.US_metrics_mapping.json',
+    datamappingUrl: '/COSTCO.US/COSTCO.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/costcologo.svg"
   },
     intuitivesurgical: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/ISRG.US/ISRG.US_metrics_mapping.json',
-    tabMenu: ['data'],
+    datamappingUrl: '/ISRG.US/ISRG.US_metrics_mapping.json',
+    tabMenu: ['data', 'sankey'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/intuitivesurgicallogo.svg"
   },
     berkshire: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/BRK-B.US.US/BRK-B.US.US_metrics_mapping.json',
+    datamappingUrl: '/BRK-B.US.US/BRK-B.US.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/berkshirelong.svg"
   },
     tencent: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/TCEHY.US.US/TCEHY.US.US_metrics_mapping.json',
+    datamappingUrl: '/TCEHY.US.US/TCEHY.US.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/tencentlogo.svg"
   },
     unitedhealth: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/UNH.US/UNH.US_metrics_mapping.json',
+    datamappingUrl: '/UNH.US/UNH.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/unhlogo.svg"
   },
     mastercard: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/MA.US/MA.US_metrics_mapping.json',
+    datamappingUrl: '/MA.US/MA.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/mastercardlong.svg"
   },
     visa: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/V.US/V.US_metrics_mapping.json',
+    datamappingUrl: '/V.US/V.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/visalogo.svg"
   },
     jpmorgan: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/JPM.US/JPM.US_metrics_mapping.json',
+    datamappingUrl: '/JPM.US/JPM.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/jpmorganlogo.svg"
   },
     broadcom: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/AVGO.US/AVGO.US_metrics_mapping.json',
+    datamappingUrl: '/AVGO.US/AVGO.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/broadcomlong.svg"
   },
     exxon: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/XOM.US/XOM.US_metrics_mapping.json',
+    datamappingUrl: '/XOM.US/XOM.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/exxonlogo.svg"
   },
     walmart: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/WMT.US/WMT.US_metrics_mapping.json',
+    datamappingUrl: '/WMT.US/WMT.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/walmartlong.svg"
   },
     palantir: {
-    datamappingUrl: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/PLTR.US/PLTR.US_metrics_mapping.json',
+    datamappingUrl: '/PLTR.US/PLTR.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/palantirlong.svg"
@@ -262,7 +263,7 @@ const settings: {[key in Topic]: Setting } = {
     datamappingUrl: 'datamapping.json',
     tabMenu: ['sankey', 'data'],
     theme: { primary: 'black', secondary: '' },
-    // logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/Tesla_logo.svg"
+    sankeyDatamappingUrl: "/TSLA.US/sankeytesla.json"
   }
 }
 
