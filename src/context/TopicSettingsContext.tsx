@@ -9,6 +9,7 @@ import React, {
 export enum Topic {
   Nvidia = 'nvidia',
   Curry = 'curry',
+  USA = 'usa',
   Meta = 'meta',
   Apple = 'apple',
   Microsoft = 'microsoft',
@@ -80,6 +81,12 @@ const settings: {[key in Topic]: Setting } = {
     tabMenu: ['data'],
     theme: { primary: '#FFC214', secondary: '#004592' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/steph_pagelogo.svg"
+  },
+    usa: {
+    datamappingUrl: '/USA/mapping_usa.json',
+    tabMenu: ['data'],
+    theme: { primary: '#0A3161', secondary: '#B31942' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/USA/us_logo.svg"
   },
     apple: {
     datamappingUrl: '/AAPL.US/AAPL.US_metrics_mapping.json',
