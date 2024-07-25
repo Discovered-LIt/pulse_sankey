@@ -55,6 +55,8 @@ const items: {[key in Types]: Item[]} = {
   ],
   [Types.THEMES]: [
     { label: 'ARTIFICAL INTELLIGENCE', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/ailogo.svg', url: '/data', param: 'curry' },
+    { label: 'USA', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/USA/us_logo.svg', url: '/data', param: 'usa' },
+
   ]
 };
 
