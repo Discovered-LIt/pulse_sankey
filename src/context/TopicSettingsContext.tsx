@@ -86,7 +86,7 @@ const settings: {[key in Topic]: Setting } = {
     datamappingUrl: '/USA/mapping_usa.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '#151C62' },
-    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/USA/usdash.svg"
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/USA/us_flag.svg"
   },
     apple: {
     datamappingUrl: '/AAPL.US/AAPL.US_metrics_mapping.json',
