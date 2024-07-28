@@ -80,13 +80,13 @@ const settings: {[key in Topic]: Setting } = {
     curry: {
     datamappingUrl: '/steph/datamapping_steph.json',
     tabMenu: ['data'],
-    theme: { primary: '#FFC214', secondary: '#004592' },
+    theme: { primary: '#FFC214', secondary: '#151C62' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/steph_pagelogo.svg"
   },
     usa: {
     datamappingUrl: '/USA/mapping_usa.json',
     tabMenu: ['data'],
-    theme: { primary: 'black', secondary: '#151C62' },
+    theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/USA/us_flag.svg"
   },
     apple: {
