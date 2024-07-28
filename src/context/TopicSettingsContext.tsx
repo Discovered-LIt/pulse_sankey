@@ -41,6 +41,7 @@ export enum Topic {
   Broadcom = 'broadcom',
   Exxon = 'exxon',
   Palantir = 'palantir',
+  Artificialintelligence = 'ai',
   Default = 'default'
 }
 
@@ -267,6 +268,12 @@ const settings: {[key in Topic]: Setting } = {
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/palantirlong.svg"
+  },
+    ai: {
+    datamappingUrl: '/AI/mapping_AI.json',
+    tabMenu: ['data'],
+    theme: { primary: 'black', secondary: '' },
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/AI/AI_logo.svg"
   },
     default: {
     datamappingUrl: 'datamapping.json',
