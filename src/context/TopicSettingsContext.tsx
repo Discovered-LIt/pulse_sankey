@@ -276,7 +276,7 @@ const settings: {[key in Topic]: Setting } = {
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/AI/ailogolong.svg"
   },
     default: {
-    datamappingUrl: '/TSLA.US_metrics_mapping.json',
+    datamappingUrl: '/TSLA.US/TSLA.US_metrics_mapping.json',
     tabMenu: ['sankey', 'data'],
     theme: { primary: 'black', secondary: '' },
     sankeyDatamappingUrl: "/TSLA.US/sankeytesla.json"
