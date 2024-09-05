@@ -29,7 +29,7 @@ const items: {[key in Types]: Item[]} = {
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/tsmclogo.svg', url: '/data', param:'tsmc' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/novonordisklogo.svg', url: '/data', param:'novonordisk' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/costcologo.svg', url: '/data', param:'costco' },
-    { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/berkshirelogo.svg', url: '/data', param:'berkshirehathaway' },
+    { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/berkshirelogo.svg', url: '/data', param:'berkshire' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/intuitivelong.svg', url: '/data', param:'intuitivesurgical' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/tencentlong.svg', url: '/data', param:'tencent' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/jpmorganlogo.svg', url: '/data', param:'jpmorgan' },
