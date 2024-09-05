@@ -210,13 +210,13 @@ const settings: {[key in Topic]: Setting } = {
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/intuitivesurgicallogo.svg"
   },
     berkshire: {
-    datamappingUrl: '/BRK-B.US.US/BRK-B.US.US_metrics_mapping.json',
+    datamappingUrl: '/BRK-B.US/BRK-B.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/berkshirelong.svg"
   },
     tencent: {
-    datamappingUrl: '/TCEHY.US.US/TCEHY.US.US_metrics_mapping.json',
+    datamappingUrl: '/TCEHY.US/TCEHY.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
     logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/tencentlogo.svg"
