@@ -177,7 +177,7 @@ const settings: {[key in Topic]: Setting } = {
     datamappingUrl: '/AMD.US/AMD.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
-    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/amdlogo.svg"
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/amdlong.svg"
   },
     lvmh: {
     datamappingUrl: '/LVMHF.US/LVMHF.US_metrics_mapping.json',
@@ -195,7 +195,7 @@ const settings: {[key in Topic]: Setting } = {
     datamappingUrl: '/NVO.US/NVO.US_metrics_mapping.json',
     tabMenu: ['data'],
     theme: { primary: 'black', secondary: '' },
-    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/novonordisklogo.svg"
+    logo: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/novonordisklong.svg"
   },
     costco: {
     datamappingUrl: '/COSTCO.US/COSTCO.US_metrics_mapping.json',
