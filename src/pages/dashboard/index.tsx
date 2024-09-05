@@ -48,14 +48,14 @@ const items: {[key in Types]: Item[]} = {
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/mastercardlong.svg', url: '/data', param:'mastercard' },
     { label: '', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/palantirlong.svg', url: '/data', param:'palantir' },    
   ],
+  [Types.THEMES]: [
+    { label: 'USA', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/USA/us_logo.svg', url: '/data', param: 'usa' },
+    { label: 'AI', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/AI/AI_logo.svg', url: '/data', param: 'ai' },
+  ],
   [Types.PEOPLE]: [
     { label: 'STEPHEN CURRY', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/stephcurry_logo.svg' },
     { label: 'MICHAEL JORDAN', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/jordan.svg' },
     { label: 'TAYLOR SWIFT', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/taylorswift_logo.svg' },
-  ],
-  [Types.THEMES]: [
-    { label: 'USA', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/USA/us_logo.svg', url: '/data', param: 'usa' },
-    { label: 'AI', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/AI/AI_logo.svg', url: '/data', param: 'ai' },
   ]
 };
 
