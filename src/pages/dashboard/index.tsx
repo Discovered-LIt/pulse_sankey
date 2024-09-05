@@ -8,8 +8,8 @@ type Item = { label: string, logo: string, url?: string, param?: string; };
 
 enum Types {
   COMPANIES = 'COMPANIES',
-  PEOPLE = 'PEOPLE',
   THEMES = 'THEMES',
+  PEOPLE = 'PEOPLE',
 }
 
 const items: {[key in Types]: Item[]} = {
