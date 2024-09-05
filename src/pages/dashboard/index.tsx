@@ -54,9 +54,8 @@ const items: {[key in Types]: Item[]} = {
     { label: 'TAYLOR SWIFT', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/Logos/taylorswift_logo.svg' },
   ],
   [Types.THEMES]: [
-    { label: 'ARTIFICAL INTELLIGENCE', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/AI/AI_logo.svg', url: '/data', param: 'ai' },
     { label: 'USA', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/USA/us_logo.svg', url: '/data', param: 'usa' },
-
+    { label: 'ARTIFICAL INTELLIGENCE', logo: 'https://pulse-stockprice.s3.us-east-2.amazonaws.com/AI/AI_logo.svg', url: '/data', param: 'ai' },
   ]
 };
 
