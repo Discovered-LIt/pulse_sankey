@@ -27,7 +27,7 @@ const StephenCurryLoading = () => {
     >
       <div className={"h-screen flex justify-center items-center flex-col"}>
         <img
-          src={'https://pulse-stockprice.s3.us-east-2.amazonaws.com/steph/stephcurry.gif'}
+          src={'https://d16knz2r0dpe77.cloudfront.net/steph/stephcurry.gif'}
           onLoadCapture={onGifLoad}
           onCompositionEnd={()=> alert("ended?")}
         />

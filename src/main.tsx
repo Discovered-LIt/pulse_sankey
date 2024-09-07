@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import Alert from "./components/alert";
 import Header from "./components/header";
 import TabMenu from "./components/tabMenu";
+import TagManager from "react-gtm-module";
 // provider
 import { Compose } from "./context/Compose";
 import AlertContextProvider from "./context/AlertContext";
@@ -20,6 +21,11 @@ const Main = () => {
   const onDahboardPage = pathname === '/';
   // Create a client
   const queryClient = new QueryClient();
+  const tagManagerArgs = {
+    gtmId: 'GTM-P5KW99D>'
+  }
+  TagManager.initialize(tagManagerArgs)
+  
   return (
     <div className="bg-black text-white h-screen overflow-scroll">
       <QueryClientProvider client={queryClient}>

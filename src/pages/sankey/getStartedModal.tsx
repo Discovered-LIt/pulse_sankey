@@ -9,31 +9,31 @@ const data = [
   {
     title: "ESTIMATE YOUR PRICE TARGET",
     description: "Use our income statement model to determine your price target for Tesla. Estimate revenue and expenses to determine price target.",
-    gif: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/pricetarget1.gif",
+    gif: "https://d16knz2r0dpe77.cloudfront.net/pricetarget1.gif",
     button: "Show Me"
   },
   {
     title: "SELECT QUARTER",
     description: "Select reporting period quarter from drop down.",
-    gif: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/selectdate2.gif",
+    gif: "https://d16knz2r0dpe77.cloudfront.net/selectdate2.gif",
     button: "Next"
   },
   {
     title: "ADJUST SLIDERS",
     description: "Adjust sliders to estimate Tesla’s revenue and expenses. Click on the icon to expand details and view historical data. Net profit will automatically calculate.",
-    gif: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/adjustsliders3.gif",
+    gif: "https://d16knz2r0dpe77.cloudfront.net/adjustsliders3.gif",
     button: "Next"
   },
   {
     title: "SET P/E RATIO",
     description: "Price-to-earnings ratio (P/E ratio) shows how much investors are willing to pay per dollar of earnings. Adjust the slider to set your P/E ratio. The P/E ratio is multiplied by Tesla’s trailing twelve month earnings to calculate your price target.",
-    gif: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/peratio4.gif",
+    gif: "https://d16knz2r0dpe77.cloudfront.net/peratio4.gif",
     button: "Next"
   },
   {
     title: "SAVE VALUES (OPTIONAL)",
     description: "Click the save button to store your values. You will be prompted to enter your email address.",
-    gif: "https://pulse-stockprice.s3.us-east-2.amazonaws.com/save5.gif",
+    gif: "https://d16knz2r0dpe77.cloudfront.net/save5.gif",
     button: "Get Started"
   }
 ];
