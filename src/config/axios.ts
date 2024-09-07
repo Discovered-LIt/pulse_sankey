@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "https://pulse-stockprice.s3.us-east-2.amazonaws.com",
+  baseURL: "https://d16knz2r0dpe77.cloudfront.net",
   // headers: {'X-Custom-Header': 'xxx'}
 });
