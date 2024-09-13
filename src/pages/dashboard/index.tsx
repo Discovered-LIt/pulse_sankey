@@ -50,7 +50,7 @@ const items: {[key in Types]: Item[]} = {
   ],
   [Types.THEMES]: [
     { label: 'USA', logo: 'https://d16knz2r0dpe77.cloudfront.net/USA/us_logo.svg', url: '/data', param: 'usa' },
-    { label: 'AI', logo: 'https://d16knz2r0dpe77.cloudfront.net/AI/AI_logo.svg', url: '/data', param: 'ai' },
+    { label: 'AI', logo: 'https://d16knz2r0dpe77.cloudfront.net/AI/AI_logo.svg' }
   ],
   [Types.PEOPLE]: [
     { label: 'STEPHEN CURRY', logo: 'https://d16knz2r0dpe77.cloudfront.net/Logos/stephcurry_logo.svg' },
