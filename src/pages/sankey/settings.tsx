@@ -236,7 +236,7 @@ const Settings = ({
           ])}
         />
         <p className="text-[10px] font-light uppercase italic">
-          {`${percentage}% since Q3 2023`}
+          {`${percentage}% since Q2 2024`}
         </p>
       </div>
     );
