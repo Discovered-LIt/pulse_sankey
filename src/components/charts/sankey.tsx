@@ -130,42 +130,50 @@ const Sankey = ({ data }: Sankey) => {
     );
   });
 
-  // Draw the links
-  const allLinks = links.map((link: any, i) => {
-    const linkGenerator = sankeyLinkHorizontal();
-    const path = linkGenerator(link);
-    const { linkFill } = sankeySettings[link?.target?.id as SankeyCategory] || {
-      linkFill: "",
-    };
-    const { layer, color } = link?.source;
-    const showLabel = layer !== 0 && !!link.target.sourceLinks.length;
+// Draw the links
+const allLinks = links.map((link: any, i) => {
+  const linkGenerator = sankeyLinkHorizontal();
+  const path = linkGenerator(link);
+  const { linkFill } = sankeySettings[link?.target?.id as SankeyCategory] || {
+    linkFill: "",
+  };
+  const { layer, color } = link?.source;
+  const showLabel = layer !== 0 && !!link.target.sourceLinks.length;
 
-    return (
-      <svg key={i}>
-        <path
-          id={`path-${i}`}
-          d={path}
-          stroke={color?.lite || linkFill}
-          fill="none"
-          strokeOpacity={1}
-          strokeWidth={Math.abs(link.width)}
+  return (
+    <svg key={i}>
+      <path
+        id={`path-${i}`}
+        d={path}
+        stroke={color?.lite || linkFill}
+        fill="none"
+        strokeOpacity={1}
+        strokeWidth={0} // Start with strokeWidth 0 for the animation
+      >
+        <animate
+          attributeName="stroke-width"
+          from="0"
+          to={Math.abs(link.width)}
+          dur="1s"
+          fill="freeze"
         />
-        {showLabel && (
-          <text>
-            <textPath
-              xlinkHref={`#path-${i}`}
-              startOffset="50%"
-              textAnchor="middle"
-              fontSize={isMobile ? 10 : 12}
-              fill="white"
-            >
-              {link.target.id}
-            </textPath>
-          </text>
-        )}
-      </svg>
-    );
-  });
+      </path>
+      {showLabel && (
+        <text>
+          <textPath
+            xlinkHref={`#path-${i}`}
+            startOffset="50%"
+            textAnchor="middle"
+            fontSize={isMobile ? 10 : 12}
+            fill="white"
+          >
+            {link.target.id}
+          </textPath>
+        </text>
+      )}
+    </svg>
+  );
+});
 
   return (
     <div className={`${isMobile ? "mobile-view" : ""}`}>
