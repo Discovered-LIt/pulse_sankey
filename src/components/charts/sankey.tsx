@@ -5,7 +5,7 @@ import * as d3 from "d3"; // Import D3 for transitions
 import { sankeySettings, SankeyCategory } from "../../config/sankey";
 import { SankeyData } from "../../pages/sankey";
 // constant
-import { GREY, GREEN } from "../../config/sankey";
+import { GREY } from "../../config/sankey";
 
 const MARGIN_Y = 25;
 const MARGIN_X = 150;
@@ -50,7 +50,6 @@ const Sankey = ({ data }: Sankey) => {
     const { heading, depth } = node;
     const showLeftLabel = depth === 0;
     const showLabel = showLeftLabel || !node.sourceLinks.length;
-    // Define the transform origin for the rotation
     let transformOriginX =
       node.x0 + (node.x1 - node.x0) / 2 + (showLeftLabel ? -40 : +50) || 1;
     let transformOriginY = node.y0 + (node.y1 - node.y0) / 2;
@@ -134,24 +133,49 @@ const Sankey = ({ data }: Sankey) => {
   // Animate the links sequentially using D3 transitions
   useEffect(() => {
     const svg = d3.select("svg");
-    
+
     links.forEach((link, i) => {
       const linkGenerator = sankeyLinkHorizontal();
       const path = linkGenerator(link);
 
-      const delay = link.source.id.includes("Revenue") ? 0 :
-                    link.source.id.includes("Cost") ? 1000 : 2000;
+      // Reference correct enum values for animation categories
+      const isRevenue =
+        link.source.id === SankeyCategory.AutoRevenue ||
+        link.source.id === SankeyCategory.AutoSalesRevenue ||
+        link.source.id === SankeyCategory.AutoLeasingRevenue ||
+        link.source.id === SankeyCategory.AutoRegCredits;
 
-      const isNetProfit = link.target.id === "Net Profit";
+      const isCost =
+        link.source.id === SankeyCategory.CostOfRevenue ||
+        link.source.id === SankeyCategory.AutoCosts ||
+        link.source.id === SankeyCategory.EnergyCosts;
+
+      const isProfitOrExpenses =
+        link.source.id === SankeyCategory.OperationProfit ||
+        link.source.id === SankeyCategory.OperationExpenses;
+
+      const isNetProfit = link.target.id === SankeyCategory.NetProfite;
+
+      let animationDelay = 0;
+      if (isRevenue) {
+        animationDelay = 0; // Revenues flow first
+      } else if (isCost) {
+        animationDelay = 1000; // Costs flow after revenues
+      } else if (isProfitOrExpenses) {
+        animationDelay = 2000; // Profits and Expenses flow after Costs
+      }
 
       // Append the path for each link with a transition
       svg.append("path")
         .attr("d", path)
         .attr("fill", "none")
-        .attr("stroke", sankeySettings[link.target.id as SankeyCategory]?.linkFill || GREY)
+        .attr(
+          "stroke",
+          sankeySettings[link.target.id as SankeyCategory]?.linkFill || GREY,
+        )
         .attr("stroke-width", 0)
         .transition()
-        .delay(delay)
+        .delay(animationDelay)
         .duration(1000)
         .attr("stroke-width", Math.abs(link.width))
         .attr("stroke-opacity", isNetProfit ? 0.8 : 1)
