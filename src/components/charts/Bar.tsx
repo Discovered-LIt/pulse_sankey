@@ -97,6 +97,8 @@ const BarChart = ({
       })
       .attr("height", (d) => Math.abs(y(d.value) - y(0)))
       .style("fill", (chartColour || "steelblue"))
+      .attr("rx", 10)
+      .attr("ry", 10)
       .on("mouseover", handleMouseOver)
       .on("mouseout", () => setTooltip(undefined));
 
