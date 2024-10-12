@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { sankey, sankeyCenter, sankeyLinkHorizontal } from "d3-sankey";
 import { sankeySettings, SankeyCategory } from "../../config/sankey";
 import { SankeyData } from "../../pages/sankey";
@@ -14,7 +14,7 @@ interface SankeyProps {
 
 const Sankey: React.FC<SankeyProps> = ({ data }) => {
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
-  const svgRef = useRef<SVGSVGElement>(null);
+  const [animate, setAnimate] = useState(false);
   const isMobile = windowWidth <= 680;
 
   useEffect(() => {
@@ -22,6 +22,12 @@ const Sankey: React.FC<SankeyProps> = ({ data }) => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    // Trigger animation after a short delay
+    const timer = setTimeout(() => setAnimate(true), 100);
+    return () => clearTimeout(timer);
+  }, [data]); // Re-run when data changes
 
   const sankeyGenerator = sankey()
     .nodeWidth(26)
@@ -37,47 +43,8 @@ const Sankey: React.FC<SankeyProps> = ({ data }) => {
 
   const linkPath = sankeyLinkHorizontal();
 
-  useEffect(() => {
-    if (!svgRef.current) return;
-
-    const svg = svgRef.current;
-
-    // Animate nodes
-    const nodeRects = svg.querySelectorAll('.node-rect');
-    nodeRects.forEach((rect: SVGRectElement) => {
-      const fullHeight = parseFloat(rect.getAttribute('height') || '0');
-      rect.setAttribute('height', '0');
-      setTimeout(() => {
-        rect.setAttribute('height', fullHeight.toString());
-        rect.style.transition = 'height 1s ease-out';
-      }, 100);
-    });
-
-    // Animate links
-    const linkPaths = svg.querySelectorAll('.link-path');
-    linkPaths.forEach((path: SVGPathElement) => {
-      const length = path.getTotalLength();
-      path.style.strokeDasharray = `${length} ${length}`;
-      path.style.strokeDashoffset = length.toString();
-      path.getBoundingClientRect(); // Trigger a reflow
-      path.style.transition = 'stroke-dashoffset 1s ease-out';
-      path.style.strokeDashoffset = '0';
-    });
-
-    // Fade in labels
-    const labels = svg.querySelectorAll('.node-label');
-    labels.forEach((label: SVGForeignObjectElement) => {
-      label.style.opacity = '0';
-      setTimeout(() => {
-        label.style.transition = 'opacity 1s ease-out';
-        label.style.opacity = '1';
-      }, 500);
-    });
-  }, [data, windowWidth]);
-
   return (
     <svg
-      ref={svgRef}
       width={MARGIN_X + windowWidth}
       height={isMobile ? 350 : HEIGHT}
       viewBox={`0 0 ${MARGIN_X + windowWidth} ${HEIGHT}`}
@@ -106,21 +73,28 @@ const Sankey: React.FC<SankeyProps> = ({ data }) => {
         return (
           <g key={node.index}>
             <rect
-              className="node-rect"
               height={node.y1 - node.y0 || Math.abs(nodeLink?.width)}
               width={sankeyGenerator.nodeWidth()}
               x={node.x0 || 0}
               y={node.y0 + (value < 0 ? nodeLink?.width : 0) || 0}
               fill={node?.color?.dark || nodeFill || GREY}
               fillOpacity={0.8}
+              style={{
+                transition: "all 1s ease-out",
+                transform: animate ? "scaleY(1)" : "scaleY(0)",
+                transformOrigin: "bottom",
+              }}
             />
             {showLabel && (
               <foreignObject
-                className="node-label"
                 x={(showLeftLabel ? node.x0 + (node.x1 - node.x0) / 2 - 80 : node.x1 + 15) || 0}
                 y={node.y0 + (node.y1 - node.y0) / 2 - 10}
                 width={isMobile ? 90 : 200}
                 height={100}
+                style={{
+                  transition: "opacity 1s ease-out",
+                  opacity: animate ? 1 : 0,
+                }}
               >
                 <div
                   style={{
@@ -149,7 +123,6 @@ const Sankey: React.FC<SankeyProps> = ({ data }) => {
         return (
           <path
             key={i}
-            className="link-path"
             d={path}
             fill="none"
             stroke={sankeySettings[link.target.id as SankeyCategory]?.linkFill || GREY}
@@ -157,6 +130,9 @@ const Sankey: React.FC<SankeyProps> = ({ data }) => {
             strokeOpacity={isNetProfit ? 0.8 : 1}
             style={{
               filter: isNetProfit ? "url(#glow)" : "none",
+              transition: "stroke-dashoffset 1s ease-out",
+              strokeDasharray: animate ? "none" : "1000",
+              strokeDashoffset: animate ? "0" : "1000",
             }}
           />
         );
