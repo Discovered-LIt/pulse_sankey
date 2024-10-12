@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { sankey, sankeyCenter, sankeyLinkHorizontal } from "d3-sankey";
+import * as d3 from "d3"; // Import D3 for transitions
 // types
 import { sankeySettings, SankeyCategory } from "../../config/sankey";
 import { SankeyData } from "../../pages/sankey";
@@ -130,77 +131,33 @@ const Sankey = ({ data }: Sankey) => {
     );
   });
 
-  // Animate the links sequentially
-  const allLinks = links.map((link: any, i) => {
-    const linkGenerator = sankeyLinkHorizontal();
-    const path = linkGenerator(link);
-    const { linkFill } = sankeySettings[link?.target?.id as SankeyCategory] || {
-      linkFill: "",
-    };
-    const { layer, color } = link?.source;
+  // Animate the links sequentially using D3 transitions
+  useEffect(() => {
+    const svg = d3.select("svg");
+    
+    links.forEach((link, i) => {
+      const linkGenerator = sankeyLinkHorizontal();
+      const path = linkGenerator(link);
 
-    // Set animation delay based on the category
-    let animationDelay = 0;
-    if (link.source.id.includes('Revenue')) {
-      animationDelay = 0; // Revenues flow first
-    } else if (link.source.id.includes('Cost')) {
-      animationDelay = 1000; // Costs flow after revenues
-    } else if (link.source.id.includes('Profit') || link.source.id.includes('Expenses')) {
-      animationDelay = 2000; // Profits and Expenses flow after Costs
-    }
+      const delay = link.source.id.includes("Revenue") ? 0 :
+                    link.source.id.includes("Cost") ? 1000 : 2000;
 
-    // Adding special effect for Net Profit
-    const isNetProfit = link.target.id === 'Net Profit';
+      const isNetProfit = link.target.id === "Net Profit";
 
-    return (
-      <svg key={i}>
-        <path
-          id={`path-${i}`}
-          d={path}
-          stroke={color?.lite || linkFill}
-          fill="none"
-          strokeOpacity={isNetProfit ? 0.8 : 1} // Make Net Profit glow
-          strokeWidth={0} // Start with strokeWidth 0 for animation
-          filter={isNetProfit ? "url(#glow)" : ""} // Glow effect for Net Profit
-        >
-          <animate
-            attributeName="stroke-width"
-            from="0"
-            to={Math.abs(link.width)}
-            dur="1s"
-            begin={`${animationDelay}ms`} // Apply delay for each category
-            fill="freeze"
-          />
-        </path>
-
-        {isNetProfit && (
-          <defs>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="3.5" result="coloredBlur" />
-              <feMerge>
-                <feMergeNode in="coloredBlur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-        )}
-
-        {layer !== 0 && !!link.target.sourceLinks.length && (
-          <text>
-            <textPath
-              xlinkHref={`#path-${i}`}
-              startOffset="50%"
-              textAnchor="middle"
-              fontSize={isMobile ? 10 : 12}
-              fill="white"
-            >
-              {link.target.id}
-            </textPath>
-          </text>
-        )}
-      </svg>
-    );
-  });
+      // Append the path for each link with a transition
+      svg.append("path")
+        .attr("d", path)
+        .attr("fill", "none")
+        .attr("stroke", sankeySettings[link.target.id as SankeyCategory]?.linkFill || GREY)
+        .attr("stroke-width", 0)
+        .transition()
+        .delay(delay)
+        .duration(1000)
+        .attr("stroke-width", Math.abs(link.width))
+        .attr("stroke-opacity", isNetProfit ? 0.8 : 1)
+        .style("filter", isNetProfit ? "url(#glow)" : "");
+    });
+  }, [links]);
 
   return (
     <div className={`${isMobile ? "mobile-view" : ""}`}>
@@ -210,7 +167,15 @@ const Sankey = ({ data }: Sankey) => {
         viewBox={`0 0 ${MARGIN_X + windowWidth} ${HEIGHT}`}
         className="m-auto"
       >
-        {allLinks}
+        <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3.5" result="coloredBlur" />
+            <feMerge>
+              <feMergeNode in="coloredBlur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
         {allNodes}
       </svg>
     </div>
