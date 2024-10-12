@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, RefObject } from "react";
+import React, { useEffect, useRef, useState, RefObject, useMemo } from "react";
 import * as d3 from "d3";
 // utils
 import { LIGHT_GREEN } from "../../config/sankey";
@@ -66,155 +66,137 @@ const LineChart = ({
   }>();
 
   const createGraph = ({
-    width = 500,
-    height = 300,
-    margin = { top: 20, right: 20, bottom: 30, left: chartOverview ? 20 : 50 },
-    ref,
-    pathOnly = false,
-    data,
-  }: CreateGraphProps) => {
-    const svg = d3.select(ref.current);
-    svg.selectAll("*").remove();
+  width = 500,
+  height = 300,
+  margin = { top: 20, right: 20, bottom: 30, left: chartOverview ? 20 : 50 },
+  ref,
+  pathOnly = false,
+  data,
+}: CreateGraphProps) => {
+  const svg = d3.select(ref.current);
+  svg.selectAll("*").remove();
 
-    const numTicks = 7; // Number of desired ticks
-    const dataLength = data.length;
-    const tickStep = Math.ceil(dataLength / (numTicks - 1));
+  const numTicks = 7; // Number of desired ticks
+  const dataLength = data.length;
+  const tickStep = Math.ceil(dataLength / (numTicks - 1));
 
-    const tickValues = Array.from({ length: numTicks }, (_, i) => {
-      const index = Math.min(i * tickStep, dataLength - 1); // Ensure not to go beyond the last data point
-      return data?.[index]?.date;
-    });
+  const tickValues = Array.from({ length: numTicks }, (_, i) => {
+    const index = Math.min(i * tickStep, dataLength - 1); // Ensure not to go beyond the last data point
+    return data?.[index]?.date;
+  });
 
-    const x = d3
-      .scaleBand()
-      .domain(data.map((d) => d.date))
-      .range([margin.left, width - margin.right])
-      .padding(0.1);
+  const x = d3
+    .scaleBand()
+    .domain(data.map((d) => d.date))
+    .range([margin.left, width - margin.right])
+    .padding(0.1);
 
-    const y = d3
-      .scaleLinear()
-      .domain([
-        d3.min(data, (d) => d.value),
-        d3.max(data, (d) => d.value) as number,
-      ])
-      .nice()
-      .range([height - margin.bottom, margin.top]);
+  const y = d3
+    .scaleLinear()
+    .domain([d3.min(data, (d) => d.value), d3.max(data, (d) => d.value)])
+    .nice()
+    .range([height - margin.bottom, margin.top]);
 
-    const line = d3
-      .line<LineChartData>()
-      .curve(d3.curveCardinal)  // Added smooth curves
-      .x((d) => x(d.date) || 0)
-      .y((d) => y(d.value));
+  const line = d3
+    .line<LineChartData>()
+    .x((d) => x(d.date) || 0)
+    .y((d) => y(d.value))
+    .curve(d3.curveCardinal); // Add cardinal curve
 
-    // Adding gradient for the line
-    const gradient = svg.append("defs")
-      .append("linearGradient")
-      .attr("id", "line-gradient")
-      .attr("gradientUnits", "userSpaceOnUse")
-      .attr("x1", 0)
-      .attr("y1", y(d3.min(data, d => d.value)))
-      .attr("x2", 0)
-      .attr("y2", y(d3.max(data, d => d.value)))
-      .selectAll("stop")
-      .data([
-        { offset: "0%", color: "lightgreen" },
-        { offset: "100%", color: "green" }
-      ])
-      .enter()
-      .append("stop")
-      .attr("offset", d => d.offset)
-      .attr("stop-color", d => d.color);
+  svg
+    .append("path")
+    .datum(data)
+    .attr("fill", "none")
+    .attr("stroke", chartColour || LIGHT_GREEN)
+    .attr("stroke-width", 2)
+    .attr("d", line);
 
-    svg
-      .append("path")
-      .datum(data)
-      .attr("fill", "none")
-      .attr("stroke", "url(#line-gradient)")
-      .attr("stroke-width", 2)
-      .attr("filter", "url(#shadow)")  // Added shadow filter
-      .attr("d", line);
-
-    // Adding shadow filter
-    svg.append("defs").append("filter")
-      .attr("id", "shadow")
-      .append("feDropShadow")
-      .attr("dx", 2)
-      .attr("dy", 2)
-      .attr("stdDeviation", 2);
-
-    // Add x-axis
-    if (!chartOverview) {
-      svg
-        .append("g")
-        .attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(
-          d3
-            .axisBottom(x)
-            .tickValues(tickValues)
-            .tickFormat((d) =>
-              getUTCDate(d, !pathOnly ? "'Q'Q yy" : "yyyy"),
-            ),
-        );
-
-      svg.selectAll(".domain").remove();
-      svg.selectAll(".tick line").remove();
-    }
-
-    if (pathOnly) return;
-
-    const handleMouseOver = (e: MouseEvent, d: LineChartData) => {
-      let x = e.pageX - 40;
-      let y = e.pageY - 40;
-      // calculate within the parent container
-      if (parentRef?.current) {
-        x -= parentRef.current.getBoundingClientRect().left;
-        const maxX = parentRef.current.offsetWidth;
-        x = Math.min(x, maxX);
-        y -= parentRef.current.getBoundingClientRect().top;
-      }
-      setTooltip({ x, y, d: d || data[data.length - 1] });
-    };
-
-    // Handle mouseout event to hide tooltip
-    const handleMouseOut = () => {
-      setTooltip(undefined);
-    };
-
-    // Append circles to the circle group
+  // Add x-axis
+  if (!chartOverview) {
     svg
       .append("g")
-      .selectAll("circle")
-      .data(data)
-      .enter()
-      .append("circle")
-      .attr("cx", (d) => x(d.date) || 0)
-      .attr("cy", (d) => y(d.value))
-      .attr("r", 5)  // Increased circle size for modern feel
-      .attr("fill", (chartColour || LIGHT_GREEN))
-      .attr("opacity", 0.7)  // Added transparency
-      .attr("cursor", "pointer")
-      .on("mouseover", handleMouseOver)
-      .on("mouseout", handleMouseOut);
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(
+        d3.axisBottom(x).tickValues(tickValues).tickFormat((d) => getUTCDate(d, !pathOnly ? "'Q'Q yy" : "yyyy"))
+      );
 
-    // Add y-axis
-    if (!chartOverview) {
-      svg
-        .append("g")
-        .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y).tickFormat((d) => `${d}${prefix}`));
+    svg.selectAll(".domain").remove();
+    svg.selectAll(".tick line").remove();
+  }
 
-      svg.selectAll(".domain").remove();
-      svg.selectAll(".tick line").remove();
+  if (pathOnly) return;
+
+  const handleMouseOver = (e: MouseEvent, d: LineChartData) => {
+    let x = e.pageX - 40;
+    let y = e.pageY - 40;
+    if (parentRef?.current) {
+      x -= parentRef.current.getBoundingClientRect().left;
+      const maxX = parentRef.current.offsetWidth;
+      x = Math.min(x, maxX);
+      y -= parentRef.current.getBoundingClientRect().top;
     }
-
-    svg
-      .attr("width", "100%")
-      .attr("height", "100%")
-      .attr("viewBox", `0 0 ${width} ${height}`)
-      .attr("preserveAspectRatio", "xMinYMin meet")
-      .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
+    setTooltip({ x, y, d: d || data[data.length - 1] });
   };
+
+  const handleMouseOut = () => {
+    setTooltip(undefined);
+  };
+
+  // Append circles to the circle group
+  svg
+    .append("g")
+    .selectAll("circle")
+    .data(data)
+    .enter()
+    .append("circle")
+    .attr("cx", (d) => x(d.date) || 0)
+    .attr("cy", (d) => y(d.value))
+    .attr("r", 3)
+    .attr("fill", chartColour || LIGHT_GREEN)
+    .attr("cursor", "pointer")
+    .on("mouseover", handleMouseOver)
+    .on("mouseout", handleMouseOut);
+
+  svg
+    .append("circle")
+    .attr("cx", x(data[data.length - 1].date) || 0)
+    .attr("cx", x(data[data.length - 1].date) || 0)
+    .attr("cy", y(data[data.length - 1].value))
+    .attr("r", 7)
+    .attr("fill", chartColour || LIGHT_GREEN)
+    .attr("opacity", 0.4)
+    .on("mouseover", handleMouseOver)
+    .on("mouseout", handleMouseOut);
+
+  svg
+    .append("circle")
+    .attr("cx", x(data[data.length - 1].date) || 0)
+    .attr("cx", x(data[data.length - 1].date) || 0)
+    .attr("cy", y(data[data.length - 1].value))
+    .attr("r", 4)
+    .attr("fill", chartColour || LIGHT_GREEN)
+    .on("mouseover", handleMouseOver)
+    .on("mouseout", handleMouseOut);
+
+  // Add y-axis
+  if (!chartOverview) {
+    svg
+      .append("g")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(d3.axisLeft(y).tickFormat((d) => `${d}${prefix}`));
+
+    svg.selectAll(".domain").remove();
+    svg.selectAll(".tick line").remove();
+  }
+
+  svg
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+};
 
   useEffect(() => {
     if (!data?.length) return;
@@ -233,7 +215,7 @@ const LineChart = ({
 
   return (
     <>
-      {!chartOverview && <Filters activeZoom={activeZoom} onZoomChange={onZoomChange} />}
+      {!chartOverview && <Filters activeZoom={activeZoom} onZoomChange={onZoomChange}/>}
       {!data?.length ? (
         <h2 className="text-center mt-10">No data found.</h2>
       ) : (
@@ -249,8 +231,8 @@ const LineChart = ({
           </TimelineRangeSlider>}
           {tooltip && (
             <div
-              className="bg-zinc-200 text-black px-4 py-2 rounded-lg shadow-lg absolute text-[12px]"  // Added rounded corners and shadow
-              style={{ left: `${tooltip?.x}px`, top: `${tooltip?.y}px` }}
+              className="bg-zinc-200 text-black px-4 py-2 rounded absolute text-[12px]"
+              style={{ left: ${tooltip?.x}px, top: ${tooltip?.y}px }}
             >
               <b className="mr-2">
                 {getUTCDate(tooltip.d.date, (dateFormat || "'Q'Q yyyy"))}:
