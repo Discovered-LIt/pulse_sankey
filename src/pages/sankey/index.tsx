@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 // components
-import SankeyChart from "../../components/charts/sankey";
+import SankeyChart, { SankeyData } from "../../components/charts/sankey";
 import Settings, { calendarDropdownOptions } from "./settings";
 import SliderInfoSideBar from "./sliderInfoSideBar";
 import Modal from "../../components/modal";
@@ -26,11 +26,6 @@ import { useAlertContext } from "../../context/AlertContext";
 import { saveSliderValues, SliderSaveBodyProps } from "../../actions/slider";
 
 export type SliderData = { [key in SliderCategory]?: number };
-
-export type SankeyData = {
-  nodes: { id: string }[];
-  links: { source: string; target: string; value: number }[];
-};
 
 const Home = () => {
   const [defaultSliderData] = useState<SliderData>(sliderDefaultData);
