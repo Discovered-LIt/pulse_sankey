@@ -14,7 +14,7 @@ interface SankeyProps {
 
 const Sankey: React.FC<SankeyProps> = ({ data }) => {
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
-  const [isVisible, setIsVisible] = useState(false);
+  const [animate, setAnimate] = useState(false);
   const isMobile = windowWidth <= 680;
 
   useEffect(() => {
@@ -24,8 +24,9 @@ const Sankey: React.FC<SankeyProps> = ({ data }) => {
   }, []);
 
   useEffect(() => {
-    // Trigger animation after component mount
-    setIsVisible(true);
+    // Trigger animation after a short delay
+    const timer = setTimeout(() => setAnimate(true), 100);
+    return () => clearTimeout(timer);
   }, []);
 
   const sankeyGenerator = sankey()
@@ -80,7 +81,7 @@ const Sankey: React.FC<SankeyProps> = ({ data }) => {
               fillOpacity={0.8}
               style={{
                 transition: "all 1s ease-out",
-                transform: isVisible ? "scaleY(1)" : "scaleY(0)",
+                transform: animate ? "scaleY(1)" : "scaleY(0)",
                 transformOrigin: "bottom",
               }}
             />
@@ -92,7 +93,7 @@ const Sankey: React.FC<SankeyProps> = ({ data }) => {
                 height={100}
                 style={{
                   transition: "opacity 1s ease-out",
-                  opacity: isVisible ? 1 : 0,
+                  opacity: animate ? 1 : 0,
                 }}
               >
                 <div
@@ -128,10 +129,10 @@ const Sankey: React.FC<SankeyProps> = ({ data }) => {
             strokeWidth={Math.abs(link.width)}
             strokeOpacity={isNetProfit ? 0.8 : 1}
             style={{
-              transition: "stroke-dashoffset 1s ease-out",
-              strokeDasharray: isVisible ? "none" : "1000",
-              strokeDashoffset: isVisible ? "0" : "1000",
               filter: isNetProfit ? "url(#glow)" : "none",
+              transition: "stroke-dashoffset 1s ease-out",
+              strokeDasharray: animate ? "none" : "1000",
+              strokeDashoffset: animate ? "0" : "1000",
             }}
           />
         );
