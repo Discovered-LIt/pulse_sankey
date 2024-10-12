@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { sankey, sankeyCenter, sankeyLinkHorizontal } from "d3-sankey";
 import { sankeySettings, SankeyCategory } from "../../config/sankey";
 import { SankeyData } from "../../pages/sankey";
@@ -7,6 +7,7 @@ import { GREY } from "../../config/sankey";
 const MARGIN_Y = 25;
 const MARGIN_X = 150;
 const HEIGHT = 400;
+const ANIMATION_DURATION = 1000; // 1 second
 
 interface SankeyProps {
   data: SankeyData;
@@ -14,7 +15,9 @@ interface SankeyProps {
 
 const Sankey: React.FC<SankeyProps> = ({ data }) => {
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
-  const [animate, setAnimate] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const animationRef = useRef<number>();
+  const startTimeRef = useRef<number>();
   const isMobile = windowWidth <= 680;
 
   useEffect(() => {
@@ -24,10 +27,28 @@ const Sankey: React.FC<SankeyProps> = ({ data }) => {
   }, []);
 
   useEffect(() => {
-    // Trigger animation after a short delay
-    const timer = setTimeout(() => setAnimate(true), 100);
-    return () => clearTimeout(timer);
-  }, [data]); // Re-run when data changes
+    startTimeRef.current = performance.now();
+    animationRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [data]);
+
+  const animate = (time: number) => {
+    if (!startTimeRef.current) {
+      startTimeRef.current = time;
+    }
+    const elapsedTime = time - startTimeRef.current;
+    const progress = Math.min(elapsedTime / ANIMATION_DURATION, 1);
+    setProgress(progress);
+
+    if (progress < 1) {
+      animationRef.current = requestAnimationFrame(animate);
+    }
+  };
 
   const sankeyGenerator = sankey()
     .nodeWidth(26)
@@ -70,20 +91,17 @@ const Sankey: React.FC<SankeyProps> = ({ data }) => {
         const value = nodeLink?.displayValue || node.value || 0;
         if (value === 0) return null;
 
+        const animatedHeight = (node.y1 - node.y0 || Math.abs(nodeLink?.width)) * progress;
+
         return (
           <g key={node.index}>
             <rect
-              height={node.y1 - node.y0 || Math.abs(nodeLink?.width)}
+              height={animatedHeight}
               width={sankeyGenerator.nodeWidth()}
               x={node.x0 || 0}
-              y={node.y0 + (value < 0 ? nodeLink?.width : 0) || 0}
+              y={(node.y0 + (value < 0 ? nodeLink?.width : 0) || 0) + (node.y1 - node.y0 - animatedHeight)}
               fill={node?.color?.dark || nodeFill || GREY}
               fillOpacity={0.8}
-              style={{
-                transition: "all 1s ease-out",
-                transform: animate ? "scaleY(1)" : "scaleY(0)",
-                transformOrigin: "bottom",
-              }}
             />
             {showLabel && (
               <foreignObject
@@ -91,10 +109,7 @@ const Sankey: React.FC<SankeyProps> = ({ data }) => {
                 y={node.y0 + (node.y1 - node.y0) / 2 - 10}
                 width={isMobile ? 90 : 200}
                 height={100}
-                style={{
-                  transition: "opacity 1s ease-out",
-                  opacity: animate ? 1 : 0,
-                }}
+                style={{ opacity: progress }}
               >
                 <div
                   style={{
@@ -126,13 +141,10 @@ const Sankey: React.FC<SankeyProps> = ({ data }) => {
             d={path}
             fill="none"
             stroke={sankeySettings[link.target.id as SankeyCategory]?.linkFill || GREY}
-            strokeWidth={Math.abs(link.width)}
+            strokeWidth={Math.abs(link.width) * progress}
             strokeOpacity={isNetProfit ? 0.8 : 1}
             style={{
               filter: isNetProfit ? "url(#glow)" : "none",
-              transition: "stroke-dashoffset 1s ease-out",
-              strokeDasharray: animate ? "none" : "1000",
-              strokeDashoffset: animate ? "0" : "1000",
             }}
           />
         );
