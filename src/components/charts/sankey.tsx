@@ -1,26 +1,31 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { sankey, sankeyCenter, sankeyLinkHorizontal } from "d3-sankey";
-import * as d3 from "d3";
-import { SankeyCategory, sankeySettings, GREY } from "../../config/sankey";
+import { sankeySettings, SankeyCategory } from "../../config/sankey";
+import { SankeyData } from "../../pages/sankey";
+import { GREY } from "../../config/sankey";
 
 const MARGIN_Y = 25;
 const MARGIN_X = 150;
 const HEIGHT = 400;
 
-export type SankeyData = {
-  nodes: { id: string; heading?: boolean; value?: number }[];
-  links: { source: string; target: string; value: number; displayValue?: number }[];
-};
+interface SankeyProps {
+  data: SankeyData;
+}
 
-const SankeyChart = ({ data }: { data: SankeyData }) => {
-  const svgRef = useRef<SVGSVGElement>(null);
+const Sankey: React.FC<SankeyProps> = ({ data }) => {
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+  const [isVisible, setIsVisible] = useState(false);
   const isMobile = windowWidth <= 680;
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    // Trigger animation after component mount
+    setIsVisible(true);
   }, []);
 
   const sankeyGenerator = sankey()
@@ -33,96 +38,106 @@ const SankeyChart = ({ data }: { data: SankeyData }) => {
     .nodeId((node: any) => node.id)
     .nodeAlign(sankeyCenter);
 
-  const { nodes, links } = sankeyGenerator(data);
+  const { nodes, links } = sankeyGenerator(data as any);
 
-  useEffect(() => {
-    if (!svgRef.current) return;
-
-    const svg = d3.select(svgRef.current);
-    svg.selectAll("*").remove();
-
-    // Add filter for glow effect
-    const defs = svg.append("defs");
-    const filter = defs.append("filter")
-      .attr("id", "glow");
-    filter.append("feGaussianBlur")
-      .attr("stdDeviation", "3.5")
-      .attr("result", "coloredBlur");
-    filter.append("feMerge")
-      .selectAll("feMergeNode")
-      .data(["coloredBlur", "SourceGraphic"])
-      .enter().append("feMergeNode")
-      .attr("in", d => d);
-
-    // Animate nodes
-    nodes.forEach((node: any) => {
-      const { nodeFill } = sankeySettings[node.id as SankeyCategory] || {};
-      const rect = svg.append("rect")
-        .attr("x", node.x0)
-        .attr("y", node.y0)
-        .attr("height", 0)
-        .attr("width", sankeyGenerator.nodeWidth())
-        .attr("fill", node?.color?.dark || nodeFill || GREY)
-        .attr("stroke", "none")
-        .attr("fill-opacity", 0.8);
-
-      rect.transition()
-        .duration(1000)
-        .attr("height", node.y1 - node.y0);
-
-      // Add labels
-      if (node.heading || !node.sourceLinks.length) {
-        const foreignObject = svg.append("foreignObject")
-          .attr("x", node.x0 + (node.x1 - node.x0) / 2 - 40)
-          .attr("y", node.y0 + (node.y1 - node.y0) / 2 - 10)
-          .attr("width", 200)
-          .attr("height", 100)
-          .style("opacity", 0);
-
-        foreignObject.append("xhtml:div")
-          .style("font-size", "12px")
-          .style("color", "#fff")
-          .html(`${node.id}<br>$${node.value?.toFixed(3)} BN`);
-
-        foreignObject.transition()
-          .duration(1000)
-          .style("opacity", 1);
-      }
-    });
-
-    // Animate links
-    links.forEach((link: any, i: number) => {
-      const linkGenerator = sankeyLinkHorizontal();
-      const path = linkGenerator(link);
-
-      const linkElement = svg.append("path")
-        .attr("d", path)
-        .attr("fill", "none")
-        .attr("stroke", sankeySettings[link.target.id as SankeyCategory]?.linkFill || GREY)
-        .attr("stroke-width", 0)
-        .attr("stroke-opacity", link.target.id === SankeyCategory.NetProfite ? 0.8 : 1);
-
-      if (link.target.id === SankeyCategory.NetProfite) {
-        linkElement.style("filter", "url(#glow)");
-      }
-
-      linkElement.transition()
-        .delay(i * 50)
-        .duration(1000)
-        .attr("stroke-width", Math.abs(link.width));
-    });
-
-  }, [data, windowWidth]);
+  const linkPath = sankeyLinkHorizontal();
 
   return (
     <svg
-      ref={svgRef}
       width={MARGIN_X + windowWidth}
       height={isMobile ? 350 : HEIGHT}
       viewBox={`0 0 ${MARGIN_X + windowWidth} ${HEIGHT}`}
       className="m-auto"
-    />
+    >
+      <defs>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3.5" result="coloredBlur" />
+          <feMerge>
+            <feMergeNode in="coloredBlur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+      {nodes.map((node: any) => {
+        const { nodeFill } = sankeySettings[node.id as SankeyCategory] || {};
+        const { heading, depth } = node;
+        const showLeftLabel = depth === 0;
+        const showLabel = showLeftLabel || !node.sourceLinks.length;
+        const nodeLink = node.sourceLinks.find(
+          (link: any) => link.source.id === node.id,
+        );
+        const value = nodeLink?.displayValue || node.value || 0;
+        if (value === 0) return null;
+
+        return (
+          <g key={node.index}>
+            <rect
+              height={node.y1 - node.y0 || Math.abs(nodeLink?.width)}
+              width={sankeyGenerator.nodeWidth()}
+              x={node.x0 || 0}
+              y={node.y0 + (value < 0 ? nodeLink?.width : 0) || 0}
+              fill={node?.color?.dark || nodeFill || GREY}
+              fillOpacity={0.8}
+              style={{
+                transition: "all 1s ease-out",
+                transform: isVisible ? "scaleY(1)" : "scaleY(0)",
+                transformOrigin: "bottom",
+              }}
+            />
+            {showLabel && (
+              <foreignObject
+                x={(showLeftLabel ? node.x0 + (node.x1 - node.x0) / 2 - 80 : node.x1 + 15) || 0}
+                y={node.y0 + (node.y1 - node.y0) / 2 - 10}
+                width={isMobile ? 90 : 200}
+                height={100}
+                style={{
+                  transition: "opacity 1s ease-out",
+                  opacity: isVisible ? 1 : 0,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 12,
+                    fontWeight: heading ? "bold" : "normal",
+                    textAlign: "left",
+                    color: "#fff",
+                    whiteSpace: "pre-wrap",
+                    width: isMobile && !showLeftLabel ? "20px" : "fit-content",
+                    lineHeight: "1.2em",
+                  }}
+                >
+                  {node.id}
+                  <br />
+                  {`$${value.toFixed(3)} BN`}
+                </div>
+              </foreignObject>
+            )}
+          </g>
+        );
+      })}
+      {links.map((link: any, i: number) => {
+        const path = linkPath(link);
+        const isNetProfit = link.target.id === SankeyCategory.NetProfite;
+
+        return (
+          <path
+            key={i}
+            d={path}
+            fill="none"
+            stroke={sankeySettings[link.target.id as SankeyCategory]?.linkFill || GREY}
+            strokeWidth={Math.abs(link.width)}
+            strokeOpacity={isNetProfit ? 0.8 : 1}
+            style={{
+              transition: "stroke-dashoffset 1s ease-out",
+              strokeDasharray: isVisible ? "none" : "1000",
+              strokeDashoffset: isVisible ? "0" : "1000",
+              filter: isNetProfit ? "url(#glow)" : "none",
+            }}
+          />
+        );
+      })}
+    </svg>
   );
 };
 
-export default SankeyChart;
+export default Sankey;
