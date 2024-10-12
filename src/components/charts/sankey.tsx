@@ -4,7 +4,7 @@ import { sankey, sankeyCenter, sankeyLinkHorizontal } from "d3-sankey";
 import { sankeySettings, SankeyCategory } from "../../config/sankey";
 import { SankeyData } from "../../pages/sankey";
 // constant
-import { GREY } from "../../config/sankey";
+import { GREY, GREEN } from "../../config/sankey";
 
 const MARGIN_Y = 25;
 const MARGIN_X = 150;
@@ -130,50 +130,77 @@ const Sankey = ({ data }: Sankey) => {
     );
   });
 
-// Draw the links
-const allLinks = links.map((link: any, i) => {
-  const linkGenerator = sankeyLinkHorizontal();
-  const path = linkGenerator(link);
-  const { linkFill } = sankeySettings[link?.target?.id as SankeyCategory] || {
-    linkFill: "",
-  };
-  const { layer, color } = link?.source;
-  const showLabel = layer !== 0 && !!link.target.sourceLinks.length;
+  // Animate the links sequentially
+  const allLinks = links.map((link: any, i) => {
+    const linkGenerator = sankeyLinkHorizontal();
+    const path = linkGenerator(link);
+    const { linkFill } = sankeySettings[link?.target?.id as SankeyCategory] || {
+      linkFill: "",
+    };
+    const { layer, color } = link?.source;
 
-  return (
-    <svg key={i}>
-      <path
-        id={`path-${i}`}
-        d={path}
-        stroke={color?.lite || linkFill}
-        fill="none"
-        strokeOpacity={1}
-        strokeWidth={0} // Start with strokeWidth 0 for the animation
-      >
-        <animate
-          attributeName="stroke-width"
-          from="0"
-          to={Math.abs(link.width)}
-          dur="1s"
-          fill="freeze"
-        />
-      </path>
-      {showLabel && (
-        <text>
-          <textPath
-            xlinkHref={`#path-${i}`}
-            startOffset="50%"
-            textAnchor="middle"
-            fontSize={isMobile ? 10 : 12}
-            fill="white"
-          >
-            {link.target.id}
-          </textPath>
-        </text>
-      )}
-    </svg>
-  );
-});
+    // Set animation delay based on the category
+    let animationDelay = 0;
+    if (link.source.id.includes('Revenue')) {
+      animationDelay = 0; // Revenues flow first
+    } else if (link.source.id.includes('Cost')) {
+      animationDelay = 1000; // Costs flow after revenues
+    } else if (link.source.id.includes('Profit') || link.source.id.includes('Expenses')) {
+      animationDelay = 2000; // Profits and Expenses flow after Costs
+    }
+
+    // Adding special effect for Net Profit
+    const isNetProfit = link.target.id === 'Net Profit';
+
+    return (
+      <svg key={i}>
+        <path
+          id={`path-${i}`}
+          d={path}
+          stroke={color?.lite || linkFill}
+          fill="none"
+          strokeOpacity={isNetProfit ? 0.8 : 1} // Make Net Profit glow
+          strokeWidth={0} // Start with strokeWidth 0 for animation
+          filter={isNetProfit ? "url(#glow)" : ""} // Glow effect for Net Profit
+        >
+          <animate
+            attributeName="stroke-width"
+            from="0"
+            to={Math.abs(link.width)}
+            dur="1s"
+            begin={`${animationDelay}ms`} // Apply delay for each category
+            fill="freeze"
+          />
+        </path>
+
+        {isNetProfit && (
+          <defs>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="3.5" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+        )}
+
+        {layer !== 0 && !!link.target.sourceLinks.length && (
+          <text>
+            <textPath
+              xlinkHref={`#path-${i}`}
+              startOffset="50%"
+              textAnchor="middle"
+              fontSize={isMobile ? 10 : 12}
+              fill="white"
+            >
+              {link.target.id}
+            </textPath>
+          </text>
+        )}
+      </svg>
+    );
+  });
 
   return (
     <div className={`${isMobile ? "mobile-view" : ""}`}>
@@ -181,7 +208,6 @@ const allLinks = links.map((link: any, i) => {
         width={MARGIN_X + windowWidth}
         height={isMobile ? 350 : HEIGHT}
         viewBox={`0 0 ${MARGIN_X + windowWidth} ${HEIGHT}`}
-        // preserveAspectRatio="xMinYMin"
         className="m-auto"
       >
         {allLinks}
