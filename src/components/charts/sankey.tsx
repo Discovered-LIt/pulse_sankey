@@ -1,35 +1,28 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { sankey, sankeyCenter, sankeyLinkHorizontal } from "d3-sankey";
 import * as d3 from "d3";
-import { sankeySettings, SankeyCategory } from "../../config/sankey";
-import { SankeyData } from "../../pages/sankey";
-import { GREY } from "../../config/sankey";
+import { SankeyCategory, sankeySettings, GREY } from "../../config/sankey";
 
 const MARGIN_Y = 25;
 const MARGIN_X = 150;
 const HEIGHT = 400;
 
-interface Sankey {
-  data: SankeyData;
-}
+export type SankeyData = {
+  nodes: { id: string; heading?: boolean; value?: number }[];
+  links: { source: string; target: string; value: number; displayValue?: number }[];
+};
 
-const Sankey = ({ data }: Sankey) => {
+const SankeyChart = ({ data }: { data: SankeyData }) => {
   const svgRef = useRef<SVGSVGElement>(null);
-  const [windowWidth, setWindowWidth] = useState<number>(0);
-  const isMobile = window.innerWidth <= 680;
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+  const isMobile = windowWidth <= 680;
 
   useEffect(() => {
-    windowresizeHandler();
-    window.addEventListener("resize", windowresizeHandler);
-    return () => window.removeEventListener("resize", windowresizeHandler);
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const windowresizeHandler = () => {
-    const width = window.innerWidth <= 680 ? 800 : window.innerWidth;
-    setWindowWidth(width);
-  };
-
-  // Set the sankey diagram properties
   const sankeyGenerator = sankey()
     .nodeWidth(26)
     .nodePadding(29)
@@ -40,24 +33,26 @@ const Sankey = ({ data }: Sankey) => {
     .nodeId((node: any) => node.id)
     .nodeAlign(sankeyCenter);
 
-  // Compute nodes and links positions
-  const { nodes, links } = sankeyGenerator(data as any);
+  const { nodes, links } = sankeyGenerator(data);
 
   useEffect(() => {
     if (!svgRef.current) return;
 
     const svg = d3.select(svgRef.current);
-
-    // Clear previous content
     svg.selectAll("*").remove();
 
     // Add filter for glow effect
-    svg.append("defs")
-      .append("filter")
-      .attr("id", "glow")
-      .append("feGaussianBlur")
+    const defs = svg.append("defs");
+    const filter = defs.append("filter")
+      .attr("id", "glow");
+    filter.append("feGaussianBlur")
       .attr("stdDeviation", "3.5")
       .attr("result", "coloredBlur");
+    filter.append("feMerge")
+      .selectAll("feMergeNode")
+      .data(["coloredBlur", "SourceGraphic"])
+      .enter().append("feMergeNode")
+      .attr("in", d => d);
 
     // Animate nodes
     nodes.forEach((node: any) => {
@@ -75,8 +70,24 @@ const Sankey = ({ data }: Sankey) => {
         .duration(1000)
         .attr("height", node.y1 - node.y0);
 
-      // Add labels (similar to your existing code)
-      // ...
+      // Add labels
+      if (node.heading || !node.sourceLinks.length) {
+        const foreignObject = svg.append("foreignObject")
+          .attr("x", node.x0 + (node.x1 - node.x0) / 2 - 40)
+          .attr("y", node.y0 + (node.y1 - node.y0) / 2 - 10)
+          .attr("width", 200)
+          .attr("height", 100)
+          .style("opacity", 0);
+
+        foreignObject.append("xhtml:div")
+          .style("font-size", "12px")
+          .style("color", "#fff")
+          .html(`${node.id}<br>$${node.value?.toFixed(3)} BN`);
+
+        foreignObject.transition()
+          .duration(1000)
+          .style("opacity", 1);
+      }
     });
 
     // Animate links
@@ -96,7 +107,7 @@ const Sankey = ({ data }: Sankey) => {
       }
 
       linkElement.transition()
-        .delay(i * 50)  // Stagger the animations
+        .delay(i * 50)
         .duration(1000)
         .attr("stroke-width", Math.abs(link.width));
     });
@@ -104,16 +115,14 @@ const Sankey = ({ data }: Sankey) => {
   }, [data, windowWidth]);
 
   return (
-    <div className={`${isMobile ? "mobile-view" : ""}`}>
-      <svg
-        ref={svgRef}
-        width={MARGIN_X + windowWidth}
-        height={isMobile ? 350 : HEIGHT}
-        viewBox={`0 0 ${MARGIN_X + windowWidth} ${HEIGHT}`}
-        className="m-auto"
-      />
-    </div>
+    <svg
+      ref={svgRef}
+      width={MARGIN_X + windowWidth}
+      height={isMobile ? 350 : HEIGHT}
+      viewBox={`0 0 ${MARGIN_X + windowWidth} ${HEIGHT}`}
+      className="m-auto"
+    />
   );
 };
 
-export default Sankey;
+export default SankeyChart;
