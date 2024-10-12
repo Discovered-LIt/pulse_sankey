@@ -197,6 +197,9 @@ const DataPage = () => {
                   chartOverview
                   chartColour={chartSettings[data.category]?.chartcolour?.dark}
                   dateFormat={chartSettings[data.category]?.dateFormat}
+                  width={500}
+                  height={300}
+                  margin={{ top: 20, right: 20, bottom: 30, left: 50 }} 
                 />}
                 {data.type === 'BAR' &&
                   <BarChart
@@ -204,6 +207,9 @@ const DataPage = () => {
                     chartColour={chartSettings[data.category]?.chartcolour?.dark}
                     chartOverview
                     dateFormat={chartSettings[data.category]?.dateFormat}
+                    width={500}
+                    height={300}
+                    margin={{ top: 20, right: 20, bottom: 30, left: 50 }}
                   />
                 }
               </div>
