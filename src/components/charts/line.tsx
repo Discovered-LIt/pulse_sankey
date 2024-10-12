@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, RefObject, useMemo } from "react";
+import React, { useEffect, useRef, useState, RefObject } from "react";
 import * as d3 from "d3";
 // utils
 import { LIGHT_GREEN } from "../../config/sankey";
@@ -102,20 +102,48 @@ const LineChart = ({
 
     const line = d3
       .line<LineChartData>()
-      // .x((d) => x(new Date(d.date)) || 0)
+      .curve(d3.curveCardinal)  // Added smooth curves
       .x((d) => x(d.date) || 0)
       .y((d) => y(d.value));
+
+    // Adding gradient for the line
+    const gradient = svg.append("defs")
+      .append("linearGradient")
+      .attr("id", "line-gradient")
+      .attr("gradientUnits", "userSpaceOnUse")
+      .attr("x1", 0)
+      .attr("y1", y(d3.min(data, d => d.value)))
+      .attr("x2", 0)
+      .attr("y2", y(d3.max(data, d => d.value)))
+      .selectAll("stop")
+      .data([
+        { offset: "0%", color: "lightgreen" },
+        { offset: "100%", color: "green" }
+      ])
+      .enter()
+      .append("stop")
+      .attr("offset", d => d.offset)
+      .attr("stop-color", d => d.color);
 
     svg
       .append("path")
       .datum(data)
       .attr("fill", "none")
-      .attr("stroke", (chartColour || LIGHT_GREEN))
+      .attr("stroke", "url(#line-gradient)")
       .attr("stroke-width", 2)
+      .attr("filter", "url(#shadow)")  // Added shadow filter
       .attr("d", line);
 
+    // Adding shadow filter
+    svg.append("defs").append("filter")
+      .attr("id", "shadow")
+      .append("feDropShadow")
+      .attr("dx", 2)
+      .attr("dy", 2)
+      .attr("stdDeviation", 2);
+
     // Add x-axis
-    if(!chartOverview) {
+    if (!chartOverview) {
       svg
         .append("g")
         .attr("transform", `translate(0,${height - margin.bottom})`)
@@ -143,7 +171,7 @@ const LineChart = ({
         const maxX = parentRef.current.offsetWidth;
         x = Math.min(x, maxX);
         y -= parentRef.current.getBoundingClientRect().top;
-      } 
+      }
       setTooltip({ x, y, d: d || data[data.length - 1] });
     };
 
@@ -161,35 +189,15 @@ const LineChart = ({
       .append("circle")
       .attr("cx", (d) => x(d.date) || 0)
       .attr("cy", (d) => y(d.value))
-      .attr("r", 3)
+      .attr("r", 5)  // Increased circle size for modern feel
       .attr("fill", (chartColour || LIGHT_GREEN))
+      .attr("opacity", 0.7)  // Added transparency
       .attr("cursor", "pointer")
       .on("mouseover", handleMouseOver)
       .on("mouseout", handleMouseOut);
 
-    svg
-      .append("circle")
-      .attr("cx", x(data[data.length - 1].date) || 0)
-      .attr("cx", x(data[data.length - 1].date) || 0)
-      .attr("cy", y(data[data.length - 1].value))
-      .attr("r", 7)
-      .attr("fill", (chartColour || LIGHT_GREEN))
-      .attr("opacity", 0.4)
-      .on("mouseover", handleMouseOver)
-      .on("mouseout", handleMouseOut);
-
-    svg
-      .append("circle")
-      .attr("cx", x(data[data.length - 1].date) || 0)
-      .attr("cx", x(data[data.length - 1].date) || 0)
-      .attr("cy", y(data[data.length - 1].value))
-      .attr("r", 4)
-      .attr("fill", (chartColour || LIGHT_GREEN))
-      .on("mouseover", handleMouseOver)
-      .on("mouseout", handleMouseOut);
-
     // Add y-axis
-    if(!chartOverview) {
+    if (!chartOverview) {
       svg
         .append("g")
         .attr("transform", `translate(${margin.left},0)`)
@@ -225,7 +233,7 @@ const LineChart = ({
 
   return (
     <>
-      {!chartOverview && <Filters activeZoom={activeZoom} onZoomChange={onZoomChange}/>}
+      {!chartOverview && <Filters activeZoom={activeZoom} onZoomChange={onZoomChange} />}
       {!data?.length ? (
         <h2 className="text-center mt-10">No data found.</h2>
       ) : (
@@ -241,7 +249,7 @@ const LineChart = ({
           </TimelineRangeSlider>}
           {tooltip && (
             <div
-              className="bg-zinc-200 text-black px-4 py-2 rounded absolute text-[12px]"
+              className="bg-zinc-200 text-black px-4 py-2 rounded-lg shadow-lg absolute text-[12px]"  // Added rounded corners and shadow
               style={{ left: `${tooltip?.x}px`, top: `${tooltip?.y}px` }}
             >
               <b className="mr-2">
