@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { sankey, sankeyCenter, sankeyLinkHorizontal } from "d3-sankey";
 import { sankeySettings, SankeyCategory } from "../../config/sankey";
 import { SankeyData } from "../../pages/sankey";
@@ -7,43 +7,23 @@ import { GREY } from "../../config/sankey";
 const MARGIN_Y = 25;
 const MARGIN_X = 150;
 const HEIGHT = 400;
-const ANIMATION_DURATION = 1000; // 1 second
 
 const AnimatedSankey = ({ data }) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [progress, setProgress] = useState(0);
-  const animationRef = useRef();
-  const startTimeRef = useRef();
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
-  useEffect(() => {
-    startTimeRef.current = performance.now();
-    animationRef.current = requestAnimationFrame(animate);
+    // Trigger animation after a short delay
+    const timer = setTimeout(() => setIsVisible(true), 100);
 
     return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(timer);
     };
-  }, [data]);
-
-  const animate = (time) => {
-    if (!startTimeRef.current) {
-      startTimeRef.current = time;
-    }
-    const elapsedTime = time - startTimeRef.current;
-    const progress = Math.min(elapsedTime / ANIMATION_DURATION, 1);
-    setProgress(progress);
-
-    if (progress < 1) {
-      animationRef.current = requestAnimationFrame(animate);
-    }
-  };
+  }, []);
 
   const sankeyGenerator = sankey()
     .nodeWidth(26)
@@ -75,7 +55,7 @@ const AnimatedSankey = ({ data }) => {
           </feMerge>
         </filter>
       </defs>
-      {nodes.map((node) => {
+      {nodes.map((node, index) => {
         const { nodeFill } = sankeySettings[node.id] || {};
         const { heading, depth } = node;
         const showLeftLabel = depth === 0;
@@ -86,17 +66,20 @@ const AnimatedSankey = ({ data }) => {
         const value = nodeLink?.displayValue || node.value || 0;
         if (value === 0) return null;
 
-        const animatedHeight = (node.y1 - node.y0) * progress;
-
         return (
           <g key={node.index}>
             <rect
-              height={animatedHeight}
+              height={node.y1 - node.y0}
               width={sankeyGenerator.nodeWidth()}
               x={node.x0}
-              y={node.y0 + (node.y1 - node.y0 - animatedHeight)}
+              y={node.y0}
               fill={node?.color?.dark || nodeFill || GREY}
               fillOpacity={0.8}
+              style={{
+                transition: `all 1s ease-in-out ${index * 0.1}s`,
+                transform: isVisible ? 'scale(1, 1)' : 'scale(0, 1)',
+                transformOrigin: 'left'
+              }}
             />
             {showLabel && (
               <foreignObject
@@ -104,7 +87,10 @@ const AnimatedSankey = ({ data }) => {
                 y={node.y0 + (node.y1 - node.y0) / 2 - 10}
                 width={200}
                 height={100}
-                style={{ opacity: progress }}
+                style={{
+                  transition: `opacity 1s ease-in-out ${index * 0.1 + 0.5}s`,
+                  opacity: isVisible ? 1 : 0
+                }}
               >
                 <div
                   style={{
@@ -134,10 +120,13 @@ const AnimatedSankey = ({ data }) => {
             d={path}
             fill="none"
             stroke={sankeySettings[link.target.id]?.linkFill || GREY}
-            strokeWidth={Math.abs(link.width) * progress}
+            strokeWidth={Math.abs(link.width)}
             strokeOpacity={isNetProfit ? 0.8 : 1}
             style={{
               filter: isNetProfit ? "url(#glow)" : "none",
+              transition: `stroke-dashoffset 1s ease-in-out ${i * 0.05}s`,
+              strokeDasharray: link.width,
+              strokeDashoffset: isVisible ? 0 : link.width
             }}
           />
         );
