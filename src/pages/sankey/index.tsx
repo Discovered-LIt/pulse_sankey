@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 // components
-import SankeyChart, { SankeyData } from "../../components/charts/sankey";
+import AnimatedSankey from "../../components/charts/AnimatedSankey";
 import Settings, { calendarDropdownOptions } from "./settings";
 import SliderInfoSideBar from "./sliderInfoSideBar";
 import Modal from "../../components/modal";
@@ -195,7 +195,7 @@ const Home = () => {
         onQuarterChange={(val) => setSelectedQuarter(val)}
       />
       <div className="md:mt-[70px] z-0">
-        <SankeyChart data={sankeyData} />
+        <AnimatedSankey data={sankeyData} />
       </div>
       <SliderInfoSideBar
         showSidebar={!!selectedSlider}
