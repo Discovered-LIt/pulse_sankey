@@ -8,9 +8,11 @@
     "jsx": "react",
     "allowJs": true,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "baseUrl": "src"
   },
-  "include": ["src/**/*", "./global.d.ts"],
+  "include": ["src/**/*", "./global.d.ts", "src/**/*.d.ts"],
   "exclude": ["node_modules"]
 }

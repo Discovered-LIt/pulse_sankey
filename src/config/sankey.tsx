@@ -356,3 +356,17 @@ export const SliderCategoryInfoMaping = {
   [SliderCategory.InterestAndOther]: { category: "INTEREST_AND_OTHER_INCOME" },
   [SliderCategory.Taxes]: { category: "INCOME_TAX" },
 };
+
+export type SankeyData = {
+  nodes: Array<{
+    id: string;
+    heading?: boolean;
+    color?: { dark: string };
+  }>;
+  links: Array<{
+    source: string;
+    target: string;
+    value: number;
+    displayValue: number;
+  }>;
+};

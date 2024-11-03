@@ -88,62 +88,55 @@ const InfoDiv = ({
   onQuarterChange,
 }: InfoDivProps) => (
   <div
-    className="
-      bg-black w-full min-h-10 px-8 py-4 top-0 z-10 text-xs
-      shadow-md shadow-slate-600/50 flex flex-wrap items-center
-      justify-between"
+    className="bg-black w-full px-8 py-4 top-0 z-10 text-xs shadow-md shadow-slate-600/50 flex items-center justify-between"
   >
-    <div className="flex justify-between gap-x-2 sm:gap-x-12 sm:justify-normal items-center flex-wrap cursor-pointer">
-      <div className="flex ">
-        <Dropdown
-          value={selectedQuarter}
-          options={calendarDropdownOptions}
-          icon={<CalendarIcon className="h-4 w-4 mr-1" />}
-          onChange={(opt) => onQuarterChange(opt.value)}
-        />
+    {/* Left side with dropdown */}
+    <div className="flex items-center gap-2">
+      <Dropdown
+        value={selectedQuarter}
+        options={calendarDropdownOptions}
+        icon={<CalendarIcon className="h-4 w-4 mr-1" />}
+        onChange={(opt) => onQuarterChange(opt.value)}
+      />
+    </div>
+
+    {/* Middle with Price Target and EPS */}
+    <div className="flex items-center gap-12">
+      <div>
+        PRICE TARGET <b className="ml-2"> ${Math.ceil(priceTarget)} </b>
       </div>
       <div>
-        PRICE TARGET
-        <b className="ml-2"> ${Math.ceil(priceTarget)} </b>
-      </div>
-      <div>
-        DILUTED EPS
-        <b className="ml-2"> ${eps.toFixed(3)} </b>
-      </div>
-      <div className="flex pt-4 md:pt-0 justify-between w-full md:w-auto">
-        <div className="flex gap-2 items-center">
-          PE RATIO
-          <div className="w-[120px]">
-            <Slider
-              id={"pe-ratio"}
-              label=""
-              description=""
-              min={0}
-              max={1000}
-              step={1}
-              prefix=""
-              value={peRatio}
-              type={SliderType.Positive}
-              onChange={(val: number) => setPeRatio(val)}
-              simple={true}
-            />
-          </div>
-        </div>
-        <SaveBtn
-          isExpanded={isExpanded}
-          onExpandClick={onExpandClick}
-          onSaveClick={onSaveClick}
-          className="md:hidden gap-2"
-        />
+        DILUTED EPS <b className="ml-2"> ${eps.toFixed(3)} </b>
       </div>
     </div>
-    <SaveBtn
-      isExpanded={isExpanded}
-      onExpandClick={onExpandClick}
-      onSaveClick={onSaveClick}
-      className="md:flex gap-4 hidden cursor-pointer items-center"
-    />
-  </div>
+
+    {/* Right side with PE ratio and save button */}
+    <div className="flex items-center gap-4">
+      <div className="flex gap-2 items-center">
+        PE RATIO
+        <div className="w-[120px]">
+          <Slider
+            id={"pe-ratio"}
+            label=""
+            description=""
+            min={0}
+            max={1000}
+            step={1}
+            prefix=""
+            value={peRatio}
+            type={SliderType.Positive}
+            onChange={(val: number) => setPeRatio(val)}
+            simple={true}
+          />
+        </div>
+      </div>
+      <SaveBtn
+        isExpanded={isExpanded}
+        onExpandClick={onExpandClick}
+        onSaveClick={onSaveClick}
+      />
+     </div> 
+   </div>
 );
 
 const Settings = ({
@@ -160,8 +153,6 @@ const Settings = ({
   onQuarterChange,
 }: Setting) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [height, setHeight] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
 
   const calculateChangePercentage = (
     currVal: number,
@@ -242,79 +233,23 @@ const Settings = ({
     );
   };
 
-  const handleMouseDown = (e: any) => {
-    e.preventDefault();
-    let startY = e.clientY || e.touches[0].clientY;
-    setIsDragging(true);
-
-    const handleMouseMove = (e: any) => {
-      e.preventDefault();
-      setIsExpanded(true);
-      const deltaY = startY - (e.clientY || e.touches[0].clientY); // Invert the deltaY calculation
-      setHeight((prevHeight) => {
-        const newHeight = prevHeight + deltaY; // Invert the deltaY here as well
-        startY = e.clientY || e.touches[0].clientY;
-        const scrollHeight =
-          document.getElementById("slider-container").scrollHeight;
-        if (newHeight >= -20) {
-          setIsExpanded(false);
-          return 0;
-        } else if (Math.abs(newHeight) >= scrollHeight) {
-          return -scrollHeight;
-        } else {
-          return newHeight;
-        }
-      });
-    };
-
-    const handleMouseUp = (e: any) => {
-      setIsDragging(false);
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("touchmove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-      document.removeEventListener("touchend", handleMouseUp);
-    };
-
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("touchmove", handleMouseMove, { passive: false });
-    document.addEventListener("mouseup", handleMouseUp);
-    document.addEventListener("touchend", handleMouseUp);
-  };
 
   const onExpandClick = () => {
     setIsExpanded(!isExpanded);
-    setHeight(isExpanded ? 0 : -250);
   };
 
   return (
     <div className="w-full bg-black overflow-auto">
-      <InfoDiv
-        isExpanded={isExpanded}
-        eps={eps}
-        priceTarget={priceTarget}
-        setPeRatio={setPeRatio}
-        peRatio={peRatio}
-        onExpandClick={onExpandClick}
-        onSaveClick={onSaveClick}
-        selectedQuarter={selectedQuarter}
-        onQuarterChange={onQuarterChange}
-      />
       <div
         id="slider-container"
-        className={cn([
-          "overflow-auto block w-full top-30 bg-black",
-          {
-            "transition-height duration-500": !isDragging,
-          },
-        ])}
-        style={{ height: `${Math.abs(height || 10)}px` }}
+        className="overflow-auto block w-full top-30 bg-black"
       >
         {Object.keys(SliderGroups).map((group: SliderGroupType, idx) => (
           <div key={`${group}-${idx}`}>
             <div className="bg-[#1d1f23] py-2 px-8 sticky top-0 w-full uppercase text-[12px]">
               {group}
             </div>
-            <div className="grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-6">
+            <div className="grid gap-10 grid-cols-1 py-6">
               {SliderGroups[group].map((type) => (
                 <div
                   className="w-[300px] mb-2 m-auto"
@@ -343,8 +278,6 @@ const Settings = ({
         ))}
         <div
           className="hidden sm:flex bg-white text-black rounded-lg w-6 h-2 sticky bottom-0 justify-center items-center m-auto cursor-ns-resize"
-          onMouseDown={handleMouseDown}
-          onTouchStart={handleMouseDown}
         >
           <div className="w-[15px] h-[2px] bg-black" />
         </div>

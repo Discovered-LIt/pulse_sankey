@@ -1,0 +1,10 @@
+.sections {
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+.section {
+  padding: 50px;
+  height: 100vh;
+  border-bottom: 1px solid #ccc;
+}

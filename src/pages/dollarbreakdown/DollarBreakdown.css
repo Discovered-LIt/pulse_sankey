@@ -1,0 +1,141 @@
+.dollarbreakdown-outer-container {
+  position: fixed;
+  top: 110px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000000;
+}
+
+/* Scrollable sankey container */
+.dollarbreakdown-scrollable-sankey-container {
+  height: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
+  position: relative;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dollarbreakdown-scrollable-sankey-container::-webkit-scrollbar {
+  display: none;
+}
+
+.dollarbreakdown-dollarbill-effect {
+  transition: transform 0.5s ease, filter 0.5s ease;
+  will-change: transform, filter;
+  /* Add animation for the fractal noise */
+  animation: dollarbreakdown-fractalMovement 10s infinite linear;
+}
+
+/* Animate the baseFrequency of feTurbulence to create movement */
+@keyframes dollarbreakdown-fractalMovement {
+  0% {
+    filter: url('#dollarbreakdown-neonFractal') baseFrequency(0.02);
+  }
+  50% {
+    filter: url('#dollarbreakdown-neonFractal') baseFrequency(0.05);
+  }
+  100% {
+    filter: url('#dollarbreakdown-neonFractal') baseFrequency(0.02);
+  }
+}
+
+.dollarbreakdown-glow-effect {
+  animation: dollarbreakdown-glowPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.dollarbreakdown-shadow-glow {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes dollarbreakdown-glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 15px rgba(0, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.7), 0 0 25px rgba(255, 0, 255, 0.5);
+  }
+}
+
+/* Add these to your CSS */
+.dollarbreakdown-fixed-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  z-index: 10;
+}
+
+.dollarbreakdown-scrollable-content {
+  padding-top: 100vh;
+  min-height: 400vh;
+}
+
+.dollarbreakdown-dollar-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.dollarbreakdown-step {
+  height: 100vh;
+  scroll-snap-align: start;
+}
+
+/* Style for SVG sections */
+.dollarbreakdown-svg-section {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  object-position: center;
+  transition: all 0.5s ease;
+  filter: brightness(1.1) contrast(1.1);
+  position: relative;
+  z-index: 1;
+}
+
+/* Container for the segments */
+.dollarbreakdown-segments-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  height: 300px;
+  position: relative;
+}
+
+/* Individual segment wrapper */
+.dollarbreakdown-segment {
+  position: relative;
+  height: 100%;
+  transition: all 0.5s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Focus state enhancements */
+.dollarbreakdown-segment.focused {
+  z-index: 10;
+  transform: scale(1.1);
+}
+
+/* Ambient lighting effect */
+.ambient-light {
+  animation: ambientPulse 4s ease-in-out infinite;
+}
+
+@keyframes ambientPulse {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.2);
+  }
+}

@@ -1,0 +1,152 @@
+/* Ensure outer container captures all events */
+.outer-container {
+  position: fixed;
+  top: 110px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  background-color: #000000;
+  flex-direction: column;
+  align-items: center; 
+}
+
+/* Enable events on the scrollable container */
+.scrollable-sankey-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  pointer-events: auto;
+}
+
+/* Make SimpleSankey container pass through events */
+.container {
+  width: 1200px; /* Set fixed width to match diagram */
+  height: 100%;
+  pointer-events: none;
+  margin: -33px auto 0; /* Center horizontally with negative top margin */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.svg-container {
+  width: 1200px; /* Match container width */
+  height: 100%;
+  pointer-events: none;
+  margin: -70px auto; /* Center horizontally */
+  position: relative; /* Add positioning context */
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: block; /* Remove any extra space */
+  margin: 0 auto; /* Center the SVG itself */
+}
+/* Allow specific interactive elements to still receive events if needed */
+.container .stats-bar {
+  pointer-events: auto;
+}
+
+/* Make sure SVG elements pass through events */
+svg {
+  pointer-events: none;
+}
+
+svg * {
+  pointer-events: none;
+}
+
+/* Keep scroll snapping behavior */
+.step {
+  height: 100vh;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 2rem;
+  scroll-snap-align: start;
+  pointer-events: none;
+}
+
+.scrollable-content {
+  position: relative;
+  min-height: 200vh;
+  pointer-events: auto;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollable-sankey-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.scrollable-sankey-container {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for IE and Edge */
+.scrollable-sankey-container {
+  -ms-overflow-style: none;
+}
+
+/* Keep the existing scroll behavior */
+.scrollable-sankey-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  pointer-events: auto;
+}
+
+/* Same for outer container */
+.outer-container::-webkit-scrollbar {
+  display: none;
+}
+
+.outer-container {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* Stats bar with even spacing */
+.stats-bar {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between; /* Change to space-evenly if you want equal spacing */
+  padding: 0 4rem; /* Add padding on sides to prevent items from touching edges */
+  pointer-events: auto;
+}
+
+/* Individual stat item spacing */
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-width: 150px; /* Ensure minimum width for each stat */
+  margin: 0 2rem; /* Add horizontal margin between items */
+}
+
+/* Or alternatively, use grid for more precise control */
+.stats-bar {
+  width: 100%;
+  max-width: 1200px;
+  margin: 70px auto;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 equal columns */
+  gap: 4rem; /* Space between items */
+  padding: 0 2rem;
+  pointer-events: auto;
+}

@@ -10,6 +10,30 @@ import {
   LIGHT_GREY,
 } from "../config/sankey";
 
+// Add your new type definitions here
+export type Stock = {
+  s: string;
+  logo: string;
+  sharesoutstanding: number;
+  color: string;
+  adjustedclose: number;
+  p: number | null;
+  t: number;
+  marketCap: number | null;
+  initialPrice: number;
+  priceChange: number;
+};
+
+export type BorderMapItem = {
+  className: string;
+  type: string;
+};
+
+export type BorderMap = {
+  [key: string]: BorderMapItem;
+};
+
+// Your existing functions
 export const getSankeyDisplayColor = (
   value: number,
   type: SankeyCategory,

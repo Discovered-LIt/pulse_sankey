@@ -1,0 +1,212 @@
+[
+ {
+   "s": "AAPL",
+   "logo": "/logos/AAPL.svg",
+   "sharesoutstanding": 15287521000,
+   "color": "#F8F8F8",
+   "adjustedclose": 227.55
+ },
+ {
+   "s": "MSFT",
+   "logo": "/logos/MSFT.svg",
+   "sharesoutstanding": 7433000000,
+   "color": "#0078d7",
+   "adjustedclose": 416.32
+ },
+ {
+   "s": "TSLA",
+   "logo": "/logos/TSLA.svg",
+   "sharesoutstanding": 3191000000,
+   "color": "#e31937",
+   "adjustedclose": 217.8
+ },
+ {
+   "s": "AMZN",
+   "logo": "/logos/AMZN.svg",
+   "sharesoutstanding": 10500000000,
+   "color": "#ff9900",
+   "adjustedclose": 188.82
+ },
+ {
+   "s": "GOOG",
+   "logo": "/logos/GOOG.svg",
+   "sharesoutstanding": 12310000000,
+   "color": "#e31937",
+   "adjustedclose": 164.52
+ },
+ {
+   "s": "NVDA",
+   "logo": "/logos/NVDA.svg",
+   "sharesoutstanding": 24578000000,
+   "color": "#76b900",
+   "adjustedclose": 134.8
+ },
+ {
+   "s": "META",
+   "logo": "/logos/META.svg",
+   "sharesoutstanding": 2530000000,
+   "color": "#0082FB",
+   "adjustedclose": 589.95
+ },
+ {
+   "s": "LLY",
+   "logo": "/logos/LLY.svg",
+   "sharesoutstanding": 900900000,
+   "color": "#FF001F",
+   "adjustedclose": 932.06
+ },
+ {
+   "s": "COST",
+   "logo": "/logos/COST.svg",
+   "sharesoutstanding": 443340000,
+   "color": "#0259A6",
+   "adjustedclose": 889.03
+ },
+ {
+   "s": "V",
+   "logo": "/logos/V.svg",
+   "sharesoutstanding": 1610000000,
+   "color": "#0078d7",
+   "adjustedclose": 277.84
+ },
+ {
+   "s": "WMT",
+   "logo": "/logos/WMT.svg",
+   "sharesoutstanding": 8044000000,
+   "color": "#0078d7",
+   "adjustedclose": 80.1
+ },
+ {
+   "s": "AVGO",
+   "logo": "/logos/AVGO.svg",
+   "sharesoutstanding": 4663000000,
+   "color": "#e31937",
+   "adjustedclose": 181.48
+ },
+ {
+   "s": "UNH",
+   "logo": "/logos/UNH.svg",
+   "sharesoutstanding": 921000000,
+   "color": "#0078d7",
+   "adjustedclose": 598.05
+ },
+ {
+   "s": "NVO",
+   "logo": "/logos/NVO.svg",
+   "sharesoutstanding": 4457700000,
+   "color": "#4267B2",
+   "adjustedclose": 120.04
+ },
+ {
+   "s": "TSM",
+   "logo": "/logos/TSM.svg",
+   "sharesoutstanding": 5185514310,
+   "color": "#FF001F",
+   "adjustedclose": 190.81
+ },
+ {
+   "s": "XOM",
+   "logo": "/logos/XOM.svg",
+   "sharesoutstanding": 4317000000,
+   "color": "#F86300",
+   "adjustedclose": 123.61
+ },
+ {
+   "s": "JPM",
+   "logo": "/logos/JPM.svg",
+   "sharesoutstanding": 2889800000,
+   "color": "#0078d7",
+   "adjustedclose": 222.29
+ },
+ {
+   "s": "HD",
+   "logo": "/logos/HD.svg",
+   "sharesoutstanding": 990000000,
+   "color": "#F86300",
+   "adjustedclose": 411.9
+ },
+ {
+   "s": "ORCL",
+   "logo": "/logos/ORCL.svg",
+   "sharesoutstanding": 2761000000,
+   "color": "#e31937",
+   "adjustedclose": 175.77
+ },
+ {
+   "s": "PG",
+   "logo": "/logos/PG.svg",
+   "sharesoutstanding": 2360500000,
+   "color": "#0078d7",
+   "adjustedclose": 171.09
+ },
+ {
+   "s": "MA",
+   "logo": "/logos/MA.svg",
+   "sharesoutstanding": 933000000,
+   "color": "#FF5900",
+   "adjustedclose": 502.26
+ },
+ {
+   "s": "JNJ",
+   "logo": "/logos/JNJ.svg",
+   "sharesoutstanding": 2406800000,
+   "color": "#FF001F",
+   "adjustedclose": 161.46
+ },
+ {
+   "s": "ABBV",
+   "logo": "/logos/ABBV.svg",
+   "sharesoutstanding": 1766000000,
+   "color": "#0078d7",
+   "adjustedclose": 194.19
+ },
+ {
+   "s": "BAC",
+   "logo": "/logos/BAC.svg",
+   "sharesoutstanding": 7865000000,
+   "color": "#0078d7",
+   "adjustedclose": 41.95
+ },
+ {
+   "s": "NFLX",
+   "logo": "/logos/NFLX.svg",
+   "sharesoutstanding": 430900000,
+   "color": "#e31937",
+   "adjustedclose": 722.79
+ },
+ {
+   "s": "KO",
+   "logo": "/logos/KO.svg",
+   "sharesoutstanding": 4339000000,
+   "color": "#ff9900",
+   "adjustedclose": 69.57
+ },
+ {
+   "s": "CRM",
+   "logo": "/logos/CRM.svg",
+   "sharesoutstanding": 984000000,
+   "color": "#00A2E0",
+   "adjustedclose": 288.1
+ },
+ {
+   "s": "MRK",
+   "logo": "/logos/MRK.svg",
+   "sharesoutstanding": 2542000000,
+   "color": "#02857C",
+   "adjustedclose": 109.73
+ },
+ {
+   "s": "CVX",
+   "logo": "/logos/CVX.svg",
+   "sharesoutstanding": 1824842000,
+   "color": "#FF001F",
+   "adjustedclose": 151.42
+ },
+ {
+   "s": "AMD",
+   "logo": "/logos/AMD.svg",
+   "sharesoutstanding": 1618000000,
+   "color": "#04A774",
+   "adjustedclose": 167.89
+ }
+]

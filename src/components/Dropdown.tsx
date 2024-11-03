@@ -9,7 +9,7 @@ type Option = { value: string, label: string }
 
 interface Props {
   value?: string;
-  placeholder?: string;
+  placeholder?: React.ReactNode;
   options: Option[];
   icon?: any;
   multiSelect?: boolean;

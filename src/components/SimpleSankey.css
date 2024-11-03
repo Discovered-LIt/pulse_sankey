@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
+
+body {
+  font-family: 'Space Mono', sans-serif;
+  background: #1D1F23;
+}
+
+.svg-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; /* Align items vertically in the container */
+}
+
+.simple-sankey {
+  position: relative;    /* Ensure it's within the normal document flow */
+  top: auto;
+  left: auto;
+  transform: none;
+  z-index: 1;
+}
+
+/* Align title and logo separately */
+.svg-container h1 {
+  text-align: center;
+  margin-bottom: 0;      /* Reduce space between title and logo */
+}
+
+#auto-revenue {
+  text-align: left; /* Align content to the left */
+  padding: 20px;
+}
+
+.recharts-wrapper {
+  width: 100%;  /* Ensure the chart scales properly */
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+
+
+/* Optional: If you want the logo to be responsive */
+@media (max-width: 768px) {
+  .tesla-logo {
+    width: 100px;  /* Make the logo smaller on smaller screens */
+    margin-top: -5px;  /* Adjust the spacing on smaller screens */
+  }
+}

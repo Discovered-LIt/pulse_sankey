@@ -1,0 +1,193 @@
+[
+  {
+    "year": 1845,
+    "totalPopulation": null,
+    "foreignBornTotal": null,
+    "foreignBornPercentage": null,
+    "topOrigins": [
+      { "country": "Ireland", "count": null }
+    ],
+    "states": {
+      "New York": "Ireland",
+      "Massachusetts": "Ireland",
+      "Pennsylvania": "Ireland"
+    }
+  },
+  {
+    "year": 1848,
+    "totalPopulation": null,
+    "foreignBornTotal": null,
+    "foreignBornPercentage": null,
+    "topOrigins": [
+      { "country": "Germany", "count": null }
+    ],
+    "states": {
+      "Pennsylvania": "Germany",
+      "Ohio": "Germany",
+      "Illinois": "Germany",
+      "Wisconsin": "Germany"
+    }
+  },
+  {
+    "year": 1850,
+    "totalPopulation": null,
+    "foreignBornTotal": null,
+    "foreignBornPercentage": null,
+    "topOrigins": [
+      { "country": "China", "count": null }
+    ],
+    "states": {
+      "California": "China"
+    }
+  },
+  {
+    "year": 1880,
+    "totalPopulation": null,
+    "foreignBornTotal": null,
+    "foreignBornPercentage": null,
+    "topOrigins": [
+      { "country": "Italy", "count": null },
+      { "country": "Eastern Europe (Jews)", "count": null },
+      { "country": "Scandinavia", "count": null }
+    ],
+    "states": {
+      "New York": "Italy",
+      "New Jersey": "Italy",
+      "Massachusetts": "Italy",
+      "Minnesota": "Scandinavia",
+      "Wisconsin": "Scandinavia",
+      "North Dakota": "Scandinavia"
+    }
+  },
+  {
+    "year": 1900,
+    "totalPopulation": null,
+    "foreignBornTotal": null,
+    "foreignBornPercentage": null,
+    "topOrigins": [
+      { "country": "Mexico", "count": null },
+      { "country": "Greece", "count": null },
+      { "country": "Japan", "count": null }
+    ],
+    "states": {
+      "Texas": "Mexico",
+      "California": "Mexico",
+      "New York": "Greece",
+      "Illinois": "Greece",
+      "Massachusetts": "Greece",
+      "Hawaii": "Japan"
+    }
+  },
+  {
+    "year": 1945,
+    "totalPopulation": null,
+    "foreignBornTotal": null,
+    "foreignBornPercentage": null,
+    "topOrigins": [
+      { "country": "Puerto Rico", "count": null }
+    ],
+    "states": {
+      "New York": "Puerto Rico",
+      "New Jersey": "Puerto Rico",
+      "Illinois": "Puerto Rico"
+    }
+  },
+  {
+    "year": 1946,
+    "totalPopulation": null,
+    "foreignBornTotal": null,
+    "foreignBornPercentage": null,
+    "topOrigins": [
+      { "country": "Philippines", "count": null }
+    ],
+    "states": {
+      "California": "Philippines",
+      "Hawaii": "Philippines"
+    }
+  },
+  {
+    "year": 1959,
+    "totalPopulation": null,
+    "foreignBornTotal": null,
+    "foreignBornPercentage": null,
+    "topOrigins": [
+      { "country": "Cuba", "count": null }
+    ],
+    "states": {
+      "Florida": "Cuba",
+      "New Jersey": "Cuba",
+      "New York": "Cuba"
+    }
+  },
+  {
+    "year": 1975,
+    "totalPopulation": null,
+    "foreignBornTotal": null,
+    "foreignBornPercentage": null,
+    "topOrigins": [
+      { "country": "Vietnam", "count": null },
+      { "country": "Laos", "count": null },
+      { "country": "Cambodia", "count": null }
+    ],
+    "states": {
+      "California": "Vietnam",
+      "Texas": "Vietnam",
+      "Washington": "Vietnam"
+    }
+  },
+  {
+    "year": 1980,
+    "totalPopulation": null,
+    "foreignBornTotal": null,
+    "foreignBornPercentage": null,
+    "topOrigins": [
+      { "country": "El Salvador", "count": null },
+      { "country": "Guatemala", "count": null },
+      { "country": "Honduras", "count": null }
+    ],
+    "states": {
+      "California": "El Salvador",
+      "Texas": "El Salvador",
+      "Florida": "El Salvador"
+    }
+  },
+  {
+    "year": 1990,
+    "totalPopulation": null,
+    "foreignBornTotal": null,
+    "foreignBornPercentage": null,
+    "topOrigins": [
+      { "country": "India", "count": null },
+      { "country": "Pakistan", "count": null },
+      { "country": "Bangladesh", "count": null },
+      { "country": "China", "count": null },
+      { "country": "Mexico", "count": null }
+    ],
+    "states": {
+      "California": "India",
+      "New Jersey": "Pakistan",
+      "Texas": "Bangladesh",
+      "Illinois": "India",
+      "New York": "China",
+      "Arizona": "Mexico"
+    }
+  },
+  {
+    "year": 2000,
+    "totalPopulation": null,
+    "foreignBornTotal": null,
+    "foreignBornPercentage": null,
+    "topOrigins": [
+      { "country": "Nigeria", "count": null },
+      { "country": "Ethiopia", "count": null },
+      { "country": "Ghana", "count": null },
+      { "country": "Somalia", "count": null }
+    ],
+    "states": {
+      "New York": "Nigeria",
+      "Maryland": "Ethiopia",
+      "Texas": "Ghana",
+      "Minnesota": "Somalia"
+    }
+  }
+]

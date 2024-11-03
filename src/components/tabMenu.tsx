@@ -17,12 +17,19 @@ const TabMenu = () => {
   useEffect(() => {
     let topic = searchParams.get('topic');
     topic = Object.values(Topic).includes(topic as Topic) ? topic : Topic.Default;
-    setActiveTopic(topic as Topic)
+    if (menuTabsToShow.includes('howtheymakemoney')) {
+      navigate('/howtheymakemoney');
+    } else {
+      setActiveTopic(topic as Topic)
+    }
   }, []);
 
   const tabs = useMemo((): { name: string, link: string }[] => {
     if(!activeTopic) return;
     const items = [
+      { id: 'howtheymakemoney', name: 'HOW THEY MAKE MONEY', link: '/howtheymakemoney'},
+      { id: 'dollarbreakdown', name: 'DOLLAR BREAKDOWN', link: '/dollarbreakdown'}, // Added new tab
+      { id: 'immigrationvisualization', name: 'IMMIGRATION', link: '/immigration'}, // Added new tab
       { id: 'data', name: 'ALL DATA', link: '/data'},
       { id: 'sankey', name: 'SIMULATE', link: '/sankey'},
     ]

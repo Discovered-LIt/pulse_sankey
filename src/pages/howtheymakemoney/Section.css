@@ -1,0 +1,66 @@
+.section-container {
+  padding: 2rem;
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.section-description {
+  font-size: 1.2rem;
+  max-width: 800px;
+  text-align: center;
+  color: #aaa;
+  margin-bottom: 2rem;
+}
+
+.horizontal-scroll-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+/* Row for SVGs */
+.svgs-row {
+  display: flex;
+  overflow-x: auto; /* Enable horizontal scrolling for SVGs */
+  gap: 2rem;
+  padding: 1rem;
+  scroll-snap-type: x mandatory;
+}
+
+.section-svg {
+  width: 100px; /* Set a fixed width for consistency */
+  height: auto;
+  scroll-snap-align: start;
+}
+
+/* Row for Charts */
+.charts-row {
+  display: flex;
+  overflow-x: auto; /* Enable horizontal scrolling for charts */
+  gap: 2rem;
+  padding: 1rem;
+  scroll-snap-type: x mandatory;
+}
+
+.section-chart-container {
+  min-width: 300px; /* Set a minimum width for each chart */
+  scroll-snap-align: start;
+  text-align: center;
+}
+
+.section-chart-container h3 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  color: #fff;
+}

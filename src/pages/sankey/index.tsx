@@ -1,11 +1,14 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 // components
-import AnimatedSankey from "../../components/charts/AnimatedSankey";
 import Settings, { calendarDropdownOptions } from "./settings";
+import Sankey from "../../components/charts/sankey";
+import ResizeObserver from "resize-observer-polyfill"; // Import the polyfill if necessary
+import InfoDiv from "./InfoDiv";  // Import InfoDiv here
 import SliderInfoSideBar from "./sliderInfoSideBar";
 import Modal from "../../components/modal";
 import TextField from "../../components/textField";
 // types
+import { SankeyData } from "../../config/sankey";
 import {
   SliderCategory,
   SankeyCategory,
@@ -37,6 +40,27 @@ const Home = () => {
     useSliderContext();
   const { setErrorAlert, setSuccessAlert } = useAlertContext();
   const [selectedQuarter, setSelectedQuarter] = useState(calendarDropdownOptions[0].value);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const sankeyContainerRef = useRef(null);
+
+  // ResizeObserver logic to track container size
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver((entries) => {
+      if (!entries || entries.length === 0) return;
+      const { width } = entries[0].contentRect;
+      setContainerWidth(width);
+    });
+
+    if (sankeyContainerRef.current) {
+      resizeObserver.observe(sankeyContainerRef.current); // Observe the container
+    }
+
+    return () => {
+      if (sankeyContainerRef.current) {
+        resizeObserver.unobserve(sankeyContainerRef.current);
+      }
+    };
+  }, []);
 
   const sankeyData = useMemo((): SankeyData => {
     const netProfit = cal.calculateNetProfit(sliderData);
@@ -100,7 +124,6 @@ const Home = () => {
       ],
     ];
 
-    // to show dynamic color for others sankey line
     const othersLineColor = getSankeyDisplayColor(
       cal.calculateOthers(sliderData),
       SankeyCategory.Others,
@@ -115,28 +138,22 @@ const Home = () => {
               SankeyCategory.AutoRevenue,
               SankeyCategory.NetProfite,
             ].includes(key),
-            ...(key === SankeyCategory.Others
-              ? { color: othersLineColor }
-              : {}),
+            ...(key === SankeyCategory.Others ? { color: othersLineColor } : {}),
           };
         },
       ),
       links: sankeyLinks.map((link) => {
         const [source, target, fn] = link;
         const value = fn?.(sliderData);
-        return { source, target, value, displayValue: fn?.(sliderData) };
+        return { source, target, value: Math.max(value, 0), displayValue: Math.max(value, 0) }; // Clamp negative values
       }),
     };
   }, [sliderData]);
 
-  const eps = useMemo(() => {
-    return cal.calEPS(sliderData);
-  }, [sliderData]);
+  const eps = useMemo(() => cal.calEPS(sliderData), [sliderData]);
 
   const onSliderChange = (type: SliderCategory, val: number) => {
-    setSlider((prevState) => {
-      return { ...prevState, ...{ [type]: val } };
-    });
+    setSlider((prevState) => ({ ...prevState, [type]: val }));
   };
 
   const onSliderInfoClick = (type: SliderCategory) => {
@@ -145,7 +162,7 @@ const Home = () => {
 
   const onSaveHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const [reportingQuarter, reportingYear] = selectedQuarter.split(" ")
+    const [reportingQuarter, reportingYear] = selectedQuarter.split(" ");
     const data = {
       chartDetails: {
         userEmail,
@@ -164,7 +181,7 @@ const Home = () => {
 
     try {
       await saveSliderValues({ data });
-      setSuccessAlert("Data saved successfully.")
+      setSuccessAlert("Data saved successfully.");
     } catch (err) {
       setErrorAlert(`Something went wrong while saving data: ${err}.`);
     } finally {
@@ -174,60 +191,59 @@ const Home = () => {
 
   const sideBarData = useMemo(() => {
     if (!selectedSlider) return undefined;
-    return sliderCategoryData[
-      SliderCategoryInfoMaping[selectedSlider].category
-    ];
+    return sliderCategoryData[SliderCategoryInfoMaping[selectedSlider].category];
   }, [selectedSlider]);
 
   return (
-    <div className="bg-[#1d1f23] h-[87vh] w-full block overflow-y-scroll overflow-x-hidden">
-      <Settings
-        onChange={onSliderChange}
-        defaultSliderData={defaultSliderData}
-        sliderData={sliderData}
+    <div className="w-full">
+      {/* InfoDiv at the top */}
+      <InfoDiv
+        isExpanded={false}
         eps={eps}
         priceTarget={(eps + 2.04) * peRatio}
         peRatio={peRatio}
         setPeRatio={setPeRatio}
-        onSliderInfoClick={onSliderInfoClick}
-        onSaveClick={() => setShowSaveModal(true)}
         selectedQuarter={selectedQuarter}
+        onExpandClick={() => {}}
+        onSaveClick={() => setShowSaveModal(true)}
         onQuarterChange={(val) => setSelectedQuarter(val)}
       />
-      <div className="md:mt-[70px] z-0">
-        <AnimatedSankey data={sankeyData} />
+
+      <div className="flex h-[87vh] w-full">
+        {/* Slider Section taking 30% width */}
+        <div className="min-w-[350px] bg-[#1d1f23] block overflow-y-scroll overflow-x-hidden border-2 border-gray-500 z-2 mt-5 ml-10 rounded-lg">
+          <Settings
+            onChange={onSliderChange}
+            defaultSliderData={defaultSliderData}
+            sliderData={sliderData}
+            eps={eps}
+            priceTarget={(eps + 2.04) * peRatio}
+            peRatio={peRatio}
+            setPeRatio={setPeRatio}
+            onSliderInfoClick={onSliderInfoClick}
+            onSaveClick={() => setShowSaveModal(true)}
+            selectedQuarter={selectedQuarter}
+            onQuarterChange={(val) => setSelectedQuarter(val)}
+          />
+        </div>
+
+        {/* Sankey Section taking 70% width */}
+        <div
+          ref={sankeyContainerRef}
+          className="z-0 h-full"
+          style={{ height: '90vh' }} // Adjust the height
+        >
+          <Sankey
+            data={sankeyData}
+          />
+        </div>
       </div>
+
       <SliderInfoSideBar
         showSidebar={!!selectedSlider}
         data={sideBarData}
-        closeSideBar={() => {
-          setSelectedSlider(null);
-        }}
+        closeSideBar={() => setSelectedSlider(null)}
       />
-      <Modal
-        open={showSaveModal}
-        header="Save Data"
-        onClose={() => setShowSaveModal(false)}
-      >
-        <form className="w-[300px]" onSubmit={onSaveHandler}>
-          <TextField
-            label="Enter your email to save data"
-            name="userEmail"
-            type="email"
-            value={userEmail}
-            placeholder="Email"
-            required
-            onChange={(e) => setUserEmail(e.target.value)}
-          />
-          <button
-            type="submit"
-            disabled={!userEmail}
-            className="inline-flex w-full justify-center rounded-md py-2 mt-4 text-sm font-semibold text-white shadow-sm bg-blue-600"
-          >
-            Save
-          </button>
-        </form>
-      </Modal>
     </div>
   );
 };

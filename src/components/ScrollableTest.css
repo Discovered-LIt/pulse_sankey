@@ -1,0 +1,33 @@
+body {
+  font-family: 'Space Mono', sans-serif;
+  background: #fffff;
+}
+
+
+.scrollable-sankey-container {
+  width: 100%;
+  height: 100%;
+  border: 1px solid red; /* Just for debugging */
+  z-index: 999;
+}
+
+.sankey-svg {
+  background-color: lightgray;
+  position: relative;
+  width: 100%;
+  height: 600px;
+  z-index: 999;
+}
+
+.step {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-align: start;
+  background-color: #1D1F23;
+  color: white;
+  padding: 20px;
+  font-size: 2rem;
+}

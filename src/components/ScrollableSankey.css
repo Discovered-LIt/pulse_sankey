@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
+
+body {
+  font-family: 'Space Mono', sans-serif;
+  background: #1D1F23;
+}
+
+/* General container for scrollable content */
+.scrollable-sankey-container {
+  position: relative;
+  height: 100vh;
+  overflow-y: auto; /* Allow scrolling */
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.sankey-svg {
+  position: relative;
+  width: 100%; /* Ensure it takes full width */
+  height: 600px;
+  margin-bottom: 20vh; /* Space to ensure proper section snapping */
+}
+
+.simple-sankey {
+  position: relative; /* Keep relative so it follows scroll flow */
+  width: 1200px;
+  height: auto; /* Allow height to adjust based on content */
+  z-index: 3; /* To appear above other elements */
+  margin: 0 auto; /* Center the Sankey chart */
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Container for sections below the Sankey */
+#sections {
+  position: relative;
+}
+
+.step {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: start; /* Ensure each step snaps to the top */
+  padding: 20px;
+  color: white;
+}
+
+.step h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.step p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 1rem;
+  border-radius: 8px;
+  color: #fff;
+  text-align: center;
+}
+
+.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fade-in {
+  opacity: 1;
+}
+
+/* Ensuring simpleSankey also adapts well on smaller screens */
+@media (max-width: 768px) {
+  .simple-sankey {
+    width: 100%; /* Scale down for smaller screens */
+    height: auto; /* Ensure height scales automatically */
+  }
+}
+
+/* Styling the container for SimpleSankey */
+.svg-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; /* Align items vertically in the container */
+  padding: 20px; /* Add some padding for better spacing */
+}
+
+.svg-container h1 {
+  text-align: center;
+  margin-bottom: 0; /* Reduce space between title and logo */
+}
+
+/* Specific section alignment for auto revenue */
+#auto-revenue {
+  text-align: left;
+  padding: 20px;
+}
+
+.recharts-wrapper {
+  width: 100%;  /* Ensure the chart scales properly */
+  max-width: 600px;
+  margin: 0 auto; /* Center the chart */
+}
+
+/* Optional: Make the logo responsive */
+@media (max-width: 768px) {
+  .tesla-logo {
+    width: 100px;  /* Make the logo smaller on smaller screens */
+    margin-top: -5px;  /* Adjust the spacing on smaller screens */
+  }
+}

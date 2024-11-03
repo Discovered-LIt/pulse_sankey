@@ -1,0 +1,36 @@
+.auto-revenue-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: hidden; /* Prevent unintended horizontal scroll */
+}
+
+.chart-scroll-container {
+  display: flex;
+  overflow-x: scroll; /* Enable horizontal scrolling */
+  white-space: nowrap;
+  height: 100vh; /* Full screen height */
+  scroll-snap-type: x mandatory; /* Smooth snap scrolling */
+}
+
+.chart-section {
+  min-width: 500px; /* Each chart takes up full width of the viewport */
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-align: start; /* Snap to start of each section */
+}
+
+.chart-title {
+  color: #FFF;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+
+.chart-wrapper {
+  background-color: #000; /* Black background for each chart section */
+  padding: 2rem;
+}
