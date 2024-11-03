@@ -12,7 +12,7 @@ const AutoRevenueChart = () => {
     { date: '2020-01', value: 10 },
     { date: '2020-02', value: 15 },
     { date: '2020-03', value: 18 },
-    { date: '2020-04', value: 20 },
+    { date: '2020-04', value: 22 },
   ];
 
   const fakeData2 = [
