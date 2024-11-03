@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useRef } from "react";
 import axiosInstance from '../../config/axios';
+import './global.css';
 import { useQuery } from "@tanstack/react-query";
 import last from 'lodash-es/last';
 import first from 'lodash-es/first';
@@ -10,7 +11,6 @@ import cn from 'classnames';
 // components
 import LineChart from "../../components/charts/line";
 import BarChart from "../../components/charts/Bar";
-import SideBar from "../../components/sideBar";
 import Spinner from "../../components/Spinner";
 import LoadingSkeleton from "../../components/loadingSkeleton";
 import Filters from "./filters";
@@ -46,20 +46,21 @@ export type Filter = {
 }
 
 const DataPage = () => {
-  const [showSidebar, setShowSidebar] = useState(false);
-  const [selectedChart, setSelectedChart] = useState<MappingData>(undefined)
+  const [showModal, setShowModal] = useState(false);
+  const [selectedChart, setSelectedChart] = useState<MappingData>(undefined);
   const sideBarRef = useRef<HTMLDivElement>();
   const [activeZoom, setActiveZoom] = useState(ZoomType.ALL);
-  const [filters, setFilters] = useState<Filter>({ types: [] })
+  const [filters, setFilters] = useState<Filter>({ types: [] });
   const { settings, datamappingUrl } = useTopicSettingsContext();
 
   useOnOutsideClick(sideBarRef.current, () => {
-    if (!showSidebar) return;
-    setShowSidebar(false);
+    if (!showModal) return;
+    setShowModal(false);
     setSelectedChart(undefined);
     setActiveZoom(ZoomType.ALL);
   });
 
+  console.log('Data Mapping URL:', datamappingUrl);
   const { data: mappingData = [], isLoading } = useQuery<MappingData[]>({
     queryKey: ['datamapping'],
     queryFn: async () => {
@@ -83,6 +84,7 @@ const DataPage = () => {
     refetchOnWindowFocus: false
   });
 
+    // Create a shared Y domain across all charts
   const chartSettings = useMemo(() => {
     if(!mappingData.length) return {};
     return mappingData.reduce((newObj, obj) => {
@@ -116,7 +118,7 @@ const DataPage = () => {
 
   const onChartSelect = (data: MappingData) => {
     setSelectedChart(data);
-    setShowSidebar(true)
+    setShowModal(true);
   }
 
   const onZoomChange = (zoom: ZoomType) => {
@@ -158,20 +160,20 @@ const DataPage = () => {
   const bgSecondaryClr = settings.theme.secondary || 'black';
 
   return(
-    <div className={cn(`px-8 pt-8 bg-[${bgPrimaryClr}]`)}>
+    <div className={cn(`px-8 pt-8 bg-[${bgPrimaryClr}] no-scrollbar overflow-auto`)}>
       <Filters
         filters={filters}
         setFilters={setFilters}
         chartTypeOptions={chartTypeOptions}
       />
       <div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 max-h-[80vh] overflow-scroll gap-4"
+        className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 2xl:grid-cols-7 max-h-[80vh]"
       >
         {
           filteredCharts?.map((data) => (
             <div
               key={data.category}
-              className="p-4 h-auto overflow-x-clip cursor-pointer rounded-[10px] hover:bg-zinc-900 sm:border-0 border border-white flex flex-row sm:flex-col min-h-[105px] sm:max-h-max mb-4 z-10"
+              className="p-4 h-auto overflow-x-clip cursor-pointer rounded-[10px] hover:bg-zinc-900 sm:border-0 border border-[#111] flex flex-row sm:flex-col min-h-[105px] sm:max-h-max mb-4 z-10"
               style={{ background: bgSecondaryClr }}
               onClick={() => onChartSelect(data)}
             >
@@ -197,7 +199,7 @@ const DataPage = () => {
                   chartOverview
                   chartColour={chartSettings[data.category]?.chartcolour?.dark}
                   dateFormat={chartSettings[data.category]?.dateFormat}
-                  width={500}
+                  width={400}
                   height={300}
                   margin={{ top: 20, right: 20, bottom: 30, left: 50 }} 
                 />}
@@ -207,7 +209,7 @@ const DataPage = () => {
                     chartColour={chartSettings[data.category]?.chartcolour?.dark}
                     chartOverview
                     dateFormat={chartSettings[data.category]?.dateFormat}
-                    width={500}
+                    width={400}
                     height={300}
                     margin={{ top: 20, right: 20, bottom: 30, left: 50 }}
                   />
@@ -216,55 +218,50 @@ const DataPage = () => {
             </div>
           ))
         }
-        <SideBar
-          open={showSidebar}
-          bgColor={settings.theme.secondary}
-          onClose={() => setShowSidebar(false)}
-        >
-          <div
-            className="h-full overflow-auto"
-            ref={sideBarRef}
-            style={{ background: settings.theme.secondary || '#232323' }}
-          >
+        </div>
+      {/* Modal for showing the selected chart */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-75 no-scrollbar overflow-auto">
+          <div className="relative w-full max-w-4xl h-[90vh] bg-opacity-75 bg-gradient-to-b from-black to-gray-900 border-4 border-gray-800 rounded-lg overflow-y-auto p-6 no-scrollbar">
+            <button
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              onClick={() => setShowModal(false)}
+            >
+              &times; Close
+            </button>
             <div className="p-6 mt-2">
               {selectedChart?.type === 'LINE' && <LineChart
                 data={filteredChartData}
                 timeLineData={[]}
                 category={selectedChart?.category}
                 isLoading={isLoading}
-                parentRef={sideBarRef}
+                parentRef={undefined}
                 prefix={selectedChart.symbol}
                 chartColour={chartSettings[selectedChart.category]?.chartcolour?.dark}
                 dateFormat={chartSettings[selectedChart.category]?.dateFormat}
                 activeZoom={activeZoom}
                 onZoomChange={onZoomChange}
               />}
-              {selectedChart?.type === 'BAR' &&
-                <BarChart
-                  data={filteredChartData}
-                  chartColour={chartSettings[selectedChart.category]?.chartcolour?.dark}
-                  parentRef={sideBarRef}
-                  dateFormat={chartSettings[selectedChart.category]?.dateFormat}
-                  activeZoom={activeZoom}
-                  onZoomChange={onZoomChange}
-                />
-              }
+              {selectedChart?.type === 'BAR' && <BarChart
+                data={filteredChartData}
+                chartColour={chartSettings[selectedChart.category]?.chartcolour?.dark}
+                parentRef={undefined}
+                dateFormat={chartSettings[selectedChart.category]?.dateFormat}
+                activeZoom={activeZoom}
+                onZoomChange={onZoomChange}
+              />}
             </div>
             <h1
-              className="py-4 text-center bg-black"
-              style={{
-                background: bgPrimaryClr,
-                color: settings.theme.secondary || 'white'
-              }}
+              className="py-4 text-center bg-black text-white rounded-lg mt-4"
             >
               {selectedChart?.title}
             </h1>
             <div className="p-6 mt-2" dangerouslySetInnerHTML={{ __html: selectedChart?.summary }} />
-            {selectedChart?.tweets?.length > 0 && <div className="p-6">
-              <p className="uppercase italic -mt-8 mb-4">latest</p>
-              <ol className="relative border-s border-gray-200 dark:border-gray-700">   
-                {
-                  selectedChart?.tweets?.map((tweetId, idx) => (
+            {selectedChart?.tweets?.length > 0 && (
+              <div className="p-6">
+                <p className="uppercase italic -mt-8 mb-4">latest</p>
+                <ol className="relative border-s border-gray-200 dark:border-gray-700">
+                  {selectedChart?.tweets?.map((tweetId, idx) => (
                     <li className="mb-10 ms-4" key={idx}>
                       <div
                         className="absolute w-4 h-4 bg-[#232323] rounded-full mt-4 -start-[8px] border border-white dark:border-gray-900 dark:bg-gray-700"
@@ -274,15 +271,15 @@ const DataPage = () => {
                         placeholder={<LoadingSkeleton />}
                       />
                     </li>
-                  ))
-                }
-              </ol>
-            </div>}
+                  ))}
+                </ol>
+              </div>
+            )}
           </div>
-        </SideBar>
-      </div>
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default DataPage;
