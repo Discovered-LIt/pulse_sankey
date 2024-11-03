@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { sankey, sankeyCenter, sankeyLinkHorizontal } from "d3-sankey";
 import { sankeySettings, SankeyCategory } from "../../config/sankey";
-import { SankeyData } from "../../pages/sankey";
+import { SankeyData } from "../../config/sankey";
 import { GREY } from "../../config/sankey";
 
 const MARGIN_Y = 25;

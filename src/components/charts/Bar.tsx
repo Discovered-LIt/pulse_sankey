@@ -14,6 +14,9 @@ interface Props {
   chartOverview?: boolean;
   data: BarChartData[];
   chartColour?: string;
+  width?: number;
+  height?: number;
+  margin?: { top: number; right: number; bottom: number; left: number };
   parentRef?: RefObject<HTMLDivElement>;
   dateFormat?: string;
   activeZoom?: ZoomType;
@@ -27,32 +30,37 @@ const BarChart = ({
   parentRef,
   dateFormat,
   activeZoom,
-  onZoomChange
+  onZoomChange,
 }: Props) => {
   const barChartRef = useRef(null);
-  const [tooltip, setTooltip] = useState<{
-    x: number;
-    y: number;
-    d: BarChartData;
-  }>();
-  
+  const [tooltip, setTooltip] = useState<{ x: number; y: number; d: BarChartData } | null>(null);
+
+  const handleMouseOver = (event: MouseEvent, d: BarChartData) => {
+    const rect = barChartRef.current?.getBoundingClientRect();
+    const x = event.pageX - (rect ? rect.left : 0);
+    const y = event.pageY - (rect ? rect.top : 0);
+    
+
+    setTooltip({ x, y, d: d || data[data.length - 1] });
+  };
+
   const createGraph = () => {
-    const width = 500,
+    const width = 400,
       height = 300,
       margin = { top: 20, right: 20, bottom: 30, left: chartOverview ? 20 : 50 };
-  
+
     const svg = d3.select(barChartRef.current);
     svg.selectAll("*").remove();
-  
+
     const numTicks = 7;
     const dataLength = data.length;
     const tickStep = Math.ceil(dataLength / (numTicks - 1));
-  
+
     const tickValues = Array.from({ length: numTicks }, (_, i) => {
       const index = Math.min(i * tickStep, dataLength - 1);
       return data?.[index]?.date;
     });
-  
+
     const x = d3
       .scaleBand()
       .range([0, width - margin.left - margin.right])
@@ -62,90 +70,83 @@ const BarChart = ({
     const y = d3
       .scaleLinear()
       .domain([
-        data.length < 2 ? 0 : d3.min(data, (d) => d.value),
-        d3.max(data, (d) => d.value),
+        0, // Start Y-axis at 0 for positive values
+        d3.max(data, (d) => d.value) || 1 // Max value or fallback to 1 if no data
       ])
       .nice()
       .range([height - margin.bottom, margin.top]);
 
-    const handleMouseOver = (e: MouseEvent, d: BarChartData) => {
-      let x = e.pageX - 40;
-      let y = e.pageY - 40;
-      // calculate within the parent container
-      if (parentRef?.current) {
-        x -= parentRef.current.getBoundingClientRect().left;
-        const maxX = parentRef.current.offsetWidth;
-        x = Math.min(x, maxX);
-        y -= parentRef.current.getBoundingClientRect().top;
-      } 
-      setTooltip({ x, y, d: d || data[data.length - 1] });
-    };
-  
-    // Bars
+    const latestDataPoint = data[data.length - 1];
+
+    // Bars with rounded tops and square bottoms using a path
     svg
       .append("g")
       .attr("transform", `translate(${margin.left},0)`)
       .selectAll(".bar")
       .data(data)
       .enter()
-      .append("rect")
-      .attr("class", "bar")
-      .attr("x", (d) => x(d.date))
-      .attr("width", x.bandwidth())
-      .attr("y", (d) => {
-        return d.value >= 0 ? y(d.value) : y(0);
+      .append("path")
+      .attr("d", (d) => {
+        const xPos = x(d.date);
+        const barHeight = Math.abs(y(d.value) - y(0));
+        const barTop = y(d.value);
+        const barWidth = x.bandwidth();
+        const radius = Math.min(10, barWidth / 2);  // Adjust radius to avoid excess curvature
+
+        // Create a custom path with rounded top and square bottom
+        return `M${xPos},${barTop + radius}
+                a${radius},${radius} 0 0 1 ${radius},-${radius}
+                h${barWidth - 2 * radius}
+                a${radius},${radius} 0 0 1 ${radius},${radius}
+                v${barHeight - radius}
+                h-${barWidth}
+                z`;
       })
-      .attr("height", (d) => Math.abs(y(d.value) - y(0)))
-      .style("fill", (chartColour || "steelblue"))
-      .attr("rx", 10)
-      .attr("ry", 10)
+      .style("fill", (d) => (d === latestDataPoint ? (chartColour || "steelblue") : "#888"))
       .on("mouseover", handleMouseOver)
       .on("mouseout", () => setTooltip(undefined));
 
     if (!chartOverview) {
-      // x axis
       svg
         .append("g")
         .attr("transform", `translate(${margin.left}, ${height - margin.bottom})`)
-        .attr("fill", "red")
         .call(
           d3
             .axisBottom(x)
             .tickValues(tickValues)
             .tickFormat((d) => getUTCDate(d, "'Q'Q yy"))
         );
-  
-      // y axis
+
       svg
         .append("g")
         .attr("transform", `translate(${margin.left}, 0)`)
         .call(d3.axisLeft(y));
-  
+
       svg.selectAll(".domain").remove();
       svg.selectAll(".tick line").remove();
     }
-  
+
     svg
       .attr("width", "100%")
-      .attr("height", "100%")
+      .attr("height", height)
       .attr("viewBox", `0 0 ${width} ${height}`)
       .attr("preserveAspectRatio", "xMinYMin meet")
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
   };
-  
+    
   useEffect(() => {
     if (!data?.length) return;
-    createGraph()
-  }, [data])
+    createGraph();
+  }, [data]);
 
-  return(
+  return (
     <>
       {!chartOverview && <Filters activeZoom={activeZoom} onZoomChange={onZoomChange}/>}
       {!data?.length ? (
         <h2 className="text-center mt-10">No data found.</h2>
       ) : (
-        <svg ref={barChartRef} width={500} height={300} />
+        <svg ref={barChartRef} width={400} height={300} />
       )}
       {tooltip && (
         <div
@@ -159,7 +160,7 @@ const BarChart = ({
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
 export default BarChart;
