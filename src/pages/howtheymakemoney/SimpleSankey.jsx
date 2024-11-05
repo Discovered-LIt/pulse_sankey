@@ -137,8 +137,8 @@ const SimpleSankey = ({ sankeyData, highlightedNode, zoomLevel, zoomFocus }) => 
 
     // Create dollar icons
     const iconCount = 3;
-    const greenDollarIconURL = '/dollarstock.svg';
-    const redDollarIconURL = '/dollarstockred.svg';
+    const greenDollarIconURL = 'https://d16knz2r0dpe77.cloudfront.net/assets/dollarstock.svg';
+    const redDollarIconURL = 'https://d16knz2r0dpe77.cloudfront.net/assets/dollarstockred.svg';
 
     const allIcons = links.flatMap((link, i) => {
       const path = linkPaths.nodes()[i];
