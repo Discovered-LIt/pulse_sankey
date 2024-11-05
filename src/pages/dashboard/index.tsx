@@ -9,7 +9,7 @@
   import { Stock, BorderMap } from '../../utils/global';
   import Head from '../../components/Head'; // Adjust the import path accordingly
 
-  const crownIcon = "/crownlargeyellow.svg";
+  const crownIcon = "https://d16knz2r0dpe77.cloudfront.net/assets/crownlargeyellow.svg";
   const cloudFrontUrl = 'https://d16knz2r0dpe77.cloudfront.net/dashmapping.json'; // Replace with your CloudFront URL
 
 
