@@ -31,7 +31,16 @@ const Head: React.FC<HeaderProps> = ({ activeType, setActiveType }) => {
         ))}
       </div>
       <div className="flex-1 flex justify-end">
-        <img src="/pulselogo_green.png" alt="Company Logo" className="h-8 mr-4" />
+        <img
+          src="/Logo_white.svg"
+          alt="Company Logo"
+          className="h-8 mr-4"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.onerror = null;
+            target.src = '/path-to-placeholder.png';
+          }}
+        />
       </div>
     </div>
   );
