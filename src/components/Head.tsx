@@ -1,10 +1,10 @@
-import React from 'react';
-import cn from 'classnames';
+import React from "react";
+import LogoWhite from "../assets/logos/Logo_white.svg"; // Adjust the path as needed
 
 enum Types {
-  COMPANIES = 'COMPANIES',
-  THEMES = 'THEMES',
-  PEOPLE = 'PEOPLE',
+  COMPANIES = "COMPANIES",
+  THEMES = "THEMES",
+  PEOPLE = "PEOPLE",
 }
 
 type HeaderProps = {
@@ -20,10 +20,9 @@ const Head: React.FC<HeaderProps> = ({ activeType, setActiveType }) => {
         {Object.values(Types).map((type) => (
           <button
             key={type}
-            className={cn([
-              "border-2 rounded-xl px-4 py-[4px] text-sm sm:mr-14",
-              activeType === type ? 'border-gray-700' : 'border-transparent'
-            ])}
+            className={`border-2 rounded-xl px-4 py-[4px] text-sm sm:mr-14 ${
+              activeType === type ? "border-gray-700" : "border-transparent"
+            }`}
             onClick={() => setActiveType(type)}
           >
             {type}
@@ -31,7 +30,8 @@ const Head: React.FC<HeaderProps> = ({ activeType, setActiveType }) => {
         ))}
       </div>
       <div className="flex-1 flex justify-end">
-        <img src="/pulselogo_green.png" alt="Company Logo" className="h-8 mr-4" />
+        {/* Import and Use SVG Here */}
+        <LogoWhite className="h-8 mr-4 fill-current text-[#2afeb7]" />
       </div>
     </div>
   );
