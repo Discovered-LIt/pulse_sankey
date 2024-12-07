@@ -1,5 +1,5 @@
 import React from "react";
-import LogoWhite from "../assets/logos/Logo_white.svg"; // Adjust the path as needed
+import LogoWhite from "../assets/Logo_white.svg"; // Adjust the path as needed
 
 enum Types {
   COMPANIES = "COMPANIES",
